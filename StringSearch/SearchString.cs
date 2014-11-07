@@ -182,13 +182,16 @@ namespace StringSearch
                 {
                     //If we currently have the digits being searched for
                     bool match = true;
-                    for (var i = 0; i < lookFor.Length; i++)
+                    int i = 0;
+                    foreach(byte prevEl in prev)
                     {
-                        if(lookFor[i] != prev.ElementAt(i))
+                        if(lookFor[i] != prevEl)
                         {
                             match = false;
                             break;
                         }
+
+                        i++;
                     }
 
                     if(match)
