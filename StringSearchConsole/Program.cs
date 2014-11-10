@@ -24,29 +24,6 @@ namespace StringSearchConsole
 
         static void Main(string[] args)
         {
-            //Console.WriteLine(Compression.ReadStringNoCompression(@"C:\Users\Josh\Documents\pi\Readme.txt"));
-
-            //Console.WriteLine(Compression.ReadStringFromCompressedLZMA(@"C:\Users\Josh\Documents\pi\Readme.7z"));
-
-            /*string fileInPath = @"C:\Users\Josh\Documents\pi\Readme.txt";
-
-            CompressIfNotExists(fileInPath);
-
-            Console.WriteLine("Reading in compressed file");
-            string toSearch = Compression.ReadStringLZMA(fileInPath + COMPRESSED_FILE_EXTENSION);
-
-            int[] foundIdxs = SearchString.Search(toSearch, "Neither");
-            foreach(int idx in foundIdxs)
-            {
-                Console.WriteLine("Neither: {0}", idx);
-            }
-
-            foundIdxs = SearchString.Search(toSearch, "2003");
-            foreach (int idx in foundIdxs)
-            {
-                Console.WriteLine("2003: {0}", idx);
-            }*/
-
             while(true)
             {
                 bool quit = menu();
