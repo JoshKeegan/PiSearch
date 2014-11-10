@@ -1,4 +1,5 @@
 ﻿using StringSearch;
+using SuffixArray;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,6 +19,7 @@ namespace StringSearchConsole
         private static string workingDirectory = "";
         private static string loadedString = null;
         private static Stream loaded4BitDigitStream = null;
+        private static int[] suffixArray = null;
         private static Stopwatch stopwatch = new Stopwatch();
 
         static void Main(string[] args)
@@ -72,6 +74,7 @@ namespace StringSearchConsole
                 "7.\t4-bit digit compress file\n" + 
                 "8.\tLoad compressed 4-bit digit file\n" + 
                 "9.\tSearch loaded 4-bit compressed stream\n" +
+                "10.\tGenerate suffix array from loaded 4-bit compressed stream\n" + 
                 "q.\tQuit");
 
             bool quit = false;
@@ -114,6 +117,9 @@ namespace StringSearchConsole
                         break;
                     case "9": //Search next from loaded 4-bit digit stream
                         subSearchLoaded4BitDigitStreamForNextOccurrence();
+                        break;
+                    case "10": //Generate suffix array from loaded 4-bit compressed stream
+                        subGenerateSuffixArray();
                         break;
                     case "q": //Quit
                         quit = true;
@@ -395,6 +401,28 @@ namespace StringSearchConsole
             stopwatch.Start();
 
             convertPiFast43File(fileInName, fileOutName);
+        }
+
+        private static void subGenerateSuffixArray()
+        {
+            //Calculate the number of digits in the loaded 4 bit digit stream
+            int length = (int)loaded4BitDigitStream.Length * 2;
+
+            //Check if the last item in the stream is empty
+            loaded4BitDigitStream.Position = loaded4BitDigitStream.Length - 1;
+            int lastByte = loaded4BitDigitStream.ReadByte();
+            int right = lastByte & 15; // mask 0000 1111
+
+            if(right == 15)
+            {
+                length--;
+            }
+
+            //Initialise the array that will hold the suffix array
+            suffixArray = new int[length];
+
+            //Calculate the suffix array
+            SAIS.sufsort(loaded4BitDigitStream, suffixArray, length);
         }
 
         private static void CompressIfNotExists(string filePath)
