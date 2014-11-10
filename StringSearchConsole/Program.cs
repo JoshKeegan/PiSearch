@@ -52,6 +52,8 @@ namespace StringSearchConsole
                 "8.\tLoad compressed 4-bit digit file\n" + 
                 "9.\tSearch loaded 4-bit compressed stream\n" +
                 "10.\tGenerate suffix array from loaded 4-bit compressed stream\n" + 
+                "11.\tSave suffix array\n" +
+                "12.\tLoad suffix array\n" +
                 "q.\tQuit");
 
             bool quit = false;
@@ -97,6 +99,12 @@ namespace StringSearchConsole
                         break;
                     case "10": //Generate suffix array from loaded 4-bit compressed stream
                         subGenerateSuffixArray();
+                        break;
+                    case "11": //Save suffix array
+                        subSaveSuffixArray();
+                        break;
+                    case "12": //Load suffix array
+                        subLoadSuffixArray();
                         break;
                     case "q": //Quit
                         quit = true;
@@ -165,6 +173,72 @@ namespace StringSearchConsole
             stopwatch.Start();
 
             Compression.CompressFile4BitDigit(workingDirectory + fileIn, workingDirectory + fileOut);
+        }
+
+        private static void subSaveSuffixArray()
+        {
+            Console.Write("File out: ");
+            string fileName = Console.ReadLine();
+
+            stopwatch.Reset();
+            stopwatch.Start();
+
+            FileStream fs = new FileStream(workingDirectory + fileName, FileMode.Create);
+
+            foreach(int i in suffixArray)
+            {
+                byte[] bytes = BitConverter.GetBytes(i);
+                fs.Write(bytes, 0, 4);
+            }
+
+            fs.Close();
+        }
+
+        private static void subLoadSuffixArray()
+        {
+            string fileName;
+
+            while(true)
+            {
+                Console.Write("Load suffix array file: ");
+                fileName = Console.ReadLine();
+
+                if(File.Exists(workingDirectory + fileName))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("File not found \"{0}\"", fileName);
+                }
+            }
+
+            stopwatch.Reset();
+            stopwatch.Start();
+
+            FileStream fs = new FileStream(workingDirectory + fileName, FileMode.Open);
+
+            int len = (int)(fs.Length / 4);
+
+            suffixArray = new int[len];
+
+            byte[] bytes = new byte[4];
+            int state = 4;
+            int i = 0;
+            while(true)
+            {
+                state = fs.Read(bytes, 0, 4);
+
+                if(state < 4)
+                {
+                    suffixArray[i] = BitConverter.ToInt32(bytes, 0);
+                    i++;
+                }
+                else
+                {
+                    break;
+                }
+            }
         }
 
         private static void subLoadFile()
