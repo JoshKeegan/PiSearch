@@ -56,6 +56,7 @@ namespace StringSearchConsole
                 "12.\tLoad suffix array\n" +
                 "13.\tSearch loaded suffix array\n" + 
                 "14.\tGenerate suffix array from loaded string\n" +
+                "15.\tPrint Suffix Array\n" + 
                 "q.\tQuit");
 
             bool quit = false;
@@ -113,6 +114,9 @@ namespace StringSearchConsole
                         break;
                     case "14": //Generate suffix array from loaded string
                         subGenerateSuffixArrayFromLoadedString();
+                        break;
+                    case "15": //Print suffix array
+                        subPrintSuffixArray();
                         break;
                     case "q": //Quit
                         quit = true;
@@ -523,6 +527,16 @@ namespace StringSearchConsole
             if (status != 0)
             {
                 Console.WriteLine("Error occurred whilst generating the suffix array: {0}", status);
+            }
+        }
+
+        private static void subPrintSuffixArray()
+        {
+            FourBitDigitArray fourBitDigitArray = new FourBitDigitArray(loaded4BitDigitStream);
+
+            for(int i = 0; i < suffixArray.Length; i++)
+            {
+                Console.WriteLine("{0}: {1}\t\t\tdigit: {2}", i, suffixArray[i], fourBitDigitArray[suffixArray[i]]);
             }
         }
 
