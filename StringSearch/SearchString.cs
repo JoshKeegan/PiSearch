@@ -82,12 +82,12 @@ namespace StringSearch
                 int min = matchingPosition;
                 int max = matchingPosition;
 
-                while(min > 0 && doesStartWithSuffix(digitArray, lookFor, min - 1) == 0)
+                while(min > 0 && doesStartWithSuffix(digitArray, lookFor, suffixArray[min - 1]) == 0)
                 {
                     min--;
                 }
 
-                while(max < digitArray.Length - 1 && doesStartWithSuffix(digitArray, lookFor, max + 1) == 0)
+                while(max < digitArray.Length - 1 && doesStartWithSuffix(digitArray, lookFor, suffixArray[max + 1]) == 0)
                 {
                     max++;
                 }
@@ -95,7 +95,7 @@ namespace StringSearch
                 int[] toRet = new int[max - min + 1];
                 for(int i = min; i <= max; i++)
                 {
-                    toRet[i - min] = i;
+                    toRet[i - min] = suffixArray[i];
                 }
                 return toRet;
             }
@@ -126,7 +126,7 @@ namespace StringSearch
                 //If this is the answer
                 if(hit == 0)
                 {
-                    return suffixArray[idx];
+                    return idx;
                 }
                 //Otherwise if we're too high in the array
                 else if(hit == 1)
