@@ -97,6 +97,10 @@ namespace StringSearch
                 {
                     toRet[i - min] = suffixArray[i];
                 }
+
+                //Sort the array of string indices (Array.Sort implements Quicksort)
+                Array.Sort(toRet);
+
                 return toRet;
             }
         }
