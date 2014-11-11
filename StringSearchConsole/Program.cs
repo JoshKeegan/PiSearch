@@ -19,6 +19,7 @@ namespace StringSearchConsole
         private static string workingDirectory = "";
         private static string loadedString = null;
         private static Stream loaded4BitDigitStream = null;
+        private static FourBitDigitArray fourBitDigitArray = null;
         private static int[] suffixArray = null;
         private static Stopwatch stopwatch = new Stopwatch();
 
@@ -324,6 +325,10 @@ namespace StringSearchConsole
                     }
 
                     loaded4BitDigitStream = Compression.ReadStreamNoComression(workingDirectory + fileName);
+
+                    //Now wrap it in a FourBitDigitArray
+                    fourBitDigitArray = new FourBitDigitArray(loaded4BitDigitStream);
+
                     break;
                 }
                 else
@@ -419,7 +424,7 @@ namespace StringSearchConsole
                 stopwatch.Reset();
                 stopwatch.Start();
 
-                int[] foundIdxs = SearchString.Search(suffixArray, new FourBitDigitArray(loaded4BitDigitStream), toFind);
+                int[] foundIdxs = SearchString.Search(suffixArray, fourBitDigitArray, toFind);
                 Console.WriteLine("Found {0} results", foundIdxs.Length);
                 foreach (int idx in foundIdxs)
                 {
@@ -532,8 +537,6 @@ namespace StringSearchConsole
 
         private static void subPrintSuffixArray()
         {
-            FourBitDigitArray fourBitDigitArray = new FourBitDigitArray(loaded4BitDigitStream);
-
             for(int i = 0; i < suffixArray.Length; i++)
             {
                 Console.WriteLine("{0}: {1}\t\t\tdigit: {2}", i, suffixArray[i], fourBitDigitArray[suffixArray[i]]);
