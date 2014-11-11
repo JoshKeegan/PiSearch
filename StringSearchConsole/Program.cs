@@ -500,7 +500,12 @@ namespace StringSearchConsole
             suffixArray = new int[length];
 
             //Calculate the suffix array
-            SAIS.sufsort(loaded4BitDigitStream, suffixArray, length);
+            int status = SAIS.sufsort(loaded4BitDigitStream, suffixArray, length);
+
+            if(status != 0)
+            {
+                Console.WriteLine("Error occurred whilst generating the suffix array: {0}", status);
+            }
         }
 
         private static void CompressIfNotExists(string filePath)
