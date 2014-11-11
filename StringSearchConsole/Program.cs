@@ -55,6 +55,7 @@ namespace StringSearchConsole
                 "11.\tSave suffix array\n" +
                 "12.\tLoad suffix array\n" +
                 "13.\tSearch loaded suffix array\n" + 
+                "14.\tGenerate suffix array from loaded string\n" +
                 "q.\tQuit");
 
             bool quit = false;
@@ -109,6 +110,9 @@ namespace StringSearchConsole
                         break;
                     case "13": //Search loaded suffix array
                         subSearchLoadedSuffixArray();
+                        break;
+                    case "14": //Generate suffix array from loaded string
+                        subGenerateSuffixArrayFromLoadedString();
                         break;
                     case "q": //Quit
                         quit = true;
@@ -503,6 +507,20 @@ namespace StringSearchConsole
             int status = SAIS.sufsort(loaded4BitDigitStream, suffixArray, length);
 
             if(status != 0)
+            {
+                Console.WriteLine("Error occurred whilst generating the suffix array: {0}", status);
+            }
+        }
+
+        private static void subGenerateSuffixArrayFromLoadedString()
+        {
+            //Initialise the aray that will hold the suffix array
+            suffixArray = new int[loadedString.Length];
+
+            //Calculate the suffix array
+            int status = SAIS.sufsort(loadedString, suffixArray, loadedString.Length);
+
+            if (status != 0)
             {
                 Console.WriteLine("Error occurred whilst generating the suffix array: {0}", status);
             }
