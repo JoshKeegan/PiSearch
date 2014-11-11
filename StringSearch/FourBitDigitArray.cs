@@ -67,6 +67,11 @@ namespace StringSearch
                     throw new IndexOutOfRangeException();
                 }
 
+                if(value < 0 || value > 15)
+                {
+                    throw new OverflowException();
+                }
+
                 stream.Position = i / 2;
                 int b = stream.ReadByte();
 
