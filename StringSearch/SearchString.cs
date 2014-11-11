@@ -56,6 +56,110 @@ namespace StringSearch
             }
         }
 
+        public static int[] Search(int[] suffixArray, FourBitDigitArray digitArray, string lookFor)
+        {
+            byte[] byteArrLookFor = new byte[lookFor.Length];
+
+            for (int i = 0; i < byteArrLookFor.Length; i++)
+            {
+                byteArrLookFor[i] = byte.Parse(lookFor[i].ToString());
+            }
+
+            return Search(suffixArray, digitArray, byteArrLookFor);
+        }
+
+        public static int[] Search(int[] suffixArray, FourBitDigitArray digitArray, byte[] lookFor)
+        {
+            int matchingPosition = binarySearchForPrefix(suffixArray, digitArray, lookFor, 0, suffixArray.Length - 1);
+
+            //If there were no matches
+            if(matchingPosition == -1)
+            {
+                return new int[0];
+            }
+            else //Otherwise match found, look for more
+            {
+                int min = matchingPosition;
+                int max = matchingPosition;
+
+                while(min > 0 && doesStartWithSuffix(digitArray, lookFor, min - 1) == 0)
+                {
+                    min--;
+                }
+
+                while(max < digitArray.Length - 1 && doesStartWithSuffix(digitArray, lookFor, max + 1) == 0)
+                {
+                    max++;
+                }
+
+                int[] toRet = new int[max - min + 1];
+                for(int i = min; i <= max; i++)
+                {
+                    toRet[i - min] = i;
+                }
+                return toRet;
+            }
+        }
+
+        private static int binarySearchForPrefix(int[] suffixArray, FourBitDigitArray digitArray, byte[] findPrefix, int min, int max)
+        {
+            int range = max - min;
+
+            if(range == 0)
+            {
+                //Only one possible value left, check it
+                if(doesStartWithSuffix(digitArray, findPrefix, min) == 0)
+                {
+                    return min;
+                }
+                else //No matches
+                {
+                    return -1;
+                }
+            }
+            else
+            {
+                int idx = min + (range / 2);
+
+                int hit = doesStartWithSuffix(digitArray, findPrefix, idx);
+
+                //If this is the answer
+                if(hit == 0)
+                {
+                    return idx;
+                }
+                //Otherwise if we're too high in the array
+                else if(hit == 1)
+                {
+                    return binarySearchForPrefix(suffixArray, digitArray, findPrefix, min, idx - 1);
+                }
+                //Otherwise we're too low in the array
+                else // hit == 0
+                {
+                    return binarySearchForPrefix(suffixArray, digitArray, findPrefix, idx + 1, max);
+                }
+            }
+        }
+
+        private static int doesStartWithSuffix(FourBitDigitArray digitArray, byte[] findPrefix, int startIdx)
+        {
+            for(int i = 0; i < findPrefix.Length; i++)
+            {
+                byte findPrefixByte = findPrefix[i];
+                byte actualByte = digitArray[startIdx + i];
+
+                if (findPrefixByte < actualByte)
+                {
+                    return 1; //Searching too high
+                }
+                else if(findPrefixByte > actualByte)
+                {
+                    return -1; //Searching too low
+                }
+            }
+            return 0; //Jackpot
+        }
+
         public static int FindNextOccurrence(string toSearch, string lookFor, int fromIdx)
         {
             if(fromIdx <= toSearch.Length - lookFor.Length)

@@ -54,6 +54,7 @@ namespace StringSearchConsole
                 "10.\tGenerate suffix array from loaded 4-bit compressed stream\n" + 
                 "11.\tSave suffix array\n" +
                 "12.\tLoad suffix array\n" +
+                "13.\tSearch loaded suffix array\n" + 
                 "q.\tQuit");
 
             bool quit = false;
@@ -105,6 +106,9 @@ namespace StringSearchConsole
                         break;
                     case "12": //Load suffix array
                         subLoadSuffixArray();
+                        break;
+                    case "13": //Search loaded suffix array
+                        subSearchLoadedSuffixArray();
                         break;
                     case "q": //Quit
                         quit = true;
@@ -394,6 +398,29 @@ namespace StringSearchConsole
             else
             {
                 Console.WriteLine("Must load a 4-bit digit stream in order to search it");
+            }
+        }
+
+        private static void subSearchLoadedSuffixArray()
+        {
+            if(suffixArray != null && loaded4BitDigitStream != null)
+            {
+                Console.Write("String of Digits to find: ");
+                string toFind = Console.ReadLine();
+
+                stopwatch.Reset();
+                stopwatch.Start();
+
+                int[] foundIdxs = SearchString.Search(suffixArray, new FourBitDigitArray(loaded4BitDigitStream), toFind);
+                Console.WriteLine("Found {0} results", foundIdxs.Length);
+                foreach (int idx in foundIdxs)
+                {
+                    Console.WriteLine(idx);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Must have a suffix array and a 4-bit digit stream loaded");
             }
         }
 

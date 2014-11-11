@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compression.cs" />
+    <Compile Include="FourBitDigitArray.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchString.cs" />
   </ItemGroup>
