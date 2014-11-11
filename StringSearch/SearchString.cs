@@ -121,12 +121,12 @@ namespace StringSearch
             {
                 int idx = min + (range / 2);
 
-                int hit = doesStartWithSuffix(digitArray, findPrefix, idx);
+                int hit = doesStartWithSuffix(digitArray, findPrefix, suffixArray[idx]);
 
                 //If this is the answer
                 if(hit == 0)
                 {
-                    return idx;
+                    return suffixArray[idx];
                 }
                 //Otherwise if we're too high in the array
                 else if(hit == 1)
