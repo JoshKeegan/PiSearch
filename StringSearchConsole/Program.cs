@@ -242,7 +242,7 @@ namespace StringSearchConsole
             {
                 state = fs.Read(bytes, 0, 4);
 
-                if(state < 4)
+                if(state == 4)
                 {
                     suffixArray[i] = BitConverter.ToInt32(bytes, 0);
                     i++;
