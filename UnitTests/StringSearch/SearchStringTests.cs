@@ -136,6 +136,82 @@ namespace UnitTests.StringSearch
         }
 
         [Test]
+        public void SearchSuffixArrayManualTest()
+        {
+            const string STR = "1234567899912340";
+
+            Dictionary<string, int[]> answers = new Dictionary<string, int[]>()
+            {
+                { "1", new int[] { 0, 11 } },
+                { "2", new int[] { 1, 12 } },
+                { "12", new int[] { 0, 11 } },
+                { "5", new int[] { 4 } }
+            };
+
+            int[] suffixArray = buildSuffixArray(STR);
+            FourBitDigitArray fourBitDigitArray = FourBitDigitArrayTests.convertStringTo4BitDigitArray(STR);
+
+            foreach (KeyValuePair<string, int[]> kvp in answers)
+            {
+                string find = kvp.Key;
+                int[] expected = kvp.Value;
+
+                int[] actual = SearchString.Search(suffixArray, fourBitDigitArray, find);
+
+                CollectionAssert.AreEqual(expected, actual);
+            }
+        }
+
+        [Test]
+        public void SearchSuffixArrayLastDigits()
+        {
+            const string STR = "1234567899912340";
+
+            int[] suffixArray = buildSuffixArray(STR);
+            FourBitDigitArray fourBitDigitArray = FourBitDigitArrayTests.convertStringTo4BitDigitArray(STR);
+
+            const string FIND = "12340";
+
+            int[] expected = new int[] { 11 };
+
+            int[] actual = SearchString.Search(suffixArray, fourBitDigitArray, FIND);
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void SearchSuffixArrayFirstDigits()
+        {
+            const string STR = "1234567899912340";
+
+            int[] suffixArray = buildSuffixArray(STR);
+            FourBitDigitArray fourBitDigitArray = FourBitDigitArrayTests.convertStringTo4BitDigitArray(STR);
+
+            const string FIND = "12345678";
+
+            int[] expected = new int[] { 0 };
+
+            int[] actual = SearchString.Search(suffixArray, fourBitDigitArray, FIND);
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void SearchSuffixArrayAllDigits()
+        {
+            const string STR = "1234567899912340";
+
+            int[] suffixArray = buildSuffixArray(STR);
+            FourBitDigitArray fourBitDigitArray = FourBitDigitArrayTests.convertStringTo4BitDigitArray(STR);
+
+            int[] expected = new int[] { 0 };
+
+            int[] actual = SearchString.Search(suffixArray, fourBitDigitArray, STR);
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void SearchSuffixArrayForEmptyString()
         {
             const string STR = "123456789";
