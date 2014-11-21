@@ -58,6 +58,7 @@ namespace StringSearchConsole
                 "13.\tSearch loaded suffix array\n" + 
                 "14.\tGenerate suffix array from loaded string\n" +
                 "15.\tPrint Suffix Array\n" + 
+                "16.\tPrint 4-bit digit array\n" + 
                 "q.\tQuit");
 
             bool quit = false;
@@ -118,6 +119,9 @@ namespace StringSearchConsole
                         break;
                     case "15": //Print suffix array
                         subPrintSuffixArray();
+                        break;
+                    case "16": //Print 4-bit digit file
+                        subPrintFourBitDigitArray();
                         break;
                     case "q": //Quit
                         quit = true;
@@ -540,6 +544,14 @@ namespace StringSearchConsole
             for(int i = 0; i < suffixArray.Length; i++)
             {
                 Console.WriteLine("{0}: {1}\t\t\tdigit: {2}", i, suffixArray[i], fourBitDigitArray[suffixArray[i]]);
+            }
+        }
+
+        private static void subPrintFourBitDigitArray()
+        {
+            for(int i = 0; i < fourBitDigitArray.Length; i++)
+            {
+                Console.WriteLine("{0}:\t\t\t\t{1}", i, fourBitDigitArray[i]);
             }
         }
 
