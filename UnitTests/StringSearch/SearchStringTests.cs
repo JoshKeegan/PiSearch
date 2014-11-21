@@ -68,7 +68,47 @@ namespace UnitTests.StringSearch
 
             int[] actual = SearchString.Search(STR, STR);
 
-            CollectionAssert.AreEqual(new int[] { 0 }, actual);
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void SequentialSearchLookForLongerThanToSearch()
+        {
+            const string STR = "123456789991234";
+            const string FIND = STR + "7";
+
+            int[] expected = new int[0];
+
+            int[] actual = SearchString.Search(STR, FIND);
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void SequentialSearchLookForEmptyString()
+        {
+            const string STR = "123456789991234";
+            const string FIND = "";
+
+            try
+            {
+                SearchString.Search(STR, FIND);
+                Assert.Fail();
+            }
+            catch(ArgumentException) { }
+        }
+
+        [Test]
+        public void SequentialSearchSearchEmptyString()
+        {
+            const string STR = "";
+            const string FIND = "1";
+
+            int[] expected = new int[0];
+
+            int[] actual = SearchString.Search(STR, FIND);
+
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]

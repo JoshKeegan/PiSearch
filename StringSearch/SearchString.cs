@@ -11,6 +11,12 @@ namespace StringSearch
     {
         public static int[] Search(string toSearch, string lookFor)
         {
+            //Validation
+            if(lookFor == "")
+            {
+                throw new ArgumentException("lookFor cannot be String.Empty");
+            }
+
             //The string to be searched must be longer than or of equal length to the string being searched for
             if(toSearch.Length >= lookFor.Length)
             {
