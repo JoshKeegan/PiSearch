@@ -60,6 +60,18 @@ namespace UnitTests.StringSearch
         }
 
         [Test]
+        public void SequentialSearchFullString()
+        {
+            const string STR = "123456789991234";
+
+            int[] expected = new int[] { 0 };
+
+            int[] actual = SearchString.Search(STR, STR);
+
+            CollectionAssert.AreEqual(new int[] { 0 }, actual);
+        }
+
+        [Test]
         public void SearchSuffixArray()
         {
             const string STR = "123456789";

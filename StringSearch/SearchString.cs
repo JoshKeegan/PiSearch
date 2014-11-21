@@ -24,8 +24,8 @@ namespace StringSearch
                     prevChars.AddLast(toSearch[i]);
                 }
 
-                //for each of the remaining characters in the string to be searched
-                for (int i = lookFor.Length; i < toSearch.Length; i++)
+                //for each of the remaining characters in the string to be searched (and one more to check the last char)
+                for (int i = lookFor.Length; i <= toSearch.Length; i++)
                 {
                     //If we currently have the string being searched for
                     bool match = true;
@@ -43,9 +43,12 @@ namespace StringSearch
                         foundIdxs.Add(i - lookFor.Length); //Start position
                     }
 
-                    //Update prevChars
-                    prevChars.RemoveFirst();
-                    prevChars.AddLast(toSearch[i]);
+                    //If not at the end of string, update prevChars
+                    if(i < toSearch.Length)
+                    {
+                        prevChars.RemoveFirst();
+                        prevChars.AddLast(toSearch[i]);
+                    }
                 }
 
                 return foundIdxs.ToArray();
