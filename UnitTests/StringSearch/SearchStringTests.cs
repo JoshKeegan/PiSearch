@@ -168,7 +168,7 @@ namespace UnitTests.StringSearch
         }
 
         [Test]
-        public void TestSuffixArrayWringSize()
+        public void TestSuffixArrayWrongSize()
         {
             int[] suffixArray = new int[] { 1, 2, 3 };
             FourBitDigitArray a = FourBitDigitArrayTests.convertStringTo4BitDigitArray("12345");
