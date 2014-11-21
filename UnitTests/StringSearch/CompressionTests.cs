@@ -51,14 +51,14 @@ namespace UnitTests.StringSearch
         }
 #endregion
 
-        private void writeStringFile(string filePath, string content)
+        private static void writeStringFile(string filePath, string content)
         {
             StreamWriter writer = new StreamWriter(filePath);
             writer.Write(content);
             writer.Close();
         }
 
-        private string read4BitDigitFileAsString(string filePath)
+        private static string read4BitDigitFileAsString(string filePath)
         {
             FileStream stream = new FileStream(filePath, FileMode.Open);
 

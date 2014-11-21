@@ -23,14 +23,18 @@ namespace StringSearch
             //Calculate the length
             long length = stream.Length * 2;
 
-            //If there is 1111 as the last digit, then it isn't actually the last digit, there because cannot write half a byte
-            stream.Position = stream.Length - 1;
-            int b = stream.ReadByte();
-            int right = b & 15; // mask 0000 1111
-
-            if(right == 15)
+            //If there are any digits in the stream, check if there is an odd number of digits
+            if(length > 0)
             {
-                length--;
+                //If there is 1111 as the last digit, then it isn't actually the last digit, there because cannot write half a byte
+                stream.Position = stream.Length - 1;
+                int b = stream.ReadByte();
+                int right = b & 15; // mask 0000 1111
+
+                if (right == 15)
+                {
+                    length--;
+                }
             }
 
             this.Length = (int)length;
@@ -67,7 +71,7 @@ namespace StringSearch
                     throw new IndexOutOfRangeException();
                 }
 
-                if(value < 0 || value > 15)
+                if(value < 0 || value >= 15)
                 {
                     throw new OverflowException();
                 }

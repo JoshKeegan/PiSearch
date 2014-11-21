@@ -83,6 +83,22 @@ namespace StringSearch
 
         public static int[] Search(int[] suffixArray, FourBitDigitArray digitArray, byte[] lookFor)
         {
+            //Validation
+            if(lookFor.Length == 0)
+            {
+                throw new ArgumentException("lookFor must contain at least 1 digit");
+            }
+
+            if(digitArray.Length == 0)
+            {
+                return new int[0];
+            }
+
+            if(suffixArray.Length != digitArray.Length)
+            {
+                throw new ArgumentException("Suffix Array must be the same length as the Digit Array. This is not the correct suffix array for this digit array");
+            }
+
             int matchingPosition = binarySearchForPrefix(suffixArray, digitArray, lookFor, 0, suffixArray.Length - 1);
 
             //If there were no matches

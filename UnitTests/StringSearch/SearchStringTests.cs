@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using StringSearch;
 using SuffixArray;
-using System.IO;
 
 namespace UnitTests.StringSearch
 {
     [TestFixture]
     public class SearchStringTests
     {
+        #region Search(string, string)
         [Test]
         public void SequentialSearch()
         {
@@ -110,14 +110,16 @@ namespace UnitTests.StringSearch
 
             CollectionAssert.AreEqual(expected, actual);
         }
+        #endregion
 
+        #region Search(int[], FourBitDigitArray, string)
         [Test]
         public void SearchSuffixArray()
         {
             const string STR = "123456789";
 
             int[] suffixArray = buildSuffixArray(STR);
-            FourBitDigitArray fourBitDigitArray = convertStringTo4BitDigitArray(STR);
+            FourBitDigitArray fourBitDigitArray = FourBitDigitArrayTests.convertStringTo4BitDigitArray(STR);
 
             for(int i = 0; i < STR.Length; i++)
             {
@@ -133,7 +135,63 @@ namespace UnitTests.StringSearch
             }
         }
 
-        private int[] buildSuffixArray(string str)
+        [Test]
+        public void SearchSuffixArrayForEmptyString()
+        {
+            const string STR = "123456789";
+
+            int[] suffixArray = buildSuffixArray(STR);
+            FourBitDigitArray fourBitDigitArray = FourBitDigitArrayTests.convertStringTo4BitDigitArray(STR);
+
+            try
+            {
+                SearchString.Search(suffixArray, fourBitDigitArray, "");
+                Assert.Fail();
+            }
+            catch (ArgumentException) { }
+        }
+
+        [Test]
+        public void SearchSuffixArraySearchEmptyString()
+        {
+            const string STR = "";
+            const string FIND = "1";
+
+            int[] suffixArray = buildSuffixArray(STR);
+            FourBitDigitArray fourBitDigitArray = FourBitDigitArrayTests.convertStringTo4BitDigitArray(STR);
+
+            int[] expected = new int[0];
+
+            int[] actual = SearchString.Search(suffixArray, fourBitDigitArray, FIND);
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void TestSuffixArrayWringSize()
+        {
+            int[] suffixArray = new int[] { 1, 2, 3 };
+            FourBitDigitArray a = FourBitDigitArrayTests.convertStringTo4BitDigitArray("12345");
+
+            try
+            {
+                SearchString.Search(suffixArray, a, "23");
+                Assert.Fail();
+            }
+            catch (ArgumentException) { }
+        }
+        #endregion
+
+        #region FindNextOccurrence(string, string, int)
+        //TODO: Expect to have the same bug as previously found in Search() when searching the last digit
+        #endregion
+
+        #region FindNextOccurrence4BitDigit(Stream, string int)
+        //TODO: Expect to have the same bug as previously found in Search() when searching the last digit
+        #endregion
+
+        #region Helper Methods
+        private static int[] buildSuffixArray(string str)
         {
             //Initialise the aray that will hold the suffix array
             int[] suffixArray = new int[str.Length];
@@ -149,21 +207,6 @@ namespace UnitTests.StringSearch
             }
             return suffixArray;
         }
-
-        private FourBitDigitArray convertStringTo4BitDigitArray(string str)
-        {
-            StreamWriter writer = new StreamWriter("temp.txt");
-            writer.Write(str);
-            writer.Close();
-
-            Compression.CompressFile4BitDigit("temp.txt", "temp.4bitDigit");
-
-            Stream memStream = Compression.ReadStreamNoComression("temp.4bitDigit");
-
-            File.Delete("temp.txt");
-            File.Delete("temp.4bitDigit");
-
-            return new FourBitDigitArray(memStream);
-        }
+        #endregion
     }
 }
