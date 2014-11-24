@@ -167,14 +167,14 @@ namespace StringSearch
                     return binarySearchForPrefix(suffixArray, digitArray, findPrefix, min, idx - 1);
                 }
                 //Otherwise we're too low in the array
-                else // hit == 0
+                else // hit == -1
                 {
                     return binarySearchForPrefix(suffixArray, digitArray, findPrefix, idx + 1, max);
                 }
             }
         }
 
-        private static int doesStartWithSuffix(FourBitDigitArray digitArray, byte[] findPrefix, int startIdx)
+        internal static int doesStartWithSuffix(FourBitDigitArray digitArray, byte[] findPrefix, int startIdx)
         {
             for(int i = 0; i < findPrefix.Length; i++)
             {
@@ -183,11 +183,11 @@ namespace StringSearch
 
                 if (findPrefixByte < actualByte)
                 {
-                    return 1; //Searching too high
+                    return 1; //Searching too high (in the array)
                 }
                 else if(findPrefixByte > actualByte)
                 {
-                    return -1; //Searching too low
+                    return -1; //Searching too low (in the array)
                 }
             }
             return 0; //Jackpot

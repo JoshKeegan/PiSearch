@@ -266,6 +266,55 @@ namespace UnitTests.StringSearch
         //TODO: Expect to have the same bug as previously found in Search() when searching the last digit
         #endregion
 
+        #region Internals
+        [Test]
+        public void TestDoesStartWithSuffix()
+        {
+            const string STR = "12345678901234";
+
+            FourBitDigitArray fourBitDigitArray = FourBitDigitArrayTests.convertStringTo4BitDigitArray(STR);
+
+            //Start index
+            for(int i = 0; i < STR.Length - 1; i++)
+            {
+                //End index
+                for (int j = i + 1; j < STR.Length; j++)
+                {
+                    string strFind = STR.Substring(i, j - i);
+                    byte[] find = stringToByteArr(strFind);
+
+                    Assert.AreEqual(0, SearchString.doesStartWithSuffix(fourBitDigitArray, find, i));
+                }
+            }
+        }
+
+        [Test]
+        public void TestDoesStartWithSuffixTooLow()
+        {
+            const string STR = "12345678901234";
+
+            FourBitDigitArray fourBitDigitArray = FourBitDigitArrayTests.convertStringTo4BitDigitArray(STR);
+
+            string strToFind = "0" + STR.Substring(1);
+            byte[] toFind = stringToByteArr(strToFind);
+
+            Assert.AreEqual(1, SearchString.doesStartWithSuffix(fourBitDigitArray, toFind, 0));
+        }
+
+        [Test]
+        public void TestDoesStartWithSuffixTooHigh()
+        {
+            const string STR = "12345678901234";
+
+            FourBitDigitArray fourBitDigitArray = FourBitDigitArrayTests.convertStringTo4BitDigitArray(STR);
+
+            string strToFind = "2" + STR.Substring(1);
+            byte[] toFind = stringToByteArr(strToFind);
+
+            Assert.AreEqual(-1, SearchString.doesStartWithSuffix(fourBitDigitArray, toFind, 0));
+        }
+        #endregion
+
         #region Helper Methods
         private static int[] buildSuffixArray(string str)
         {
@@ -282,6 +331,18 @@ namespace UnitTests.StringSearch
                 throw new Exception(error);
             }
             return suffixArray;
+        }
+
+        private static byte[] stringToByteArr(string str)
+        {
+            byte[] toRet = new byte[str.Length];
+
+            for(int i = 0; i < toRet.Length; i++)
+            {
+                toRet[i] = byte.Parse(str[i].ToString());
+            }
+
+            return toRet;
         }
         #endregion
     }
