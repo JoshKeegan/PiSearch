@@ -134,14 +134,14 @@ namespace StringSearch
             }
         }
 
-        private static int binarySearchForPrefix(int[] suffixArray, FourBitDigitArray digitArray, byte[] findPrefix, int min, int max)
+        internal static int binarySearchForPrefix(int[] suffixArray, FourBitDigitArray digitArray, byte[] findPrefix, int min, int max)
         {
             int range = max - min;
 
             if(range == 0)
             {
                 //Only one possible value left, check it
-                if(doesStartWithSuffix(digitArray, findPrefix, min) == 0)
+                if(doesStartWithSuffix(digitArray, findPrefix, suffixArray[min]) == 0)
                 {
                     return min;
                 }

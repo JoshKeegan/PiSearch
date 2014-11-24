@@ -313,6 +313,24 @@ namespace UnitTests.StringSearch
 
             Assert.AreEqual(-1, SearchString.doesStartWithSuffix(fourBitDigitArray, toFind, 0));
         }
+
+        [Test]
+        public void TestBinarySearchForPrefixSingleChars()
+        {
+            const string STR = "2734981324";
+
+            int[] suffixArray = buildSuffixArray(STR);
+            FourBitDigitArray fourBitDigitArray = FourBitDigitArrayTests.convertStringTo4BitDigitArray(STR);
+
+            for(int i = 0; i < STR.Length; i++)
+            {
+                byte[] find = new byte[] { (byte)(STR[i] - '0') };
+
+                int answer = SearchString.binarySearchForPrefix(suffixArray, fourBitDigitArray, find, 0, STR.Length - 1);
+
+                Assert.AreEqual(fourBitDigitArray[i], fourBitDigitArray[suffixArray[answer]]);
+            }
+        }
         #endregion
 
         #region Helper Methods
