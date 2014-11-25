@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringSearch", "StringSearc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{AE0F6632-D53F-4BB5-99A0-60871EEB6DD1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Streams", "MemoryTributary\Streams.csproj", "{E5A88DB1-F025-4207-B169-72567E71BB91}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{AE0F6632-D53F-4BB5-99A0-60871EEB6DD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE0F6632-D53F-4BB5-99A0-60871EEB6DD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE0F6632-D53F-4BB5-99A0-60871EEB6DD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5A88DB1-F025-4207-B169-72567E71BB91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5A88DB1-F025-4207-B169-72567E71BB91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5A88DB1-F025-4207-B169-72567E71BB91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5A88DB1-F025-4207-B169-72567E71BB91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
