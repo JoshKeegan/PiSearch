@@ -25,7 +25,7 @@ namespace Streams
         }
 
         /* length is ignored because capacity has no meaning unless we implement an artifical limit */
-        public MemoryTributary(int length)
+        public MemoryTributary(long length)
         {
             SetLength(length);
             Position = length;
