@@ -59,6 +59,7 @@ namespace StringSearchConsole
                 "14.\tGenerate suffix array from loaded string\n" +
                 "15.\tPrint Suffix Array\n" + 
                 "16.\tPrint 4-bit digit array\n" + 
+                "17.\tConvert y-cruncher output to raw decimal places of pi\n" +
                 "q.\tQuit");
 
             bool quit = false;
@@ -122,6 +123,9 @@ namespace StringSearchConsole
                         break;
                     case "16": //Print 4-bit digit file
                         subPrintFourBitDigitArray();
+                        break;
+                    case "17": //Convert y-cruncher output to raw decimal places of pi
+                        subProcessYCruncherOutput();
                         break;
                     case "q": //Quit
                         quit = true;
@@ -498,6 +502,33 @@ namespace StringSearchConsole
             convertPiFast43File(fileInName, fileOutName);
         }
 
+        private static void subProcessYCruncherOutput()
+        {
+            string fileInName;
+            while (true)
+            {
+                Console.Write("y-cruncher txt output file name (decimal, uncompressed): ");
+                fileInName = Console.ReadLine();
+
+                if (File.Exists(workingDirectory + fileInName))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Couldn't find file \"{0}\"", fileInName);
+                }
+            }
+
+            Console.Write("Output file name: ");
+            string fileOutName = Console.ReadLine();
+
+            stopwatch.Reset();
+            stopwatch.Start();
+
+            convertYCruncherFile(fileInName, fileOutName);
+        }
+
         private static void subGenerateSuffixArray()
         {
             //Calculate the number of digits in the loaded 4 bit digit stream
@@ -605,6 +636,29 @@ namespace StringSearchConsole
                         startedPi = true;
                     }
                 }
+            }
+
+            //Clean up
+            reader.Close();
+            writer.Close();
+        }
+
+        private static void convertYCruncherFile(string fileInName, string fileOutName)
+        {
+            StreamReader reader = new StreamReader(workingDirectory + fileInName);
+            StreamWriter writer = new StreamWriter(workingDirectory + fileOutName);
+
+            //Ignore the first 2 chars ("3.")
+            reader.Read(new char[2], 0, 2);
+
+            //Read in the file contents 1024 characters at a time
+            char[] buffer = new char[1024];
+            int charsRead;
+            while(!reader.EndOfStream)
+            {
+                charsRead = reader.Read(buffer, 0, 1024);
+
+                writer.Write(buffer, 0, charsRead);
             }
 
             //Clean up
