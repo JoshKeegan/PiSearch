@@ -99,7 +99,7 @@ namespace StringSearch.Collections
 
                     //Calculate what this byte is from the value we've been supplied
                     ulong shifted = value >> (64 - valueBitIdx - 8);
-                    byte valueThisByte = (byte)(shifted & byte.MinValue);
+                    byte valueThisByte = (byte)(shifted & byte.MaxValue);
 
                     //If this isn't the first or last byte then just copy the whole byte
                     if((j != startByteIdx && j != lastByteEffectedIdx) ||
