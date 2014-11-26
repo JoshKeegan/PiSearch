@@ -10,7 +10,7 @@ using StringSearch.Collections;
 namespace UnitTests.StringSearch.Collections
 {
     [TestFixture]
-    public class MemoryEfficientBigLongArrayTests
+    public class MemoryEfficientBigULongArrayTests
     {
         [Test]
         public void TestConstructor()

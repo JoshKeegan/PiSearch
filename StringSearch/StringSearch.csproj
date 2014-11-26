@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\BigArray.cs" />
-    <Compile Include="Collections\MemoryEfficientBigLongArray.cs" />
+    <Compile Include="Collections\MemoryEfficientBigULongArray.cs" />
     <Compile Include="Compression.cs" />
     <Compile Include="FourBitDigitArray.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
