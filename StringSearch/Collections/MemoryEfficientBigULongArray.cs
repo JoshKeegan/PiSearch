@@ -98,6 +98,45 @@ namespace StringSearch.Collections
                     byte toStore;
 
                     //Calculate what this byte is from the value we've been supplied
+                    //To get the byte we're interesting in working with from the value, shift it's bits so that the 8 LSB's are the byte we're after. We want this
+                    //  byte to line up with the bits as stored in the stream, so pad left and right with zero's if necessary.
+                    //  We know the index of the first bit of this byte and the number of bits in a long (64), so first we can do 64 - valueBitIdx to get how
+                    //  much we'd have to shift the value by to get the value of the bit at valueBitIdx. This is actually one too high and would need a -1, but not in the formula
+                    //  because it's accounted for in the next part.
+                    //  But we want a whole byte, not just a single bit so look 8 earlier than this bit (actually 7, but 8 accounts for not having taken the 1 off in the previous step)
+                    //  to get the preceding byte with this index being the LSB. However, we need the byte to line up with how it will be stored
+                    //  in the stream, so instead of looking 8 earlier, look 8 - startBitByteOffset earlier. By subtracting the number of bits into the first byte
+                    //  the value is stored, this will align the returned byte with how it is stored in the stream.
+                    //  If this yields a negative value to shift right by, shift left by this value (padding with zero's to the right).
+                    //  Padding left will be automatic because they will be zero's in the long value
+                    /*
+                     * Worked Example:
+                     * Max Value: 1000
+                     * bitsPerValue: 10
+                     * i (array index): 3
+                     * value: 400
+                     * binary value: 01 10010000
+                     * startBitIdx: 30 (bitsPerValue * i)
+                     * startBitByteOffset: 6 (startBitIdx % 8)
+                     * 
+                     * First byte:
+                     * expected: 00000001 (6 zero's padding because of startBitByteOffset and then the beginning of the actual bits making up the value)
+                     * j: 0
+                     * valueBitIdx: 54 (64 - bitsPerValue) + (j * 8)
+                     * rightShiftBy: 8 (64 - valueBitIdx - (8 - startBitByteOffset))
+                     * 
+                     * When writing this byte to the stream, the first 6 bits will be taken from the existing byte value and then the last two from this
+                     * 
+                     * 
+                     * Second byte:
+                     * expected: 10010000
+                     * j: 1
+                     * valueBitIdx: 62 (64 - bitsPerValue) + (j * 8)
+                     * rightShiftBy: 0 (64 - valueBitIdx - (8 - startBitByteOffset))
+                     * 
+                     * When writing this byte to the stream, the whole byte will be written, without having to even read the existing data
+                     * 
+                     */
                     int rightShiftBy = (64 - valueBitIdx - (8 - startBitByteOffset));
                     ulong shifted;
                     //If actually right shifting
