@@ -47,6 +47,14 @@ namespace UnitTests.StringSearch.Collections
         }
 
         [Test]
+        public void TestGetSetByteAligned()
+        {
+            MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, byte.MaxValue);
+            arr[7] = 12;
+            Assert.AreEqual(12, arr[7]);
+        }
+
+        [Test]
         public void TestGetSetMultipleValues()
         {
             ulong[] ulongArr = { 23, 47, 1000, 247, 803, 2, 0, 403 };
