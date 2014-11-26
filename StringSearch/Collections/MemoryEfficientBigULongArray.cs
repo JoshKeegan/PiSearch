@@ -98,7 +98,8 @@ namespace StringSearch.Collections
                     byte toStore;
 
                     //Calculate what this byte is from the value we've been supplied
-                    ulong shifted = value >> (64 - valueBitIdx - 8);
+                    byte byteValueBitIdx = (byte)((valueBitIdx / 8) * 8);
+                    ulong shifted = value >> (64 - byteValueBitIdx - 8);
                     byte valueThisByte = (byte)(shifted & byte.MaxValue);
 
                     //If this isn't the first or last byte then just copy the whole byte
@@ -174,6 +175,9 @@ namespace StringSearch.Collections
                     
                     //Write this byte to the stream
                     this.stream.WriteByte(toStore);
+
+                    //Increment the value bit index
+                    valueBitIdx += 8;
                 }
             }
         }
