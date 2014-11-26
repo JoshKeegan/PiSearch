@@ -138,6 +138,15 @@ namespace UnitTests.StringSearch.Collections
         }
 
         [Test]
+        public void TestConstructorBiggerThan2Gb()
+        {
+            //Test that an array larger than 2GiB in size can be constructed
+            const long LENGTH = 3L * 1024L * 1024L * 1024L; // 3GiB at 1byte per el
+
+            MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(LENGTH, byte.MaxValue);
+        }
+
+        [Test]
         public void TestGetSetBig()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, ulong.MaxValue);
