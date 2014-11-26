@@ -212,7 +212,7 @@ namespace StringSearch.Collections
             byte numBits = 1;
             ulong largestPossible = 1;
 
-            while(maxValue < largestPossible)
+            while(maxValue > largestPossible)
             {
                 numBits++;
 
