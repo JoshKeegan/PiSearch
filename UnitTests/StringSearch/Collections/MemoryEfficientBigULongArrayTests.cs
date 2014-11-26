@@ -153,5 +153,31 @@ namespace UnitTests.StringSearch.Collections
             arr[3] = ulong.MaxValue;
             Assert.AreEqual(ulong.MaxValue, arr[3]);
         }
+
+        #region Test Internals
+        [Test]
+        public void TestCalculateBitsPerValue()
+        {
+            Dictionary<ulong, byte> answers = new Dictionary<ulong, byte>()
+            {
+                { 1, 1 },
+                { 2, 2 },
+                { 3, 2 },
+                { 7, 3 },
+                { byte.MaxValue, 8 },
+                { uint.MaxValue, 32 },
+                { ulong.MaxValue, 64 }
+            };
+
+            foreach(KeyValuePair<ulong, byte> kvp in answers)
+            {
+                ulong num = kvp.Key;
+                byte numBits = kvp.Value;
+
+                byte actual = MemoryEfficientBigULongArray.calculateBitsPerValue(num);
+                Assert.AreEqual(numBits, actual);
+            }
+        }
+        #endregion
     }
 }

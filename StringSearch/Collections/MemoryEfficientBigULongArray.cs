@@ -207,7 +207,7 @@ namespace StringSearch.Collections
             : this(length, ulong.MaxValue) { }
 
         //Helpers
-        private static byte calculateBitsPerValue(ulong maxValue)
+        internal static byte calculateBitsPerValue(ulong maxValue)
         {
             byte numBits = 1;
             ulong largestPossible = 1;
