@@ -74,6 +74,25 @@ namespace UnitTests.StringSearch.Collections
         }
 
         [Test]
+        public void TestGetSetMultipleValuesReverseOrder()
+        {
+            ulong[] ulongArr = { 23, 47, 1000, 247, 803, 2, 0, 403 };
+            MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(ulongArr.Length, 1000);
+
+            //Populate the arr
+            for (int i = ulongArr.Length - 1; i >= 0; i--)
+            {
+                arr[i] = ulongArr[i];
+            }
+
+            //Check the values
+            for (int i = ulongArr.Length - 1; i >= 0; i--)
+            {
+                Assert.AreEqual(ulongArr[i], arr[i]);
+            }
+        }
+
+        [Test]
         public void TestGetIndexTooSmall()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, 1000);
