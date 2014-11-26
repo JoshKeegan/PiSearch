@@ -21,7 +21,7 @@ namespace StringSearch.Collections
             get
             {
                 //Validation
-                if(i >= this.Length)
+                if(i >= this.Length || i < 0)
                 {
                     throw new IndexOutOfRangeException();
                 }
@@ -63,9 +63,14 @@ namespace StringSearch.Collections
             set
             {
                 //Validation
-                if (i >= this.Length)
+                if (i >= this.Length || i < 0)
                 {
                     throw new IndexOutOfRangeException();
+                }
+
+                if(value > this.MaxValue)
+                {
+                    throw new ArgumentOutOfRangeException(String.Format("Cannot hold values larger than MaxValue ({0})", this.MaxValue));
                 }
 
                 long startBitIdx = i * this.bitsPerValue;
