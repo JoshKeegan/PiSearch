@@ -98,8 +98,17 @@ namespace StringSearch.Collections
                     byte toStore;
 
                     //Calculate what this byte is from the value we've been supplied
-                    byte byteValueBitIdx = (byte)((valueBitIdx / 8) * 8);
-                    ulong shifted = value >> (64 - byteValueBitIdx - 8);
+                    int rightShiftBy = (64 - valueBitIdx - (8 - startBitByteOffset));
+                    ulong shifted;
+                    //If actually right shifting
+                    if(rightShiftBy >= 0)
+                    {
+                        shifted = value >> rightShiftBy;
+                    }
+                    else //Otherwise this is the last bit and it doesn't align with the end of a byte, so we effectively want to right shift by a -ve amount
+                    {
+                        shifted = value << -rightShiftBy;
+                    }
                     byte valueThisByte = (byte)(shifted & byte.MaxValue);
 
                     //If this isn't the first or last byte then just copy the whole byte
