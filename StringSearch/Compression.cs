@@ -11,6 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Streams;
+
 namespace StringSearch
 {
     public class Compression
@@ -132,7 +134,7 @@ namespace StringSearch
         public static Stream ReadStreamNoComression(string filePath)
         {
             FileStream fileStream = new FileStream(filePath, FileMode.Open);
-            MemoryStream memStream = new MemoryStream();
+            MemoryTributary memStream = new MemoryTributary();
 
             fileStream.CopyTo(memStream);
 
