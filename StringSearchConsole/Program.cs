@@ -21,7 +21,7 @@ namespace StringSearchConsole
         private static string workingDirectory = "";
         private static string loadedString = null;
         private static Stream loaded4BitDigitStream = null;
-        private static FourBitDigitArray fourBitDigitArray = null;
+        private static FourBitDigitBigArray fourBitDigitArray = null;
         private static int[] suffixArray = null;
         private static Stopwatch stopwatch = new Stopwatch();
 
@@ -337,7 +337,7 @@ namespace StringSearchConsole
                     loaded4BitDigitStream = Compression.ReadStreamNoComression(workingDirectory + fileName);
 
                     //Now wrap it in a FourBitDigitArray
-                    fourBitDigitArray = new FourBitDigitArray(loaded4BitDigitStream);
+                    fourBitDigitArray = new FourBitDigitBigArray(loaded4BitDigitStream);
 
                     break;
                 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
+using Streams;
 using StringSearch;
 using StringSearch.Collections;
 using System.IO;
@@ -12,7 +13,7 @@ using System.IO;
 namespace UnitTests.StringSearch.Collections
 {
     [TestFixture]
-    public class FourBitDigitArrayTests
+    public class FourBitDigitBigArrayTests
     {
         [Test]
         public void TestConstructor()
@@ -21,7 +22,7 @@ namespace UnitTests.StringSearch.Collections
 
             Stream memStream = convertStringTo4BitDigitStream(STR);
 
-            FourBitDigitArray a = new FourBitDigitArray(memStream);
+            FourBitDigitBigArray a = new FourBitDigitBigArray(memStream);
         }
 
         [Test]
@@ -29,7 +30,7 @@ namespace UnitTests.StringSearch.Collections
         {
             Stream memStream = convertStringTo4BitDigitStream("");
 
-            FourBitDigitArray a = new FourBitDigitArray(memStream);
+            FourBitDigitBigArray a = new FourBitDigitBigArray(memStream);
 
             Assert.AreEqual(0, a.Length);
         }
@@ -39,7 +40,7 @@ namespace UnitTests.StringSearch.Collections
         {
             Stream memStream = convertStringTo4BitDigitStream("123");
 
-            FourBitDigitArray a = new FourBitDigitArray(memStream);
+            FourBitDigitBigArray a = new FourBitDigitBigArray(memStream);
 
             Assert.AreEqual(3, a.Length);
         }
@@ -49,7 +50,7 @@ namespace UnitTests.StringSearch.Collections
         {
             const string STR = "391";
 
-            FourBitDigitArray a = convertStringTo4BitDigitArray(STR);
+            FourBitDigitBigArray a = convertStringTo4BitDigitArray(STR);
 
             for(int i = 0; i < STR.Length; i++)
             {
@@ -65,7 +66,7 @@ namespace UnitTests.StringSearch.Collections
         {
             const string ORIG = "391";
 
-            FourBitDigitArray a = convertStringTo4BitDigitArray(ORIG);
+            FourBitDigitBigArray a = convertStringTo4BitDigitArray(ORIG);
 
             a[0] = 7;
             Assert.AreEqual(7, a[0]);
@@ -81,7 +82,7 @@ namespace UnitTests.StringSearch.Collections
         {
             const string ORIG = "391";
 
-            FourBitDigitArray a = convertStringTo4BitDigitArray(ORIG);
+            FourBitDigitBigArray a = convertStringTo4BitDigitArray(ORIG);
 
             a[1] = 7;
             Assert.AreEqual(7, a[1]);
@@ -98,7 +99,7 @@ namespace UnitTests.StringSearch.Collections
         [Test]
         public void TestAccessOutOfRangeNeg()
         {
-            FourBitDigitArray a = convertStringTo4BitDigitArray("123");
+            FourBitDigitBigArray a = convertStringTo4BitDigitArray("123");
 
             try
             {
@@ -111,7 +112,7 @@ namespace UnitTests.StringSearch.Collections
         [Test]
         public void TestAccessOutOfRange()
         {
-            FourBitDigitArray a = convertStringTo4BitDigitArray("123");
+            FourBitDigitBigArray a = convertStringTo4BitDigitArray("123");
 
             try
             {
@@ -124,7 +125,7 @@ namespace UnitTests.StringSearch.Collections
         [Test]
         public void TestSetOutOfRangeNeg()
         {
-            FourBitDigitArray a = convertStringTo4BitDigitArray("123");
+            FourBitDigitBigArray a = convertStringTo4BitDigitArray("123");
 
             try
             {
@@ -137,7 +138,7 @@ namespace UnitTests.StringSearch.Collections
         [Test]
         public void TestSetOutOfRange()
         {
-            FourBitDigitArray a = convertStringTo4BitDigitArray("123");
+            FourBitDigitBigArray a = convertStringTo4BitDigitArray("123");
 
             try
             {
@@ -150,7 +151,7 @@ namespace UnitTests.StringSearch.Collections
         [Test]
         public void TestSetOverflow()
         {
-            FourBitDigitArray a = convertStringTo4BitDigitArray("123");
+            FourBitDigitBigArray a = convertStringTo4BitDigitArray("123");
 
             try
             {
@@ -165,7 +166,7 @@ namespace UnitTests.StringSearch.Collections
         {
             //Highest possible value in 4 bits (15) reserved for marking that half of the byte as not in use
             //  so it counts as overflow
-            FourBitDigitArray a = convertStringTo4BitDigitArray("123");
+            FourBitDigitBigArray a = convertStringTo4BitDigitArray("123");
 
             try
             {
@@ -175,12 +176,72 @@ namespace UnitTests.StringSearch.Collections
             catch (OverflowException) { }
         }
 
+        [Test]
+        public void TestLength()
+        {
+            FourBitDigitBigArray a = convertStringTo4BitDigitArray("123");
+            Assert.AreEqual(3, a.Length);
+        }
+
+        [Test]
+        public void TestLengthBig()
+        {
+            const long LENGTH = 3000000000;
+            FourBitDigitBigArray a = makeNew(LENGTH);
+            Assert.AreEqual(LENGTH, a.Length);
+        }
+
+        [Test]
+        public void TestConstructorMemoryTributaryAsUnderlyingStream()
+        {
+            MemoryTributary stream = new MemoryTributary(5);
+            FourBitDigitBigArray a = new FourBitDigitBigArray(stream);
+        }
+
+        [Test]
+        public void TestConstructorMemoryTributaryAsUnderlyingStreamBig()
+        {
+            MemoryTributary stream = new MemoryTributary(3000000000); //3bil bytes ~= 3GB
+            FourBitDigitBigArray a = new FourBitDigitBigArray(stream);
+        }
+
+        [Test]
+        public void TestGetSetBig()
+        {
+            FourBitDigitBigArray a = makeNew(3000000000);
+            a[2500000000] = 5;
+            Assert.AreEqual(5, a[2500000000]);
+        }
+
         #region Helpers
-        public static FourBitDigitArray convertStringTo4BitDigitArray(string str)
+        public static FourBitDigitBigArray convertStringTo4BitDigitArray(string str)
         {
             Stream memStream = convertStringTo4BitDigitStream(str);
 
-            return new FourBitDigitArray(memStream);
+            return new FourBitDigitBigArray(memStream);
+        }
+
+        private static FourBitDigitBigArray makeNew(long length)
+        {
+            //If length is odd, add one to it
+            bool odd = false;
+            if(length % 2 == 1)
+            {
+                odd = true;
+                length++;
+            }
+
+            MemoryTributary stream = new MemoryTributary(length / 2);
+
+            //If the length was odd, set the last byte to 15 (last 4 bits are all 1's)
+            if(odd)
+            {
+                stream.Position = (length / 2) - 1;
+                stream.WriteByte(15);
+            }
+
+            FourBitDigitBigArray a = new FourBitDigitBigArray(stream);
+            return a;
         }
 
         private static Stream convertStringTo4BitDigitStream(string str)

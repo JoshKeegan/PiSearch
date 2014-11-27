@@ -71,7 +71,7 @@ namespace StringSearch
             }
         }
 
-        public static int[] Search(int[] suffixArray, FourBitDigitArray digitArray, string lookFor)
+        public static int[] Search(int[] suffixArray, FourBitDigitBigArray digitArray, string lookFor)
         {
             byte[] byteArrLookFor = new byte[lookFor.Length];
 
@@ -83,7 +83,7 @@ namespace StringSearch
             return Search(suffixArray, digitArray, byteArrLookFor);
         }
 
-        public static int[] Search(int[] suffixArray, FourBitDigitArray digitArray, byte[] lookFor)
+        public static int[] Search(int[] suffixArray, FourBitDigitBigArray digitArray, byte[] lookFor)
         {
             //Validation
             if(lookFor.Length == 0)
@@ -136,7 +136,7 @@ namespace StringSearch
             }
         }
 
-        internal static int binarySearchForPrefix(int[] suffixArray, FourBitDigitArray digitArray, byte[] findPrefix, int min, int max)
+        internal static int binarySearchForPrefix(int[] suffixArray, FourBitDigitBigArray digitArray, byte[] findPrefix, int min, int max)
         {
             int range = max - min;
 
@@ -176,7 +176,7 @@ namespace StringSearch
             }
         }
 
-        internal static int doesStartWithSuffix(FourBitDigitArray digitArray, byte[] findPrefix, int startIdx)
+        internal static int doesStartWithSuffix(FourBitDigitBigArray digitArray, byte[] findPrefix, int startIdx)
         {
             for(int i = 0; i < findPrefix.Length; i++)
             {

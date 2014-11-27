@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace StringSearch.Collections
 {
-    public class FourBitDigitArray
+    public class FourBitDigitBigArray : BigArray<byte>
     {
         //Private vars
         private Stream stream;
 
         //Public vars
-        public int Length { get; private set; }
+        public long Length { get; private set; }
 
         //Constructor
-        public FourBitDigitArray(Stream stream)
+        public FourBitDigitBigArray(Stream stream)
         {
             this.stream = stream;
 
@@ -37,10 +37,10 @@ namespace StringSearch.Collections
                 }
             }
 
-            this.Length = (int)length;
+            this.Length = length;
         }
 
-        public byte this[int i]
+        public byte this[long i]
         {
             get
             {

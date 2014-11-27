@@ -43,7 +43,7 @@
     <Compile Include="Collections\BigArray.cs" />
     <Compile Include="Collections\MemoryEfficientBigULongArray.cs" />
     <Compile Include="Compression.cs" />
-    <Compile Include="Collections\FourBitDigitArray.cs" />
+    <Compile Include="Collections\FourBitDigitBigArray.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchString.cs" />
   </ItemGroup>
