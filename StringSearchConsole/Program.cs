@@ -1,12 +1,14 @@
-﻿using StringSearch;
-using SuffixArray;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using StringSearch;
+using StringSearch.Collections;
+using SuffixArray;
 
 namespace StringSearchConsole
 {

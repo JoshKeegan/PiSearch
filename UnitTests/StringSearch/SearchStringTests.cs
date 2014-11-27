@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 using NUnit.Framework;
 using StringSearch;
+using StringSearch.Collections;
 using SuffixArray;
+using UnitTests.StringSearch.Collections;
 
 namespace UnitTests.StringSearch
 {

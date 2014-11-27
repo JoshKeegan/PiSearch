@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 using NUnit.Framework;
 using StringSearch;
+using StringSearch.Collections;
 using System.IO;
 
-namespace UnitTests.StringSearch
+namespace UnitTests.StringSearch.Collections
 {
     [TestFixture]
     public class FourBitDigitArrayTests
