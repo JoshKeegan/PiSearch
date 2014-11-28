@@ -244,7 +244,7 @@ namespace UnitTests.StringSearch.Collections
             return a;
         }
 
-        private static Stream convertStringTo4BitDigitStream(string str)
+        public static Stream convertStringTo4BitDigitStream(string str)
         {
             StreamWriter writer = new StreamWriter("temp.txt");
             writer.Write(str);
