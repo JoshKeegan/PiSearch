@@ -290,7 +290,7 @@ namespace UnitTests.StringSearch
         {
             const string STR = "123456789991234";
 
-            Assert.AreEqual(9, SearchString.FindNextOccurrence(STR, "91234", 0));
+            Assert.AreEqual(10, SearchString.FindNextOccurrence(STR, "91234", 0));
         }
 
         [Test]

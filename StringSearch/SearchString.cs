@@ -218,7 +218,7 @@ namespace StringSearch
                 }
 
                 //For each of the remaining characters in the string to be searched
-                for(; i < toSearch.Length; i++)
+                for(; true; i++)
                 {
                     //If we currently have the string being searched for
                     bool match = true;
@@ -234,6 +234,12 @@ namespace StringSearch
                     if(match)
                     {
                         return i - lookFor.Length; //Start position
+                    }
+
+                    //If at the end of the string, break
+                    if(i == toSearch.Length)
+                    {
+                        break;
                     }
 
                     //Update prevChars
