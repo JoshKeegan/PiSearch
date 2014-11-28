@@ -292,6 +292,63 @@ namespace UnitTests.StringSearch
 
             Assert.AreEqual(9, SearchString.FindNextOccurrence(STR, "91234", 0));
         }
+
+        [Test]
+        public void TestFindNextOccurrenceSearchFullString()
+        {
+            const string STR = "123456789991234";
+
+            Assert.AreEqual(0, SearchString.FindNextOccurrence(STR, STR, 0));
+        }
+
+        [Test]
+        public void TestFindNextOccurrenceLookForLongerThanToSearch()
+        {
+            const string STR = "123456789991234";
+
+            Assert.AreEqual(-1, SearchString.FindNextOccurrence(STR, STR + "1", 0));
+        }
+
+        [Test]
+        public void TestFindNextOccurrenceLookForLongerThanLeftInToSearch()
+        {
+            const string STR = "123456789991234";
+
+            Assert.AreEqual(-1, SearchString.FindNextOccurrence(STR, "43", STR.Length - 1));
+        }
+
+        [Test]
+        public void TestFindNextOccurrenceSearchLastDigit()
+        {
+            const string STR = "123456789991234";
+
+            Assert.AreEqual(STR.Length - 1, SearchString.FindNextOccurrence(STR, STR[STR.Length - 1].ToString(), STR.Length - 1));
+            Assert.AreEqual(-1, SearchString.FindNextOccurrence(STR, "5", STR.Length - 1));
+        }
+
+        [Test]
+        public void TestFindNextOccurrenceLookForEmptyString()
+        {
+            const string STR = "123456789991234";
+
+            try
+            {
+                SearchString.FindNextOccurrence(STR, "", 0);
+                Assert.Fail();
+            }
+            catch (ArgumentException) { }
+        }
+
+        [Test]
+        public void TestFindNextOccurrenceSearchEmptyString()
+        {
+            try
+            {
+                SearchString.FindNextOccurrence("", "1", 0);
+                Assert.Fail();
+            }
+            catch (ArgumentException) { }
+        }
         #endregion
 
         #region FindNextOccurrence4BitDigit(Stream, string int)
@@ -328,6 +385,70 @@ namespace UnitTests.StringSearch
             Stream s = FourBitDigitArrayTests.convertStringTo4BitDigitStream(STR);
 
             Assert.AreEqual(9, SearchString.FindNextOccurrence4BitDigit(s, "91234", 0));
+        }
+
+        [Test]
+        public void TestFindNextOccurrence4BitDigitSearchFullString()
+        {
+            const string STR = "123456789991234";
+            Stream s = FourBitDigitArrayTests.convertStringTo4BitDigitStream(STR);
+
+            Assert.AreEqual(0, SearchString.FindNextOccurrence4BitDigit(s, STR, 0));
+        }
+
+        [Test]
+        public void TestFindNextOccurrence4BitDigitLookForLongerThanToSearch()
+        {
+            const string STR = "123456789991234";
+            Stream s = FourBitDigitArrayTests.convertStringTo4BitDigitStream(STR);
+
+            Assert.AreEqual(-1, SearchString.FindNextOccurrence4BitDigit(s, STR + "1", 0));
+        }
+
+        [Test]
+        public void TestFindNextOccurrence4BitDigitLookForLongerThanLeftInToSearch()
+        {
+            const string STR = "123456789991234";
+            Stream s = FourBitDigitArrayTests.convertStringTo4BitDigitStream(STR);
+
+            Assert.AreEqual(-1, SearchString.FindNextOccurrence4BitDigit(s, "43", STR.Length - 1));
+        }
+
+        [Test]
+        public void TestFindNextOccurrence4BitDigitSearchLastDigit()
+        {
+            const string STR = "123456789991234";
+            Stream s = FourBitDigitArrayTests.convertStringTo4BitDigitStream(STR);
+
+            Assert.AreEqual(STR.Length - 1, SearchString.FindNextOccurrence4BitDigit(s, STR[STR.Length - 1].ToString(), STR.Length - 1));
+            Assert.AreEqual(-1, SearchString.FindNextOccurrence4BitDigit(s, "5", STR.Length - 1));
+        }
+
+        [Test]
+        public void TestFindNextOccurrence4BitDigitLookForEmptyString()
+        {
+            const string STR = "123456789991234";
+            Stream s = FourBitDigitArrayTests.convertStringTo4BitDigitStream(STR);
+
+            try
+            {
+                SearchString.FindNextOccurrence4BitDigit(s, "", 0);
+                Assert.Fail();
+            }
+            catch (ArgumentException) { }
+        }
+
+        [Test]
+        public void TestFindNextOccurrence4BitDigitSearchEmptyString()
+        {
+            Stream s = FourBitDigitArrayTests.convertStringTo4BitDigitStream("");
+
+            try
+            {
+                SearchString.FindNextOccurrence4BitDigit(s, "1", 0);
+                Assert.Fail();
+            }
+            catch (ArgumentException) { }
         }
         #endregion
 
