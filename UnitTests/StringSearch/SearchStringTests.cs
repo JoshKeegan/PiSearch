@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using StringSearch;
 using SuffixArray;
+using System.IO;
 
 namespace UnitTests.StringSearch
 {
@@ -259,11 +260,75 @@ namespace UnitTests.StringSearch
         #endregion
 
         #region FindNextOccurrence(string, string, int)
-        //TODO: Expect to have the same bug as previously found in Search() when searching the last digit
+        [Test]
+        public void TestFindNextOccurrence()
+        {
+            const string STR = "123456789991234";
+
+            Dictionary<Tuple<string, int>, int> answers = new Dictionary<Tuple<string, int>, int>()
+            {
+                { Tuple.Create("1", 0), 0 },
+                { Tuple.Create("2", 0), 1 },
+                { Tuple.Create("123", 0), 0 },
+                { Tuple.Create("1", 1), 11 }
+            };
+
+            foreach(KeyValuePair<Tuple<string, int>, int> kvp in answers)
+            {
+                string find = kvp.Key.Item1;
+                int fromIdx = kvp.Key.Item2;
+                int expected = kvp.Value;
+
+                int actual = SearchString.FindNextOccurrence(STR, find, fromIdx);
+
+                Assert.AreEqual(expected, actual);
+            }
+        }
+
+        [Test]
+        public void TestFindNextOccurrenceLastDigits()
+        {
+            const string STR = "123456789991234";
+
+            Assert.AreEqual(9, SearchString.FindNextOccurrence(STR, "91234", 0));
+        }
         #endregion
 
         #region FindNextOccurrence4BitDigit(Stream, string int)
-        //TODO: Expect to have the same bug as previously found in Search() when searching the last digit
+        [Test]
+        public void TestFindNextOccurrence4BitDigit()
+        {
+            const string STR = "123456789991234";
+            Stream s = FourBitDigitArrayTests.convertStringTo4BitDigitStream(STR);
+
+            Dictionary<Tuple<string, int>, int> answers = new Dictionary<Tuple<string, int>, int>()
+            {
+                { Tuple.Create("1", 0), 0 },
+                { Tuple.Create("2", 0), 1 },
+                { Tuple.Create("123", 0), 0 },
+                { Tuple.Create("1", 1), 11 }
+            };
+
+            foreach (KeyValuePair<Tuple<string, int>, int> kvp in answers)
+            {
+                string find = kvp.Key.Item1;
+                int fromIdx = kvp.Key.Item2;
+                int expected = kvp.Value;
+
+                int actual = SearchString.FindNextOccurrence4BitDigit(s, find, fromIdx);
+
+                Assert.AreEqual(expected, actual);
+            }
+        }
+
+        [Test]
+        public void TestFindNextOccurrence4BitDigitLastDigits()
+        {
+            const string STR = "123456789991234";
+            Stream s = FourBitDigitArrayTests.convertStringTo4BitDigitStream(STR);
+
+            Assert.AreEqual(9, SearchString.FindNextOccurrence4BitDigit(s, "91234", 0));
+        }
         #endregion
 
         #region Internals
