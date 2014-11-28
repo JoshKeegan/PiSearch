@@ -195,6 +195,17 @@ namespace StringSearch
 
         public static int FindNextOccurrence(string toSearch, string lookFor, int fromIdx)
         {
+            //Validation
+            if(toSearch.Length == 0)
+            {
+                throw new ArgumentException("toSearch cannot be empty");
+            }
+
+            if(lookFor.Length == 0)
+            {
+                throw new ArgumentException("lookFor cannot be empty");
+            }
+
             if(fromIdx <= toSearch.Length - lookFor.Length)
             {
                 LinkedList<char> prevChars = new LinkedList<char>();
@@ -253,6 +264,17 @@ namespace StringSearch
 
         public static int FindNextOccurrence4BitDigit(Stream searchStream, byte[] lookFor, int fromIdx)
         {
+            //Validation
+            if (searchStream.Length == 0)
+            {
+                throw new ArgumentException("toSearch cannot be empty");
+            }
+
+            if (lookFor.Length == 0)
+            {
+                throw new ArgumentException("lookFor cannot be empty");
+            }
+
             //Set the stream position (in bytes)
             searchStream.Position = fromIdx / 2;
 
