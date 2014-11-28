@@ -303,25 +303,30 @@ namespace StringSearch
 
             //Read in the first N chars
             bool fillingPrev = true;
+            bool filledPrevThisIter = false;
+            bool eos = false;
             LinkedList<byte> prev = new LinkedList<byte>();
+            byte digit;
 
             //Have one big loop for both fill & search modes
             while(true)
             {
-                byte digit;
-
                 //If we're at an even index, read in the next byte
                 if(idx % 2 == 0)
                 {
                     rawByteRead = searchStream.ReadByte();
                     if(rawByteRead == -1)
                     {
-                        return -1;
+                        eos = true; //End of stream
+                        digit = 15;
                     }
-                    thisByte = (byte)rawByteRead;
+                    else //Otherwise read a value
+                    {
+                        thisByte = (byte)rawByteRead;
 
-                    //Get the first half of the byte as this digit
-                    digit = (byte)(thisByte >> 4);
+                        //Get the first half of the byte as this digit
+                        digit = (byte)(thisByte >> 4);
+                    }
                 }
                 else //Otherwise we already have this byte read in
                 {
@@ -331,7 +336,7 @@ namespace StringSearch
                     //If this is (0000) 1111 => 15 then this is the end but the byte had to be padded
                     if(digit == 15)
                     {
-                        return -1;
+                        eos = true; //End of stream
                     }
                 }
 
@@ -341,9 +346,16 @@ namespace StringSearch
                     prev.AddLast(digit);
 
                     //Update fillingPrev
-                    fillingPrev = prev.Count != lookFor.Length;
+                    if(prev.Count == lookFor.Length)
+                    {
+                        fillingPrev = false;
+                        idx++; //Also increment the index as we'll jump straight into the match tests on this iteration
+                        filledPrevThisIter = true;
+                    }
                 }
-                else //Otherwise we're actually searching
+                
+                //If not filling up the previous chars (not equivelant to else because fillingPrev can be set in the previous if)
+                if(!fillingPrev) 
                 {
                     //If we currently have the digits being searched for
                     bool match = true;
@@ -363,14 +375,28 @@ namespace StringSearch
                     {
                         return idx - lookFor.Length; //Start idx
                     }
+                    else if(eos) //Else if we haven't found a match & we're at the end of the stream, report back that nothing was found
+                    {
+                        return -1;
+                    }
 
-                    //Update prev
-                    prev.RemoveFirst();
-                    prev.AddLast(digit);
+                    //Update prev (if we haven't filled prev on this iter)
+                    if(!filledPrevThisIter)
+                    {
+                        prev.RemoveFirst();
+                        prev.AddLast(digit);
+                    }
                 }
 
-                //Update the current idx for next iter
-                idx++;
+                //Update the current idx for next iter (if we haven't filled prev on this iter, as then it will have already been incremented)
+                if(!filledPrevThisIter)
+                {
+                    idx++;
+                }
+                else //Otherwise update filledPrevThisIter
+                {
+                    filledPrevThisIter = false;
+                }
             }
         }
     }
