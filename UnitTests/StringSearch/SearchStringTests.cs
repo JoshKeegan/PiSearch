@@ -384,7 +384,7 @@ namespace UnitTests.StringSearch
             const string STR = "123456789991234";
             Stream s = FourBitDigitArrayTests.convertStringTo4BitDigitStream(STR);
 
-            Assert.AreEqual(9, SearchString.FindNextOccurrence4BitDigit(s, "91234", 0));
+            Assert.AreEqual(10, SearchString.FindNextOccurrence4BitDigit(s, "91234", 0));
         }
 
         [Test]
