@@ -415,7 +415,7 @@ namespace StringSearchConsole
                 stopwatch.Reset();
                 stopwatch.Start();
 
-                int nextOccurrence = SearchString.FindNextOccurrence4BitDigit(loaded4BitDigitStream, toFind, startIdx);
+                long nextOccurrence = SearchString.FindNextOccurrence4BitDigit(loaded4BitDigitStream, toFind, startIdx);
                 Console.WriteLine(nextOccurrence);
             }
             else

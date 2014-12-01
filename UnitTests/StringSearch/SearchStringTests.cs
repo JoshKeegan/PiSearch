@@ -360,21 +360,21 @@ namespace UnitTests.StringSearch
             const string STR = "123456789991234";
             Stream s = FourBitDigitBigArrayTests.convertStringTo4BitDigitStream(STR);
 
-            Dictionary<Tuple<string, int>, int> answers = new Dictionary<Tuple<string, int>, int>()
+            Dictionary<Tuple<string, long>, long> answers = new Dictionary<Tuple<string, long>, long>()
             {
-                { Tuple.Create("1", 0), 0 },
-                { Tuple.Create("2", 0), 1 },
-                { Tuple.Create("123", 0), 0 },
-                { Tuple.Create("1", 1), 11 }
+                { Tuple.Create("1", 0L), 0 },
+                { Tuple.Create("2", 0L), 1 },
+                { Tuple.Create("123", 0L), 0 },
+                { Tuple.Create("1", 1L), 11 }
             };
 
-            foreach (KeyValuePair<Tuple<string, int>, int> kvp in answers)
+            foreach (KeyValuePair<Tuple<string, long>, long> kvp in answers)
             {
                 string find = kvp.Key.Item1;
-                int fromIdx = kvp.Key.Item2;
-                int expected = kvp.Value;
+                long fromIdx = kvp.Key.Item2;
+                long expected = kvp.Value;
 
-                int actual = SearchString.FindNextOccurrence4BitDigit(s, find, fromIdx);
+                long actual = SearchString.FindNextOccurrence4BitDigit(s, find, fromIdx);
 
                 Assert.AreEqual(expected, actual);
             }

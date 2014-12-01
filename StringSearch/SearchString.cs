@@ -257,7 +257,7 @@ namespace StringSearch
             }
         }
 
-        public static int FindNextOccurrence4BitDigit(Stream searchStream, string lookFor, int fromIdx)
+        public static long FindNextOccurrence4BitDigit(Stream searchStream, string lookFor, long fromIdx)
         {
             byte[] byteArrLookFor = new byte[lookFor.Length];
 
@@ -269,7 +269,7 @@ namespace StringSearch
             return FindNextOccurrence4BitDigit(searchStream, byteArrLookFor, fromIdx);
         }
 
-        public static int FindNextOccurrence4BitDigit(Stream searchStream, byte[] lookFor, int fromIdx)
+        public static long FindNextOccurrence4BitDigit(Stream searchStream, byte[] lookFor, long fromIdx)
         {
             //Validation
             if (searchStream.Length == 0)
@@ -286,12 +286,12 @@ namespace StringSearch
             searchStream.Position = fromIdx / 2;
 
             //Keep track of the index in the stream ready to return if we hit a result
-            int idx = fromIdx;
+            long idx = fromIdx;
 
             int rawByteRead;
             byte thisByte = byte.MaxValue;
 
-            //If this is an odd index, read in the first byte in the stream so thisByte has a value (as it will expect it to have alreayd been read)
+            //If this is an odd index, read in the first byte in the stream so thisByte has a value (as it will expect it to have already been read)
             if(idx % 2 == 1)
             {
                 rawByteRead = searchStream.ReadByte();
