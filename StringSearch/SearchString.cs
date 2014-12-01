@@ -360,16 +360,13 @@ namespace StringSearch
                 {
                     //If we currently have the digits being searched for
                     bool match = true;
-                    int i = 0;
-                    for (int j = 0; j < prev.Length; j++ )
+                    for (int i = 0; i < prev.Length; i++ )
                     {
-                        if (lookFor[i] != prev[j])
+                        if (lookFor[i] != prev[i])
                         {
                             match = false;
                             break;
                         }
-
-                        i++;
                     }
 
                     if(match)
