@@ -210,13 +210,13 @@ namespace StringSearch
 
             if(fromIdx <= toSearch.Length - lookFor.Length)
             {
-                LinkedList<char> prevChars = new LinkedList<char>();
+                FixedLengthQueue<char> prevChars = new FixedLengthQueue<char>(lookFor.Length);
 
                 //Read in the first N chars
                 int i = fromIdx;
                 for(int j = 0; j < lookFor.Length; i++, j++)
                 {
-                    prevChars.AddLast(toSearch[i]);
+                    prevChars.Enqueue(toSearch[i]);
                 }
 
                 //For each of the remaining characters in the string to be searched
@@ -226,7 +226,7 @@ namespace StringSearch
                     bool match = true;
                     for (int j = 0; j < lookFor.Length; j++)
                     {
-                        if (prevChars.ElementAt(j) != lookFor[j])
+                        if (prevChars[j] != lookFor[j])
                         {
                             match = false;
                             break;
@@ -245,8 +245,7 @@ namespace StringSearch
                     }
 
                     //Update prevChars
-                    prevChars.RemoveFirst();
-                    prevChars.AddLast(toSearch[i]);
+                    prevChars.Enqueue(toSearch[i]);
                 }
 
                 //Didn't match anything
@@ -307,7 +306,7 @@ namespace StringSearch
             bool fillingPrev = true;
             bool filledPrevThisIter = false;
             bool eos = false;
-            LinkedList<byte> prev = new LinkedList<byte>();
+            FixedLengthQueue<byte> prev = new FixedLengthQueue<byte>(lookFor.Length);
             byte digit;
 
             //Have one big loop for both fill & search modes
@@ -345,7 +344,7 @@ namespace StringSearch
                 //If filling up the previous chars
                 if(fillingPrev)
                 {
-                    prev.AddLast(digit);
+                    prev.Enqueue(digit);
 
                     //Update fillingPrev
                     if(prev.Count == lookFor.Length)
@@ -362,9 +361,9 @@ namespace StringSearch
                     //If we currently have the digits being searched for
                     bool match = true;
                     int i = 0;
-                    foreach(byte prevEl in prev)
+                    for (int j = 0; j < prev.Length; j++ )
                     {
-                        if(lookFor[i] != prevEl)
+                        if (lookFor[i] != prev[j])
                         {
                             match = false;
                             break;
@@ -385,8 +384,7 @@ namespace StringSearch
                     //Update prev (if we haven't filled prev on this iter)
                     if(!filledPrevThisIter)
                     {
-                        prev.RemoveFirst();
-                        prev.AddLast(digit);
+                        prev.Enqueue(digit);
                     }
                 }
 
