@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\FixedLengthQueue.cs" />
     <Compile Include="Compression.cs" />
     <Compile Include="FourBitDigitArray.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
