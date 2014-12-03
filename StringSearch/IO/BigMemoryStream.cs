@@ -136,7 +136,27 @@ namespace StringSearch.IO
             return count;
         }
 
-        //TODO: Manually overriding ReadByte() should be more efficient than the default implementation that will use Read() to get a single byte
+        //Manually overriding ReadByte() is unneccessary, but more efficient than the default implementation that 
+        //  will use Read() to get a single byte
+        public override int ReadByte()
+        {
+            this.throwIfClosed();
+
+            if(this.position > this.length)
+            {
+                return -1;
+            }
+
+            //Determine which underlying Memory stream this byte is in
+            int streamIdx = (int)(this.position / MEMORY_STREAM_MAX_SIZE);
+
+            //Set out position in the underlying memory stream to that of this byte
+            memStreams[streamIdx].Position = this.position % MEMORY_STREAM_MAX_SIZE;
+
+            this.position++;
+
+            return memStreams[streamIdx].ReadByte();
+        }
 
         public override long Seek(long offset, SeekOrigin origin)
         {
