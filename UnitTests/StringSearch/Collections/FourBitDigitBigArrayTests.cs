@@ -263,19 +263,21 @@ namespace UnitTests.StringSearch.Collections
             }
 
             Stream stream;
+            long streamLength = length / 2;
             if(length > int.MaxValue)
             {
-                stream = new BigMemoryStream(length / 2);
+                stream = new BigMemoryStream(streamLength);
             }
             else
             {
-                stream = new MemoryStream((int)(length / 2));
+                stream = new MemoryStream((int)streamLength);
             }
+            stream.SetLength(streamLength);
 
             //If the length was odd, set the last byte to 15 (last 4 bits are all 1's)
             if(odd)
             {
-                stream.Position = (length / 2) - 1;
+                stream.Position = streamLength - 1;
                 stream.WriteByte(15);
             }
 

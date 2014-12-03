@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * An Implementation of Stream that stores its values in Memory.
+ * Is not limited to int.MaxValue bytes like MemoryStream.
+ * For simplicity it does not differentiate between length & capacity; treating them as the same thing
+ * 
+ * By Josh Keegan 02/12/2014
+ * Last Edit 03/12/2014
+ */
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -243,28 +252,18 @@ namespace StringSearch.IO
 
         public BigMemoryStream(long capacity)
         {
-            if(capacity < 0)
+            if (capacity < 0)
             {
                 throw new ArgumentOutOfRangeException("capacity must be >= 0");
             }
 
             this.isClosed = false;
-            this.length = capacity;
+            this.length = 0; //Will be set to actual value by expand
             this.position = 0;
 
-            int numMemStreamsRequired = numMemoryStreamsRequired(capacity);
-
-            this.memStreams = new List<MemoryStream>(numMemStreamsRequired);
-
-            //Initialise these initial memory streams
-            for(int i = 0; i < numMemStreamsRequired; i++)
-            {
-                int memStreamLength = i == numMemStreamsRequired - 1 ? //If this is the last stream
-                    (int)(this.length % MEMORY_STREAM_MAX_SIZE) : //Work out how long it needs to be
-                    MEMORY_STREAM_MAX_SIZE; //Otherwise use maximum possible value
-
-                this.memStreams.Add(new MemoryStream(memStreamLength));
-            }
+            //Initialise memStreams to be empty, expand will set the actual values
+            this.memStreams = new List<MemoryStream>(0);
+            this.expand(capacity);
         }
         #endregion
 
@@ -299,6 +298,7 @@ namespace StringSearch.IO
                     MEMORY_STREAM_MAX_SIZE;
 
                 MemoryStream stream = new MemoryStream(streamLength);
+                stream.SetLength(streamLength);
                 this.memStreams.Add(stream);
             }
 
