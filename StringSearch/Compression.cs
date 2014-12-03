@@ -2,6 +2,7 @@
  * String Search Library
  * Compression class
  * By Josh Keegan 06/11/2014
+ * Last Edit 03/12/2014
  */
 
 using System;
@@ -11,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Streams;
+using StringSearch.IO;
 
 namespace StringSearch
 {
@@ -134,7 +135,7 @@ namespace StringSearch
         public static Stream ReadStreamNoComression(string filePath)
         {
             FileStream fileStream = new FileStream(filePath, FileMode.Open);
-            MemoryTributary memStream = new MemoryTributary();
+            BigMemoryStream memStream = new BigMemoryStream();
 
             fileStream.CopyTo(memStream);
 

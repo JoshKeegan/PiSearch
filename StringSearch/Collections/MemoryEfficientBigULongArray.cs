@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Streams;
+using StringSearch.IO;
 
 namespace StringSearch.Collections
 {
@@ -252,7 +252,7 @@ namespace StringSearch.Collections
             }
 
             //Store the array in memory by default
-            this.stream = new MemoryTributary(numBytes);
+            this.stream = new BigMemoryStream(numBytes);
         }
 
         public MemoryEfficientBigULongArray(long length)

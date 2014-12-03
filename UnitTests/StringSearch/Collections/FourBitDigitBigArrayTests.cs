@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
-using Streams;
 using StringSearch;
 using StringSearch.Collections;
-using System.IO;
+using StringSearch.IO;
 
 namespace UnitTests.StringSearch.Collections
 {
@@ -184,7 +184,38 @@ namespace UnitTests.StringSearch.Collections
         }
 
         [Test]
+        public void TestLengthEven()
+        {
+            FourBitDigitBigArray a = convertStringTo4BitDigitArray("1234");
+            Assert.AreEqual(4, a.Length);
+        }
+
+        [Test]
+        public void TestLengthEmpty()
+        {
+            const long LENGTH = 3;
+            FourBitDigitBigArray a = makeNew(LENGTH);
+            Assert.AreEqual(LENGTH, a.Length);
+        }
+
+        [Test]
+        public void TestLengthEmptyEven()
+        {
+            const long LENGTH = 4;
+            FourBitDigitBigArray a = makeNew(LENGTH);
+            Assert.AreEqual(LENGTH, a.Length);
+        }
+
+        [Test]
         public void TestLengthBig()
+        {
+            const long LENGTH = 3000000001;
+            FourBitDigitBigArray a = makeNew(LENGTH);
+            Assert.AreEqual(LENGTH, a.Length);
+        }
+
+        [Test]
+        public void TestLengthBigEven()
         {
             const long LENGTH = 3000000000;
             FourBitDigitBigArray a = makeNew(LENGTH);
@@ -192,16 +223,16 @@ namespace UnitTests.StringSearch.Collections
         }
 
         [Test]
-        public void TestConstructorMemoryTributaryAsUnderlyingStream()
+        public void TestConstructorBigMemoryStreamAsUnderlyingStream()
         {
-            MemoryTributary stream = new MemoryTributary(5);
+            BigMemoryStream stream = new BigMemoryStream(5);
             FourBitDigitBigArray a = new FourBitDigitBigArray(stream);
         }
 
         [Test]
-        public void TestConstructorMemoryTributaryAsUnderlyingStreamBig()
+        public void TestConstructorBigMemoryStreamAsUnderlyingStreamBig()
         {
-            MemoryTributary stream = new MemoryTributary(3000000000); //3bil bytes ~= 3GB
+            BigMemoryStream stream = new BigMemoryStream(3000000000); //3bil bytes ~= 3GB
             FourBitDigitBigArray a = new FourBitDigitBigArray(stream);
         }
 
@@ -231,7 +262,15 @@ namespace UnitTests.StringSearch.Collections
                 length++;
             }
 
-            MemoryTributary stream = new MemoryTributary(length / 2);
+            Stream stream;
+            if(length > int.MaxValue)
+            {
+                stream = new BigMemoryStream(length / 2);
+            }
+            else
+            {
+                stream = new MemoryStream((int)(length / 2));
+            }
 
             //If the length was odd, set the last byte to 15 (last 4 bits are all 1's)
             if(odd)

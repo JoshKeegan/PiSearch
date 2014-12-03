@@ -54,10 +54,6 @@
       <Project>{2f495572-ac33-4535-a337-c508f8457e03}</Project>
       <Name>7zip</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MemoryTributary\Streams.csproj">
-      <Project>{e5a88db1-f025-4207-b169-72567e71bb91}</Project>
-      <Name>Streams</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

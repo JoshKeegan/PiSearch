@@ -49,7 +49,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringSearch\Collections\MemoryEfficientBigULongArrayTests.cs" />
     <Compile Include="StringSearch\CompressionTests.cs" />
-	<Compile Include="StringSearch\Collections\FixedLengthQueueTests.cs" />
+    <Compile Include="StringSearch\Collections\FixedLengthQueueTests.cs" />
     <Compile Include="StringSearch\Collections\FourBitDigitBigArrayTests.cs" />
     <Compile Include="StringSearch\SearchStringTests.cs" />
   </ItemGroup>
@@ -57,10 +57,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MemoryTributary\Streams.csproj">
-      <Project>{e5a88db1-f025-4207-b169-72567e71bb91}</Project>
-      <Name>Streams</Name>
-    </ProjectReference>
     <ProjectReference Include="..\StringSearch\StringSearch.csproj">
       <Project>{27ee1fb7-b2d2-4008-b256-fadc8c0c8c7d}</Project>
       <Name>StringSearch</Name>

@@ -10,7 +10,7 @@ namespace StringSearch.IO
     public class BigMemoryStream : Stream
     {
         //Constants
-        private const int MEMORY_STREAM_MAX_SIZE = int.MaxValue; //The maximum number of bytes to store in one of the underlying Memory Streams. Actual limit is int.MaxValue, but could be lowered to help find continuous empty space on the heap
+        private const int MEMORY_STREAM_MAX_SIZE = int.MaxValue / 4; //The maximum number of bytes to store in one of the underlying Memory Streams. Actual limit is int.MaxValue, but should be lower to help find continuous empty space on the heap
 
         //Private Variables
         private bool isClosed;
@@ -124,7 +124,7 @@ namespace StringSearch.IO
                 //if we're onto a new stream, update our position in it
                 if(streamIdx != prevStreamIdx)
                 {
-                    memStreams[memStreams.Count - 1].Position = idx % MEMORY_STREAM_MAX_SIZE;
+                    memStreams[streamIdx].Position = idx % MEMORY_STREAM_MAX_SIZE;
                 }
 
                 buffer[offset + i] = (byte)this.memStreams[streamIdx].ReadByte();
@@ -232,7 +232,19 @@ namespace StringSearch.IO
             this.length = capacity;
             this.position = 0;
 
-            this.memStreams = new List<MemoryStream>(numMemoryStreamsRequired(capacity));
+            int numMemStreamsRequired = numMemoryStreamsRequired(capacity);
+
+            this.memStreams = new List<MemoryStream>(numMemStreamsRequired);
+
+            //Initialise these initial memory streams
+            for(int i = 0; i < numMemStreamsRequired; i++)
+            {
+                int memStreamLength = i == numMemStreamsRequired - 1 ? //If this is the last stream
+                    (int)(this.length % MEMORY_STREAM_MAX_SIZE) : //Work out how long it needs to be
+                    MEMORY_STREAM_MAX_SIZE; //Otherwise use maximum possible value
+
+                this.memStreams.Add(new MemoryStream(memStreamLength));
+            }
         }
         #endregion
 
@@ -249,11 +261,14 @@ namespace StringSearch.IO
         {
             int newNumMemStreams = numMemoryStreamsRequired(length);
 
-            //Resize the current last stream
-            int currentLastStreamNewLength = newNumMemStreams == this.memStreams.Count ?
-                (int)(length % MEMORY_STREAM_MAX_SIZE) :
-                MEMORY_STREAM_MAX_SIZE;
-            this.memStreams[this.memStreams.Count - 1].SetLength(currentLastStreamNewLength);
+            //Resize the current last stream (if there is one)
+            if(this.memStreams.Count != 0)
+            {
+                int currentLastStreamNewLength = newNumMemStreams == this.memStreams.Count ?
+                    (int)(length % MEMORY_STREAM_MAX_SIZE) :
+                    MEMORY_STREAM_MAX_SIZE;
+                    this.memStreams[this.memStreams.Count - 1].SetLength(currentLastStreamNewLength);
+            }
 
             //Add more streams to the end (if necessary)
             while(newNumMemStreams != this.memStreams.Count)
