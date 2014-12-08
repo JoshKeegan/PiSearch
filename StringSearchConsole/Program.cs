@@ -680,7 +680,7 @@ namespace StringSearchConsole
 
         internal static BigArray<ulong> convertIntArrayToBigUlongArray(int[] arr)
         {
-            BigArray<ulong> toRet = new ULongArrayWrapper(arr.Length);
+            BigArray<ulong> toRet = new MemoryEfficientBigULongArray(arr.Length);
 
             for(int i = 0; i < arr.Length; i++)
             {
