@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -257,6 +258,20 @@ namespace StringSearch.Collections
 
         public MemoryEfficientBigULongArray(long length)
             : this(length, ulong.MaxValue) { }
+
+        //Public Methods
+        public IEnumerator<ulong> GetEnumerator()
+        {
+            for (long i = 0; i < this.Length; i++)
+            {
+                yield return this[i];
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return (IEnumerator)GetEnumerator();
+        }
 
         //Helpers
         internal static byte calculateBitsPerValue(ulong maxValue)

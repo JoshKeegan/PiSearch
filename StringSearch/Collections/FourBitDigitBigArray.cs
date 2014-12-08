@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,36 +16,11 @@ namespace StringSearch.Collections
         //Public vars
         public long Length { get; private set; }
 
-        //Constructor
-        public FourBitDigitBigArray(Stream stream)
-        {
-            this.stream = stream;
-
-            //Calculate the length
-            long length = stream.Length * 2;
-
-            //If there are any digits in the stream, check if there is an odd number of digits
-            if(length > 0)
-            {
-                //If there is 1111 as the last digit, then it isn't actually the last digit, there because cannot write half a byte
-                stream.Position = stream.Length - 1;
-                int b = stream.ReadByte();
-                int right = b & 15; // mask 0000 1111
-
-                if (right == 15)
-                {
-                    length--;
-                }
-            }
-
-            this.Length = length;
-        }
-
         public byte this[long i]
         {
             get
             {
-                if(i < 0 || i >= this.Length)
+                if (i < 0 || i >= this.Length)
                 {
                     throw new IndexOutOfRangeException();
                 }
@@ -53,7 +29,7 @@ namespace StringSearch.Collections
                 int b = stream.ReadByte();
 
                 //If left half of byte
-                if(i % 2 == 0)
+                if (i % 2 == 0)
                 {
                     b = b >> 4;
                 }
@@ -71,7 +47,7 @@ namespace StringSearch.Collections
                     throw new IndexOutOfRangeException();
                 }
 
-                if(value < 0 || value >= 15)
+                if (value < 0 || value >= 15)
                 {
                     throw new OverflowException();
                 }
@@ -99,6 +75,45 @@ namespace StringSearch.Collections
                 stream.Position = i / 2;
                 stream.WriteByte((byte)b);
             }
+        }
+
+        //Constructor
+        public FourBitDigitBigArray(Stream stream)
+        {
+            this.stream = stream;
+
+            //Calculate the length
+            long length = stream.Length * 2;
+
+            //If there are any digits in the stream, check if there is an odd number of digits
+            if(length > 0)
+            {
+                //If there is 1111 as the last digit, then it isn't actually the last digit, there because cannot write half a byte
+                stream.Position = stream.Length - 1;
+                int b = stream.ReadByte();
+                int right = b & 15; // mask 0000 1111
+
+                if (right == 15)
+                {
+                    length--;
+                }
+            }
+
+            this.Length = length;
+        }
+
+        //Public methods
+        public IEnumerator<byte> GetEnumerator()
+        {
+            for(long i = 0; i < this.Length; i++)
+            {
+                yield return this[i];
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return (IEnumerator)GetEnumerator();
         }
     }
 }

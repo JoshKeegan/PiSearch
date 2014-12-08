@@ -40,9 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseObjectExtensions\CollectionExtensionsInt.cs" />
     <Compile Include="Collections\BigArray.cs" />
     <Compile Include="Collections\FixedLengthQueue.cs" />
     <Compile Include="Collections\MemoryEfficientBigULongArray.cs" />
+    <Compile Include="Collections\ULongArrayWrapper.cs" />
     <Compile Include="Compression.cs" />
     <Compile Include="Collections\FourBitDigitBigArray.cs" />
     <Compile Include="IO\BigMemoryStream.cs" />

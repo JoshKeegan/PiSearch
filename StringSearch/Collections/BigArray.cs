@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StringSearch.Collections
 {
-    public interface BigArray<T>
+    public interface BigArray<T> : IEnumerable<T>
     {
         T this[long i] 
         {

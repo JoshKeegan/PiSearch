@@ -12,7 +12,7 @@ using SuffixArray;
 
 namespace StringSearchConsole
 {
-    class Program
+    public class Program
     {
         //Constants
         const string COMPRESSED_FILE_EXTENSION = ".7z";
@@ -22,7 +22,7 @@ namespace StringSearchConsole
         private static string loadedString = null;
         private static Stream loaded4BitDigitStream = null;
         private static FourBitDigitBigArray fourBitDigitArray = null;
-        private static int[] suffixArray = null;
+        private static BigArray<ulong> suffixArray = null;
         private static Stopwatch stopwatch = new Stopwatch();
 
         static void Main(string[] args)
@@ -208,10 +208,10 @@ namespace StringSearchConsole
 
             FileStream fs = new FileStream(workingDirectory + fileName, FileMode.Create);
 
-            foreach(int i in suffixArray)
+            foreach (ulong i in suffixArray)
             {
                 byte[] bytes = BitConverter.GetBytes(i);
-                fs.Write(bytes, 0, 4);
+                fs.Write(bytes, 0, 8);
             }
 
             fs.Close();
@@ -241,20 +241,20 @@ namespace StringSearchConsole
 
             FileStream fs = new FileStream(workingDirectory + fileName, FileMode.Open);
 
-            int len = (int)(fs.Length / 4);
+            int len = (int)(fs.Length / 8);
 
-            suffixArray = new int[len];
+            suffixArray = new ULongArrayWrapper(len);
 
-            byte[] bytes = new byte[4];
+            byte[] bytes = new byte[8];
             int state = 4;
             int i = 0;
             while(true)
             {
-                state = fs.Read(bytes, 0, 4);
+                state = fs.Read(bytes, 0, 8);
 
-                if(state == 4)
+                if(state == 8)
                 {
-                    suffixArray[i] = BitConverter.ToInt32(bytes, 0);
+                    suffixArray[i] = BitConverter.ToUInt64(bytes, 0);
                     i++;
                 }
                 else
@@ -434,7 +434,7 @@ namespace StringSearchConsole
                 stopwatch.Reset();
                 stopwatch.Start();
 
-                int[] foundIdxs = SearchString.Search(suffixArray, fourBitDigitArray, toFind);
+                long[] foundIdxs = SearchString.Search(suffixArray, fourBitDigitArray, toFind);
                 Console.WriteLine("Found {0} results", foundIdxs.Length);
                 foreach (int idx in foundIdxs)
                 {
@@ -547,7 +547,7 @@ namespace StringSearchConsole
             }
 
             //Initialise the array that will hold the suffix array
-            suffixArray = new int[length];
+            int[] suffixArray = new int[length];
 
             //Calculate the suffix array
             int status = SAIS.sufsort(loaded4BitDigitStream, suffixArray, length);
@@ -556,12 +556,17 @@ namespace StringSearchConsole
             {
                 Console.WriteLine("Error occurred whilst generating the suffix array: {0}", status);
             }
+            else
+            {
+                Console.WriteLine("Converting generated int[] suffix array to BigArray<ulong>");
+                Program.suffixArray = convertIntArrayToBigUlongArray(suffixArray);
+            }
         }
 
         private static void subGenerateSuffixArrayFromLoadedString()
         {
             //Initialise the aray that will hold the suffix array
-            suffixArray = new int[loadedString.Length];
+            int[] suffixArray = new int[loadedString.Length];
 
             //Calculate the suffix array
             int status = SAIS.sufsort(loadedString, suffixArray, loadedString.Length);
@@ -570,13 +575,18 @@ namespace StringSearchConsole
             {
                 Console.WriteLine("Error occurred whilst generating the suffix array: {0}", status);
             }
+            else
+            {
+                Console.WriteLine("Converting generated int[] suffix array to BigArray<ulong>");
+                Program.suffixArray = convertIntArrayToBigUlongArray(suffixArray);
+            }
         }
 
         private static void subPrintSuffixArray()
         {
             for(int i = 0; i < suffixArray.Length; i++)
             {
-                Console.WriteLine("{0}: {1}\t\t\tdigit: {2}", i, suffixArray[i], fourBitDigitArray[suffixArray[i]]);
+                Console.WriteLine("{0}: {1}\t\t\tdigit: {2}", i, suffixArray[i], fourBitDigitArray[(long)suffixArray[i]]);
             }
         }
 
@@ -666,6 +676,18 @@ namespace StringSearchConsole
             //Clean up
             reader.Close();
             writer.Close();
+        }
+
+        internal static BigArray<ulong> convertIntArrayToBigUlongArray(int[] arr)
+        {
+            BigArray<ulong> toRet = new ULongArrayWrapper(arr.Length);
+
+            for(int i = 0; i < arr.Length; i++)
+            {
+                toRet[i] = (uint)arr[i];
+            }
+
+            return toRet;
         }
     }
 }

@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
 using StringSearch;
+using StringSearch.BaseObjectExtensions;
 using StringSearch.Collections;
+using StringSearchConsole;
 using SuffixArray;
-using System.IO;
 using UnitTests.StringSearch.Collections;
 
 namespace UnitTests.StringSearch
@@ -121,7 +123,7 @@ namespace UnitTests.StringSearch
         {
             const string STR = "123456789";
 
-            int[] suffixArray = buildSuffixArray(STR);
+            BigArray<ulong> suffixArray = buildSuffixArray(STR);
             FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
 
             for(int i = 0; i < STR.Length; i++)
@@ -130,8 +132,8 @@ namespace UnitTests.StringSearch
                 {
                     string find = STR.Substring(i, j - i);
 
-                    int[] seqSearchRes = SearchString.Search(STR, find);
-                    int[] suffixArraySearchRes = SearchString.Search(suffixArray, fourBitDigitArray, find);
+                    long[] seqSearchRes = SearchString.Search(STR, find).ToLongArr();
+                    long[] suffixArraySearchRes = SearchString.Search(suffixArray, fourBitDigitArray, find);
 
                     CollectionAssert.AreEqual(seqSearchRes, suffixArraySearchRes);
                 }
@@ -143,23 +145,23 @@ namespace UnitTests.StringSearch
         {
             const string STR = "1234567899912340";
 
-            Dictionary<string, int[]> answers = new Dictionary<string, int[]>()
+            Dictionary<string, long[]> answers = new Dictionary<string, long[]>()
             {
-                { "1", new int[] { 0, 11 } },
-                { "2", new int[] { 1, 12 } },
-                { "12", new int[] { 0, 11 } },
-                { "5", new int[] { 4 } }
+                { "1", new long[] { 0, 11 } },
+                { "2", new long[] { 1, 12 } },
+                { "12", new long[] { 0, 11 } },
+                { "5", new long[] { 4 } }
             };
 
-            int[] suffixArray = buildSuffixArray(STR);
+            BigArray<ulong> suffixArray = buildSuffixArray(STR);
             FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
 
-            foreach (KeyValuePair<string, int[]> kvp in answers)
+            foreach (KeyValuePair<string, long[]> kvp in answers)
             {
                 string find = kvp.Key;
-                int[] expected = kvp.Value;
+                long[] expected = kvp.Value;
 
-                int[] actual = SearchString.Search(suffixArray, fourBitDigitArray, find);
+                long[] actual = SearchString.Search(suffixArray, fourBitDigitArray, find);
 
                 CollectionAssert.AreEqual(expected, actual);
             }
@@ -170,14 +172,14 @@ namespace UnitTests.StringSearch
         {
             const string STR = "1234567899912340";
 
-            int[] suffixArray = buildSuffixArray(STR);
+            BigArray<ulong> suffixArray = buildSuffixArray(STR);
             FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
 
             const string FIND = "12340";
 
-            int[] expected = new int[] { 11 };
+            long[] expected = new long[] { 11 };
 
-            int[] actual = SearchString.Search(suffixArray, fourBitDigitArray, FIND);
+            long[] actual = SearchString.Search(suffixArray, fourBitDigitArray, FIND);
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -187,14 +189,14 @@ namespace UnitTests.StringSearch
         {
             const string STR = "1234567899912340";
 
-            int[] suffixArray = buildSuffixArray(STR);
+            BigArray<ulong> suffixArray = buildSuffixArray(STR);
             FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
 
             const string FIND = "12345678";
 
-            int[] expected = new int[] { 0 };
+            long[] expected = new long[] { 0 };
 
-            int[] actual = SearchString.Search(suffixArray, fourBitDigitArray, FIND);
+            long[] actual = SearchString.Search(suffixArray, fourBitDigitArray, FIND);
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -204,12 +206,12 @@ namespace UnitTests.StringSearch
         {
             const string STR = "1234567899912340";
 
-            int[] suffixArray = buildSuffixArray(STR);
+            BigArray<ulong> suffixArray = buildSuffixArray(STR);
             FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
 
-            int[] expected = new int[] { 0 };
+            long[] expected = new long[] { 0 };
 
-            int[] actual = SearchString.Search(suffixArray, fourBitDigitArray, STR);
+            long[] actual = SearchString.Search(suffixArray, fourBitDigitArray, STR);
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -219,7 +221,7 @@ namespace UnitTests.StringSearch
         {
             const string STR = "123456789";
 
-            int[] suffixArray = buildSuffixArray(STR);
+            BigArray<ulong> suffixArray = buildSuffixArray(STR);
             FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
 
             try
@@ -236,12 +238,12 @@ namespace UnitTests.StringSearch
             const string STR = "";
             const string FIND = "1";
 
-            int[] suffixArray = buildSuffixArray(STR);
+            BigArray<ulong> suffixArray = buildSuffixArray(STR);
             FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
 
-            int[] expected = new int[0];
+            long[] expected = new long[0];
 
-            int[] actual = SearchString.Search(suffixArray, fourBitDigitArray, FIND);
+            long[] actual = SearchString.Search(suffixArray, fourBitDigitArray, FIND);
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -249,7 +251,7 @@ namespace UnitTests.StringSearch
         [Test]
         public void TestSuffixArrayWrongSize()
         {
-            int[] suffixArray = new int[] { 1, 2, 3 };
+            BigArray<ulong> suffixArray = Program.convertIntArrayToBigUlongArray(new int[] { 1, 2, 3 });
             FourBitDigitBigArray a = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray("12345");
 
             try
@@ -507,24 +509,24 @@ namespace UnitTests.StringSearch
         {
             const string STR = "2734981324";
 
-            int[] suffixArray = buildSuffixArray(STR);
+            BigArray<ulong> suffixArray = buildSuffixArray(STR);
             FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
 
             for(int i = 0; i < STR.Length; i++)
             {
                 byte[] find = new byte[] { (byte)(STR[i] - '0') };
 
-                int answer = SearchString.binarySearchForPrefix(suffixArray, fourBitDigitArray, find, 0, STR.Length - 1);
+                long answer = SearchString.binarySearchForPrefix(suffixArray, fourBitDigitArray, find, 0, STR.Length - 1);
 
-                Assert.AreEqual(fourBitDigitArray[i], fourBitDigitArray[suffixArray[answer]]);
+                Assert.AreEqual(fourBitDigitArray[i], fourBitDigitArray[(long)suffixArray[answer]]);
             }
         }
         #endregion
 
         #region Helper Methods
-        private static int[] buildSuffixArray(string str)
+        private static BigArray<ulong> buildSuffixArray(string str)
         {
-            //Initialise the aray that will hold the suffix array
+            //Initialise the array that will hold the suffix array
             int[] suffixArray = new int[str.Length];
 
             //Calculate the suffix array
@@ -536,7 +538,11 @@ namespace UnitTests.StringSearch
                 Console.WriteLine(error);
                 throw new Exception(error);
             }
-            return suffixArray;
+
+            //Convert the suffix array to the format expected in SearchString
+            BigArray<ulong> converted = Program.convertIntArrayToBigUlongArray(suffixArray);
+
+            return converted;
         }
 
         private static byte[] stringToByteArr(string str)

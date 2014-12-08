@@ -57,6 +57,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\StringSearchConsole\StringSearchConsole.csproj">
+      <Project>{380e25fa-963c-4c96-869a-cd25acae76ac}</Project>
+      <Name>StringSearchConsole</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StringSearch\StringSearch.csproj">
       <Project>{27ee1fb7-b2d2-4008-b256-fadc8c0c8c7d}</Project>
       <Name>StringSearch</Name>

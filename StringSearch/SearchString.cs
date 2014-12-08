@@ -71,7 +71,7 @@ namespace StringSearch
             }
         }
 
-        public static int[] Search(int[] suffixArray, FourBitDigitBigArray digitArray, string lookFor)
+        public static long[] Search(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, string lookFor)
         {
             byte[] byteArrLookFor = new byte[lookFor.Length];
 
@@ -83,7 +83,7 @@ namespace StringSearch
             return Search(suffixArray, digitArray, byteArrLookFor);
         }
 
-        public static int[] Search(int[] suffixArray, FourBitDigitBigArray digitArray, byte[] lookFor)
+        public static long[] Search(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, byte[] lookFor)
         {
             //Validation
             if(lookFor.Length == 0)
@@ -93,7 +93,7 @@ namespace StringSearch
 
             if(digitArray.Length == 0)
             {
-                return new int[0];
+                return new long[0];
             }
 
             if(suffixArray.Length != digitArray.Length)
@@ -101,32 +101,32 @@ namespace StringSearch
                 throw new ArgumentException("Suffix Array must be the same length as the Digit Array. This is not the correct suffix array for this digit array");
             }
 
-            int matchingPosition = binarySearchForPrefix(suffixArray, digitArray, lookFor, 0, suffixArray.Length - 1);
+            long matchingPosition = binarySearchForPrefix(suffixArray, digitArray, lookFor, 0, suffixArray.Length - 1);
 
             //If there were no matches
             if(matchingPosition == -1)
             {
-                return new int[0];
+                return new long[0];
             }
             else //Otherwise match found, look for more
             {
-                int min = matchingPosition;
-                int max = matchingPosition;
+                long min = matchingPosition;
+                long max = matchingPosition;
 
-                while(min > 0 && doesStartWithSuffix(digitArray, lookFor, suffixArray[min - 1]) == 0)
+                while(min > 0 && doesStartWithSuffix(digitArray, lookFor, (long)suffixArray[min - 1]) == 0)
                 {
                     min--;
                 }
 
-                while(max < digitArray.Length - 1 && doesStartWithSuffix(digitArray, lookFor, suffixArray[max + 1]) == 0)
+                while(max < digitArray.Length - 1 && doesStartWithSuffix(digitArray, lookFor, (long)suffixArray[max + 1]) == 0)
                 {
                     max++;
                 }
 
-                int[] toRet = new int[max - min + 1];
-                for(int i = min; i <= max; i++)
+                long[] toRet = new long[max - min + 1];
+                for(long i = min; i <= max; i++)
                 {
-                    toRet[i - min] = suffixArray[i];
+                    toRet[i - min] = (long)suffixArray[i];
                 }
 
                 //Sort the array of string indices (Array.Sort implements Quicksort)
@@ -136,14 +136,14 @@ namespace StringSearch
             }
         }
 
-        internal static int binarySearchForPrefix(int[] suffixArray, FourBitDigitBigArray digitArray, byte[] findPrefix, int min, int max)
+        internal static long binarySearchForPrefix(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, byte[] findPrefix, long min, long max)
         {
-            int range = max - min;
+            long range = max - min;
 
             if(range == 0)
             {
                 //Only one possible value left, check it
-                if(doesStartWithSuffix(digitArray, findPrefix, suffixArray[min]) == 0)
+                if(doesStartWithSuffix(digitArray, findPrefix, (long)suffixArray[min]) == 0)
                 {
                     return min;
                 }
@@ -154,9 +154,9 @@ namespace StringSearch
             }
             else
             {
-                int idx = min + (range / 2);
+                long idx = min + (range / 2);
 
-                int hit = doesStartWithSuffix(digitArray, findPrefix, suffixArray[idx]);
+                int hit = doesStartWithSuffix(digitArray, findPrefix, (long)suffixArray[idx]);
 
                 //If this is the answer
                 if(hit == 0)
@@ -176,7 +176,7 @@ namespace StringSearch
             }
         }
 
-        internal static int doesStartWithSuffix(FourBitDigitBigArray digitArray, byte[] findPrefix, int startIdx)
+        internal static int doesStartWithSuffix(FourBitDigitBigArray digitArray, byte[] findPrefix, long startIdx)
         {
             for(int i = 0; i < findPrefix.Length; i++)
             {
