@@ -243,7 +243,7 @@ namespace StringSearchConsole
 
             int len = (int)(fs.Length / 8);
 
-            suffixArray = new ULongArrayWrapper(len);
+            suffixArray = new MemoryEfficientBigULongArray(len);
 
             byte[] bytes = new byte[8];
             int state = 4;
