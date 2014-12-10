@@ -247,7 +247,7 @@ namespace StringSearchConsole
 
             int len = (int)(fs.Length / 8);
 
-            suffixArray = new MemoryEfficientBigULongArray(len);
+            suffixArray = new MemoryEfficientBigULongArray(len, (uint)len);
 
             byte[] bytes = new byte[8];
             int state = 4;
@@ -745,7 +745,7 @@ namespace StringSearchConsole
 
         internal static BigArray<ulong> convertIntArrayToBigUlongArray(int[] arr)
         {
-            BigArray<ulong> toRet = new MemoryEfficientBigULongArray(arr.Length);
+            BigArray<ulong> toRet = new MemoryEfficientBigULongArray(arr.Length, (uint)arr.Length);
 
             for(int i = 0; i < arr.Length; i++)
             {
