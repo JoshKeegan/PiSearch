@@ -62,6 +62,7 @@ namespace StringSearchConsole
                 "15.\tPrint Suffix Array\n" + 
                 "16.\tPrint 4-bit digit array\n" + 
                 "17.\tConvert y-cruncher output to raw decimal places of pi\n" +
+                "18.\tTake first n digits from compressed 4-bit digit file\n" +
                 "q.\tQuit");
 
             bool quit = false;
@@ -128,6 +129,9 @@ namespace StringSearchConsole
                         break;
                     case "17": //Convert y-cruncher output to raw decimal places of pi
                         subProcessYCruncherOutput();
+                        break;
+                    case "18": //Take first n digits from a compress-ed 4-bit digit file
+                        subTakeFirstNDigitsFrom4BitDigitFile();
                         break;
                     case "q": //Quit
                         quit = true;
@@ -531,6 +535,67 @@ namespace StringSearchConsole
             convertYCruncherFile(fileInName, fileOutName);
         }
 
+        private static void subTakeFirstNDigitsFrom4BitDigitFile()
+        {
+            string fileInName;
+            while(true)
+            {
+                Console.Write("4-bit digit file in: ");
+                fileInName = Console.ReadLine();
+
+                if(File.Exists(workingDirectory + fileInName))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Couldn't find file \"{0}\"", fileInName);
+                }
+            }
+
+            //Work out the number of digits in this file
+            FileStream stream = new FileStream(workingDirectory + fileInName, FileMode.Open);
+            long numDigits = stream.Length * 2;
+            
+            //If the last bits are 1111 (15), then length is odd (one less)
+            stream.Position = stream.Length - 1;
+            int lastByte = stream.ReadByte();
+            if((lastByte & 15) == 15)
+            {
+                numDigits--;
+            }
+
+            stream.Close();
+
+            Console.Write("Output file name: ");
+            string fileOutName = Console.ReadLine();
+
+            long takeNumDigits;
+            while(true)
+            {
+                Console.Write("Number of digits to take: ");
+                long.TryParse(Console.ReadLine(), out takeNumDigits);
+
+                if(takeNumDigits <= 0)
+                {
+                    Console.WriteLine("takeNumDigits must be > 0");
+                }
+                else if(takeNumDigits > numDigits)
+                {
+                    Console.WriteLine("takeNumDigits must be less than numDigits ({0})", numDigits);
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            stopwatch.Reset();
+            stopwatch.Start();
+
+            takeFirstDigitsFrom4BitDigitFile(fileInName, fileOutName, takeNumDigits);
+        }
+
         private static void subGenerateSuffixArray()
         {
             //Calculate the number of digits in the loaded 4 bit digit stream
@@ -688,6 +753,40 @@ namespace StringSearchConsole
             }
 
             return toRet;
+        }
+
+        private static void takeFirstDigitsFrom4BitDigitFile(string fileInName, string fileOutName, long numDigits)
+        {
+            FileStream streamIn = new FileStream(workingDirectory + fileInName, FileMode.Open);
+            FileStream streamOut = new FileStream(workingDirectory + fileOutName, FileMode.CreateNew);
+
+            long outLength = numDigits;
+            if(outLength % 2 == 1)
+            {
+                outLength++;
+            }
+            outLength /= 2;
+
+            streamOut.SetLength(outLength);
+
+            for(long i = 0; i < outLength; i++)
+            {
+                streamOut.WriteByte((byte)streamIn.ReadByte());
+            }
+
+            //If odd, set the last half of the last byte to 1111 (15)
+            if(numDigits % 2 == 1)
+            {
+                streamOut.Position = streamOut.Length - 1;
+                byte lastByte = (byte)streamOut.ReadByte();
+                lastByte = (byte)(lastByte | 15);
+                streamOut.Position = streamOut.Length - 1;
+                streamOut.WriteByte(lastByte);
+            }
+
+            //Clean up
+            streamIn.Close();
+            streamOut.Close();
         }
     }
 }
