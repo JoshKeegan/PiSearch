@@ -4,7 +4,7 @@
  * For simplicity it does not differentiate between length & capacity; treating them as the same thing
  * 
  * By Josh Keegan 02/12/2014
- * Last Edit 03/12/2014
+ * Last Edit 15/12/2014
  */
 
 using System;
@@ -235,7 +235,7 @@ namespace StringSearch.IO
                 //if we're onto a new stream, update our position in it
                 if (streamIdx != prevStreamIdx)
                 {
-                    memStreams[memStreams.Count - 1].Position = idx % MEMORY_STREAM_MAX_SIZE;
+                    memStreams[streamIdx].Position = idx % MEMORY_STREAM_MAX_SIZE;
                 }
 
                 this.memStreams[streamIdx].WriteByte(buffer[offset + i]);
