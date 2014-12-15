@@ -337,6 +337,128 @@ namespace UnitTests.StringSearch.IO
             Assert.AreEqual(5, stream.ReadByte());
         }
 
+        [Test]
+        public void TestReadByteEOS()
+        {
+            BigMemoryStream stream = new BigMemoryStream(100);
+
+            stream.Position = 100;
+            int b = stream.ReadByte();
+
+            Assert.AreEqual(-1, b);
+        }
+
+        [Test]
+        public void TestReadByteEOSBig()
+        {
+            long length = 3L * 1024L * 1024L * 1024L; //3GiB
+            BigMemoryStream stream = new BigMemoryStream(length);
+
+            stream.Position = length;
+            int b = stream.ReadByte();
+
+            Assert.AreEqual(-1, b);
+        }
+
+        [Test]
+        public void TestReadWriteLastByte()
+        {
+            BigMemoryStream stream = new BigMemoryStream(100);
+
+            stream.Position = 99;
+            stream.WriteByte(5);
+
+            stream.Position = 99;
+            int b = stream.ReadByte();
+            Assert.AreEqual(5, b);
+        }
+
+        [Test]
+        public void TestReadWriteLastByteBig()
+        {
+            long length = 3L * 1024L * 1024L * 1024L; //3GiB
+            BigMemoryStream stream = new BigMemoryStream(length);
+
+            stream.Position = length - 1;
+            stream.WriteByte(5);
+
+            stream.Position = length - 1;
+            int b = stream.ReadByte();
+            Assert.AreEqual(5, b);
+        }
+
+        [Test]
+        public void TestReadWriteLastByteInUnderlyingStream()
+        {
+            long length = BigMemoryStream.MEMORY_STREAM_MAX_SIZE + 5;
+            BigMemoryStream stream = new BigMemoryStream(length);
+
+            stream.Position = BigMemoryStream.MEMORY_STREAM_MAX_SIZE - 1;
+            stream.WriteByte(5);
+
+            stream.Position = BigMemoryStream.MEMORY_STREAM_MAX_SIZE - 1;
+            int b = stream.ReadByte();
+            Assert.AreEqual(5, b);
+        }
+
+        [Test]
+        public void TestReadWriteFirstByteInSecondUnderlyingStream()
+        {
+            long length = BigMemoryStream.MEMORY_STREAM_MAX_SIZE + 5;
+            BigMemoryStream stream = new BigMemoryStream(length);
+
+            stream.Position = BigMemoryStream.MEMORY_STREAM_MAX_SIZE;
+            stream.WriteByte(5);
+
+            stream.Position = BigMemoryStream.MEMORY_STREAM_MAX_SIZE;
+            int b = stream.ReadByte();
+            Assert.AreEqual(5, b);
+        }
+
+        [Test]
+        public void TestReadWriteLastByteInStreamAtMaxOfUnderlyingStream()
+        {
+            BigMemoryStream stream = new BigMemoryStream(BigMemoryStream.MEMORY_STREAM_MAX_SIZE);
+
+            stream.Position = BigMemoryStream.MEMORY_STREAM_MAX_SIZE - 1;
+            stream.WriteByte(5);
+
+            stream.Position = BigMemoryStream.MEMORY_STREAM_MAX_SIZE - 1;
+            int b = stream.ReadByte();
+            Assert.AreEqual(5, b);
+        }
+
+        [Test]
+        public void TestReadByteUnset()
+        {
+            BigMemoryStream stream = new BigMemoryStream(100);
+            stream.Position = 50;
+
+            int b = stream.ReadByte();
+            Assert.AreEqual(0, b);
+        }
+
+        [Test]
+        public void TestReadLastByteUnset()
+        {
+            BigMemoryStream stream = new BigMemoryStream(100);
+            stream.Position = stream.Length - 1;
+
+            int b = stream.ReadByte();
+            Assert.AreEqual(0, b);
+        }
+
+        [Test]
+        public void TestReadLastByteUnsetBig()
+        {
+            long length = 3L * 1024L * 1024L * 1024L; //3GiB
+            BigMemoryStream stream = new BigMemoryStream(length);
+            stream.Position = stream.Length - 1;
+
+            int b = stream.ReadByte();
+            Assert.AreEqual(0, b);
+        }
+
         //TODO: Test SetLength
 
         //TODO: Test Seek (once implemented)

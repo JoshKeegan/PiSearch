@@ -19,7 +19,7 @@ namespace StringSearch.IO
     public class BigMemoryStream : Stream
     {
         //Constants
-        private const int MEMORY_STREAM_MAX_SIZE = int.MaxValue / 4; //The maximum number of bytes to store in one of the underlying Memory Streams. Actual limit is int.MaxValue, but should be lower to help find continuous empty space on the heap
+        internal const int MEMORY_STREAM_MAX_SIZE = 1000; //int.MaxValue / 4; //The maximum number of bytes to store in one of the underlying Memory Streams. Actual limit is int.MaxValue, but should be lower to help find continuous empty space on the heap
 
         //Private Variables
         private bool isClosed;
@@ -151,7 +151,7 @@ namespace StringSearch.IO
         {
             this.throwIfClosed();
 
-            if(this.position > this.length)
+            if(this.position >= this.length)
             {
                 return -1;
             }
@@ -164,6 +164,10 @@ namespace StringSearch.IO
 
             this.position++;
 
+            Stream s = memStreams[streamIdx];
+            Console.WriteLine(s.Length);
+            Stream ls = memStreams[memStreams.Count - 1];
+            Console.WriteLine(ls.Length);
             return memStreams[streamIdx].ReadByte();
         }
 
