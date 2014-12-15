@@ -98,17 +98,12 @@ namespace UnitTests.StringSearch.Collections
             long len = 1000000000;
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(len, (ulong)len - 1);
 
-            //Set
-            for(long i = 0; i < len; i++)
-            {
-                arr[i] = (ulong)i;
-            }
+            long setPos = 50;
+            ulong setVal = 4;
 
-            //Get
-            for(long i = 0; i < len; i++)
-            {
-                Assert.AreEqual((ulong)i, arr[i]);
-            }
+            arr[setPos] = setVal;
+
+            Assert.AreEqual(setVal, arr[setPos]);
         }
 
         [Test]
