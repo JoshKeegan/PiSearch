@@ -42,6 +42,16 @@ namespace UnitTests.StringSearch.IO
         }
 
         [Test]
+        public void TestConstructorWithBigCapacity()
+        {
+            long length = 3L * 1024L * 1024L * 1024L; //3GiB
+
+            BigMemoryStream stream = new BigMemoryStream(length);
+
+            Assert.AreEqual(length, stream.Length);
+        }
+
+        [Test]
         public void TestPositionStart()
         {
             BigMemoryStream stream = new BigMemoryStream();
@@ -60,6 +70,22 @@ namespace UnitTests.StringSearch.IO
 
                 Assert.AreEqual(i, stream.Position);
             }
+        }
+
+        [Test]
+        public void TestSetPositionBig()
+        {
+            long length = 3L * 1024L * 1024L * 1024L; //3GiB
+
+            BigMemoryStream stream = new BigMemoryStream(length);
+
+            //Small position on big stream
+            stream.Position = 10;
+            Assert.AreEqual(10, stream.Position);
+
+            //Big position on big stream
+            stream.Position = length - 5;
+            Assert.AreEqual(length - 5, stream.Position);
         }
 
         [Test]
@@ -153,6 +179,57 @@ namespace UnitTests.StringSearch.IO
 
             byte[] buffer = new byte[length];
             stream.Read(buffer, 0, length);
+
+            CollectionAssert.AreEqual(values, buffer);
+        }
+
+        [Test]
+        public void TestReadWriteBig()
+        {
+            long length = 3L * 1024L * 1024L * 1024L; //3GiB
+
+            BigMemoryStream stream = new BigMemoryStream(length);
+
+            byte[] values = new byte[100];
+            for (byte i = 0; i < values.Length; i++)
+            {
+                values[i] = (byte)(i + 100);
+            }
+
+            stream.Write(values, 0, values.Length);
+
+            //Back to the start to read the values back
+            stream.Position = 0;
+
+            byte[] buffer = new byte[values.Length];
+            stream.Read(buffer, 0, values.Length);
+
+            CollectionAssert.AreEqual(values, buffer);
+        }
+
+        [Test]
+        public void TestReadWriteBigAboveIntegerIndex()
+        {
+            long length = 3L * 1024L * 1024L * 1024L; //3GiB
+            long fromStreamPos = (long)int.MaxValue + 1000;
+
+            BigMemoryStream stream = new BigMemoryStream(length);
+
+            stream.Position = fromStreamPos;
+
+            byte[] values = new byte[100];
+            for (byte i = 0; i < values.Length; i++)
+            {
+                values[i] = (byte)(i + 100);
+            }
+
+            stream.Write(values, 0, values.Length);
+
+            //Back to the start (fromStreamPos) to read the values back
+            stream.Position = fromStreamPos;
+
+            byte[] buffer = new byte[values.Length];
+            stream.Read(buffer, 0, values.Length);
 
             CollectionAssert.AreEqual(values, buffer);
         }
