@@ -93,7 +93,7 @@ namespace UnitTests.StringSearch.Collections
         }
 
         [Test]
-        public void TestGetSetManySequentialValues()
+        public void TestGetSetBigArray()
         {
             long len = 1000000000;
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(len, (ulong)len - 1);
