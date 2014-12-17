@@ -1,6 +1,7 @@
 ﻿/*
  * Unit Tests for BigMemoryStream
  * By Josh Keegan 15/12/2014
+ * Last Edit 17/12/2014
  */
 
 using System;
@@ -453,6 +454,20 @@ namespace UnitTests.StringSearch.IO
         {
             long length = 3L * 1024L * 1024L * 1024L; //3GiB
             BigMemoryStream stream = new BigMemoryStream(length);
+            stream.Position = stream.Length - 1;
+
+            int b = stream.ReadByte();
+            Assert.AreEqual(0, b);
+        }
+
+        [Test]
+        public void TestReadLastByteUnsetLengthCausedBug()
+        {
+            //Length 1.5bn was identified as causing a failure of FourBitDigitArrayTests.TestLengthBigEven()
+            //  Problem identified as being in BigMemoryStream, as shown by this test
+            long length = 1500000000;
+            BigMemoryStream stream = new BigMemoryStream(length);
+
             stream.Position = stream.Length - 1;
 
             int b = stream.ReadByte();
