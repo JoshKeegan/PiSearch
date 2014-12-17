@@ -2,7 +2,7 @@
  * String Search Library
  * Compression class
  * By Josh Keegan 06/11/2014
- * Last Edit 03/12/2014
+ * Last Edit 17/12/2014
  */
 
 using System;
@@ -21,25 +21,6 @@ namespace StringSearch
         /*
          * Compress
          */
-        public static void CompressFileLZMA(string inPath, string outPath)
-        {
-            SevenZip.Compression.LZMA.Encoder encoder = new SevenZip.Compression.LZMA.Encoder();
-            FileStream inStream = new FileStream(inPath, FileMode.Open);
-            FileStream outStream = new FileStream(outPath, FileMode.Create);
-
-            // Write the encoder properties
-            encoder.WriteCoderProperties(outStream);
-
-            // Write the decompressed file size.
-            outStream.Write(BitConverter.GetBytes(inStream.Length), 0, 8);
-
-            // Encode the file.
-            encoder.Code(inStream, outStream, inStream.Length, -1, null);
-            inStream.Close();
-            outStream.Flush();
-            outStream.Close();
-        }
-
         public static void CompressFile4BitDigit(string inPath, string outPath)
         {
             StreamReader reader = new StreamReader(inPath);
@@ -75,41 +56,6 @@ namespace StringSearch
         /*
          * Decompress
          */
-        public static string ReadStringLZMA(string filePath)
-        {
-            SevenZip.Compression.LZMA.Decoder decoder = new SevenZip.Compression.LZMA.Decoder();
-            FileStream inStream = new FileStream(filePath, FileMode.Open);
-
-            //Read the decoder properties
-            byte[] properties = new byte[5];
-            inStream.Read(properties, 0, 5);
-
-            //Read in the decompressed file size
-            byte[] fileSizeBytes = new byte[8];
-            inStream.Read(fileSizeBytes, 0, 8);
-            long fileSize = BitConverter.ToInt64(fileSizeBytes, 0);
-
-            //Store the output into a memory stream
-            MemoryStream outStream = new MemoryStream();
-
-            decoder.SetDecoderProperties(properties);
-            decoder.Code(inStream, outStream, inStream.Length, fileSize, null);
-
-            //Clean up the open file
-            inStream.Close();
-
-            //Read the output stream from the beginning into a string
-            outStream.Position = 0;
-            StreamReader reader = new StreamReader(outStream);
-            string toRet = reader.ReadToEnd();
-
-            //Clean Up
-            reader.Close();
-            outStream.Close();
-
-            return toRet;
-        }
-
         public static string ReadStringNoCompression(string filePath)
         {
             StreamReader reader = new StreamReader(filePath);
