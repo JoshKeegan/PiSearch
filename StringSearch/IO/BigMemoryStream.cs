@@ -164,10 +164,6 @@ namespace StringSearch.IO
 
             this.position++;
 
-            Stream s = memStreams[streamIdx];
-            Console.WriteLine(s.Length);
-            Stream ls = memStreams[memStreams.Count - 1];
-            Console.WriteLine(ls.Length);
             return memStreams[streamIdx].ReadByte();
         }
 
@@ -296,10 +292,22 @@ namespace StringSearch.IO
             //Add more streams to the end (if necessary)
             while(newNumMemStreams != this.memStreams.Count)
             {
-                //If this will be the last memory stream to be added, check the size required for it. Otherwise pick the largest
-                int streamLength = newNumMemStreams == this.memStreams.Count + 1 ? 
-                    (int)(length % MEMORY_STREAM_MAX_SIZE) : 
-                    MEMORY_STREAM_MAX_SIZE;
+                int streamLength;
+                //If this will be the last memory stream, work out how big it should be
+                if(newNumMemStreams == this.memStreams.Count + 1)
+                {
+                    streamLength = (int)(length % MEMORY_STREAM_MAX_SIZE);
+
+                    //If there was no remainder, this last stream should actually be the maximum possible size
+                    if(streamLength == 0)
+                    {
+                        streamLength = MEMORY_STREAM_MAX_SIZE;
+                    }
+                }
+                else //Otherwise this isn't going to be the last stream, it should therefore be the max allowed size
+                {
+                    streamLength = MEMORY_STREAM_MAX_SIZE;
+                }
 
                 MemoryStream stream = new MemoryStream(streamLength);
                 stream.SetLength(streamLength);
