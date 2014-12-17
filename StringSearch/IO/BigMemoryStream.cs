@@ -4,7 +4,7 @@
  * For simplicity it does not differentiate between length & capacity; treating them as the same thing
  * 
  * By Josh Keegan 02/12/2014
- * Last Edit 15/12/2014
+ * Last Edit 17/12/2014
  */
 
 using System;
@@ -19,7 +19,7 @@ namespace StringSearch.IO
     public class BigMemoryStream : Stream
     {
         //Constants
-        internal const int MEMORY_STREAM_MAX_SIZE = 1000; //int.MaxValue / 4; //The maximum number of bytes to store in one of the underlying Memory Streams. Actual limit is int.MaxValue, but should be lower to help find continuous empty space on the heap
+        internal const int MEMORY_STREAM_MAX_SIZE = int.MaxValue / 4; //The maximum number of bytes to store in one of the underlying Memory Streams. Actual limit is int.MaxValue, but should be lower to help find continuous empty space on the heap
 
         //Private Variables
         private bool isClosed;

@@ -461,12 +461,9 @@ namespace UnitTests.StringSearch.IO
         }
 
         [Test]
-        public void TestReadLastByteUnsetLengthCausedBug()
+        public void TestReadLastByteUnsetWithMaxSizeOfUnderlyingStream()
         {
-            //Length 1.5bn was identified as causing a failure of FourBitDigitArrayTests.TestLengthBigEven()
-            //  Problem identified as being in BigMemoryStream, as shown by this test
-            long length = 1500000000;
-            BigMemoryStream stream = new BigMemoryStream(length);
+            BigMemoryStream stream = new BigMemoryStream(BigMemoryStream.MEMORY_STREAM_MAX_SIZE);
 
             stream.Position = stream.Length - 1;
 
