@@ -52,42 +52,30 @@ namespace UnitTests.StringSearch.Collections
         }
 
         [Test]
+        [ExpectedException]
         public void TestConstructorNegativeLength()
         {
-            try
-            {
-                new FixedLengthQueue<int>(-1);
-                Assert.Fail();
-            }
-            catch (Exception) { }
+            new FixedLengthQueue<int>(-1);
         }
 
         [Test]
+        [ExpectedException (typeof(ArgumentOutOfRangeException))]
         public void TestConstructorNegativeHead()
         {
             int[] initialValues = new int[] { 4, 7, 3, 11, 215, -4 };
             int head = -1;
 
-            try
-            {
-                FixedLengthQueue<int> q = new FixedLengthQueue<int>(initialValues, head);
-                Assert.Fail();
-            }
-            catch (ArgumentOutOfRangeException) { }
+            FixedLengthQueue<int> q = new FixedLengthQueue<int>(initialValues, head);
         }
 
         [Test]
+        [ExpectedException (typeof(ArgumentOutOfRangeException))]
         public void TestConstructorHeadTooBig()
         {
             int[] initialValues = new int[] { 4, 7, 3, 11, 215, -4 };
             int head = initialValues.Length;
 
-            try
-            {
-                FixedLengthQueue<int> q = new FixedLengthQueue<int>(initialValues, head);
-                Assert.Fail();
-            }
-            catch (ArgumentOutOfRangeException) { }
+            FixedLengthQueue<int> q = new FixedLengthQueue<int>(initialValues, head);
         }
 
         [Test]

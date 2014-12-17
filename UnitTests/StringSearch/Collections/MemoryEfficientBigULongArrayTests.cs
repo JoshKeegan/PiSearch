@@ -107,68 +107,48 @@ namespace UnitTests.StringSearch.Collections
         }
 
         [Test]
+        [ExpectedException (typeof(IndexOutOfRangeException))]
         public void TestGetIndexTooSmall()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, 1000);
 
-            try
-            {
-                ulong val = arr[-1];
-                Assert.Fail();
-            }
-            catch (IndexOutOfRangeException) { }
+            ulong val = arr[-1];
         }
 
         [Test]
+        [ExpectedException (typeof(IndexOutOfRangeException))]
         public void TestGetIndexTooBig()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, 1000);
 
-            try
-            {
-                ulong val = arr[arr.Length];
-                Assert.Fail();
-            }
-            catch (IndexOutOfRangeException) { }
+            ulong val = arr[arr.Length];
         }
 
         [Test]
+        [ExpectedException (typeof(IndexOutOfRangeException))]
         public void TestSetIndexTooSmall()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, 1000);
 
-            try
-            {
-                arr[-1] = 1;
-                Assert.Fail();
-            }
-            catch (IndexOutOfRangeException) { }
+            arr[-1] = 1;
         }
 
         [Test]
+        [ExpectedException (typeof(ArgumentOutOfRangeException))]
         public void TestSetValueTooBig()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, 1000);
 
-            try
-            {
-                arr[1] = arr.MaxValue + 1;
-                Assert.Fail();
-            }
-            catch (ArgumentOutOfRangeException) { }
+            arr[1] = arr.MaxValue + 1;
         }
 
         [Test]
+        [ExpectedException (typeof(IndexOutOfRangeException))]
         public void TestSetIndexTooBig()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, 1000);
 
-            try
-            {
-                arr[arr.Length] = 1;
-                Assert.Fail();
-            }
-            catch (IndexOutOfRangeException) { }
+            arr[arr.Length] = 1;
         }
 
         [Test]

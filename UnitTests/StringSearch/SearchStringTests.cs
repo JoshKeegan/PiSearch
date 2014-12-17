@@ -90,17 +90,13 @@ namespace UnitTests.StringSearch
         }
 
         [Test]
+        [ExpectedException (typeof(ArgumentException))]
         public void SequentialSearchLookForEmptyString()
         {
             const string STR = "123456789991234";
             const string FIND = "";
 
-            try
-            {
-                SearchString.Search(STR, FIND);
-                Assert.Fail();
-            }
-            catch(ArgumentException) { }
+            SearchString.Search(STR, FIND);
         }
 
         [Test]
@@ -217,6 +213,7 @@ namespace UnitTests.StringSearch
         }
 
         [Test]
+        [ExpectedException (typeof(ArgumentException))]
         public void SearchSuffixArrayForEmptyString()
         {
             const string STR = "123456789";
@@ -224,12 +221,7 @@ namespace UnitTests.StringSearch
             BigArray<ulong> suffixArray = buildSuffixArray(STR);
             FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
 
-            try
-            {
-                SearchString.Search(suffixArray, fourBitDigitArray, "");
-                Assert.Fail();
-            }
-            catch (ArgumentException) { }
+            SearchString.Search(suffixArray, fourBitDigitArray, "");
         }
 
         [Test]
@@ -249,17 +241,13 @@ namespace UnitTests.StringSearch
         }
 
         [Test]
+        [ExpectedException (typeof(ArgumentException))]
         public void TestSuffixArrayWrongSize()
         {
             BigArray<ulong> suffixArray = Program.convertIntArrayToBigUlongArray(new int[] { 1, 2, 3 });
             FourBitDigitBigArray a = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray("12345");
 
-            try
-            {
-                SearchString.Search(suffixArray, a, "23");
-                Assert.Fail();
-            }
-            catch (ArgumentException) { }
+            SearchString.Search(suffixArray, a, "23");
         }
         #endregion
 
@@ -331,27 +319,19 @@ namespace UnitTests.StringSearch
         }
 
         [Test]
+        [ExpectedException (typeof(ArgumentException))]
         public void TestFindNextOccurrenceLookForEmptyString()
         {
             const string STR = "123456789991234";
 
-            try
-            {
-                SearchString.FindNextOccurrence(STR, "", 0);
-                Assert.Fail();
-            }
-            catch (ArgumentException) { }
+            SearchString.FindNextOccurrence(STR, "", 0);
         }
 
         [Test]
+        [ExpectedException (typeof(ArgumentException))]
         public void TestFindNextOccurrenceSearchEmptyString()
         {
-            try
-            {
-                SearchString.FindNextOccurrence("", "1", 0);
-                Assert.Fail();
-            }
-            catch (ArgumentException) { }
+            SearchString.FindNextOccurrence("", "1", 0);
         }
         #endregion
 
@@ -429,30 +409,22 @@ namespace UnitTests.StringSearch
         }
 
         [Test]
+        [ExpectedException (typeof(ArgumentException))]
         public void TestFindNextOccurrence4BitDigitLookForEmptyString()
         {
             const string STR = "123456789991234";
             Stream s = FourBitDigitBigArrayTests.convertStringTo4BitDigitStream(STR);
 
-            try
-            {
-                SearchString.FindNextOccurrence4BitDigit(s, "", 0);
-                Assert.Fail();
-            }
-            catch (ArgumentException) { }
+            SearchString.FindNextOccurrence4BitDigit(s, "", 0);
         }
 
         [Test]
+        [ExpectedException (typeof(ArgumentException))]
         public void TestFindNextOccurrence4BitDigitSearchEmptyString()
         {
             Stream s = FourBitDigitBigArrayTests.convertStringTo4BitDigitStream("");
 
-            try
-            {
-                SearchString.FindNextOccurrence4BitDigit(s, "1", 0);
-                Assert.Fail();
-            }
-            catch (ArgumentException) { }
+            SearchString.FindNextOccurrence4BitDigit(s, "1", 0);
         }
         #endregion
 
