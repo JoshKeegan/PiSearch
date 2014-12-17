@@ -92,7 +92,7 @@ namespace StringSearch
                 memStream = new MemoryStream();
             }
 
-            fileStream.CopyTo(memStream);
+            fileStream.CopyTo(memStream, 16 * 1024 * 1024); //Read in 16MiB at a time for quicker copying of large streams (default is 16KiB)
 
             //Clean up
             fileStream.Close();
