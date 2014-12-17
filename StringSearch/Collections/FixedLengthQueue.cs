@@ -47,7 +47,15 @@ namespace StringSearch.Collections
 
         //Constructors
         public FixedLengthQueue(int length)
-            : this(new T[length]) { }
+        { 
+            if(length < 0)
+            {
+                throw new ArgumentOutOfRangeException("length must be >= 0");
+            }
+
+            this.array = new T[length];
+            this.head = 0;
+        }
         
         public FixedLengthQueue(T[] initialValues)
             : this(initialValues, 0) { }
@@ -55,7 +63,7 @@ namespace StringSearch.Collections
         public FixedLengthQueue(T[] initialValues, int head)
         {
             //Validation
-            if(head < 0 || head >= initialValues.Length)
+            if (head < 0 || head >= initialValues.Length)
             {
                 throw new ArgumentOutOfRangeException("head must be >= 0 and < initialValues.Length");
             }

@@ -52,7 +52,7 @@ namespace UnitTests.StringSearch.Collections
         }
 
         [Test]
-        [ExpectedException]
+        [ExpectedException (typeof(ArgumentOutOfRangeException))]
         public void TestConstructorNegativeLength()
         {
             new FixedLengthQueue<int>(-1);
