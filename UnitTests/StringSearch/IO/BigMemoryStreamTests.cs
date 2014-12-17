@@ -327,6 +327,40 @@ namespace UnitTests.StringSearch.IO
         }
 
         [Test]
+        public void TestReadLastUnset()
+        {
+            byte[] expected = new byte[] { 0 };
+
+            BigMemoryStream stream = new BigMemoryStream(100);
+
+            stream.Position = stream.Length - 1;
+
+            byte[] buffer = new byte[1];
+
+            int bytesRead = stream.Read(buffer, 0, 1);
+
+            Assert.AreEqual(1, bytesRead);
+            CollectionAssert.AreEqual(expected, buffer);
+        }
+
+        [Test]
+        public void TestReadLastUnsetWithMaxSizeOfUnderlyingStream()
+        {
+            byte[] expected = new byte[] { 0 };
+
+            BigMemoryStream stream = new BigMemoryStream(BigMemoryStream.MEMORY_STREAM_MAX_SIZE);
+
+            stream.Position = stream.Length - 1;
+
+            byte[] buffer = new byte[1];
+
+            int bytesRead = stream.Read(buffer, 0, 1);
+
+            Assert.AreEqual(1, bytesRead);
+            CollectionAssert.AreEqual(expected, buffer);
+        }
+
+        [Test]
         public void TestReadWriteByte()
         {
             BigMemoryStream stream = new BigMemoryStream(100);
