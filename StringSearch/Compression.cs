@@ -81,7 +81,16 @@ namespace StringSearch
         public static Stream ReadStreamNoComression(string filePath)
         {
             FileStream fileStream = new FileStream(filePath, FileMode.Open);
-            BigMemoryStream memStream = new BigMemoryStream();
+            Stream memStream;
+            //If this stream being loaded is too large for MemoryStream, use BigMemoryStream
+            if(fileStream.Length > int.MaxValue)
+            {
+                memStream = new BigMemoryStream(fileStream.Length);
+            }
+            else //Otherwise use the standard MemoryStream implementation which is faster
+            {
+                memStream = new MemoryStream();
+            }
 
             fileStream.CopyTo(memStream);
 
