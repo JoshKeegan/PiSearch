@@ -12,9 +12,6 @@ namespace StringSearchConsole
 {
     class Program
     {
-        //Constants
-        const string COMPRESSED_FILE_EXTENSION = ".7z";
-
         //Variables
         private static string workingDirectory = "";
         private static string loadedString = null;
@@ -43,8 +40,7 @@ namespace StringSearchConsole
             string divider = new String('-', menuTopLine.Length);
 
             Console.WriteLine(divider + '\n' + menuTopLine + '\n' + divider + '\n' + 
-                "1.\tCompress File\n" +
-                "2.\tLoad File\n" + 
+                "2.\tLoad text file (one continuous string of digits)\n" + 
                 "3.\tSearch loaded string\n" + 
                 "4.\tSet working directory\n" + 
                 "5.\tConvert PiFast43 output to raw decimal places of pi\n" +
@@ -77,9 +73,6 @@ namespace StringSearchConsole
 
                 switch(selection)
                 {
-                    case "1": //Compress file
-                        subCompressFile();
-                        break;
                     case "2": //Load file
                         subLoadFile();
                         break;
@@ -150,27 +143,6 @@ namespace StringSearchConsole
                 }
             }
             return quit;
-        }
-
-        private static void subCompressFile()
-        {
-            while(true)
-            {
-                Console.Write("File to compress: ");
-                string fileName = Console.ReadLine();
-
-                if(File.Exists(workingDirectory + fileName))
-                {
-                    stopwatch.Reset();
-                    stopwatch.Start();
-                    CompressIfNotExists(workingDirectory + fileName);
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("File not found \"{0}\"", fileName);
-                }
-            }
         }
 
         private static void subFourBitDigitCompressFile()
@@ -276,35 +248,15 @@ namespace StringSearchConsole
                 stopwatch.Reset();
                 stopwatch.Start();
 
-                //Check if the name of a compressed file has been entered
-                bool compressedFile = fileName.Length >= COMPRESSED_FILE_EXTENSION.Length && fileName.Substring(fileName.Length - COMPRESSED_FILE_EXTENSION.Length) == COMPRESSED_FILE_EXTENSION;
-
-                //If we've been given the name of an uncompressed file, check if there is a compressed version
-                if(!compressedFile)
-                {
-                    if(File.Exists(workingDirectory + fileName + COMPRESSED_FILE_EXTENSION))
-                    {
-                        compressedFile = true;
-                        fileName += COMPRESSED_FILE_EXTENSION;
-                    }
-                }
-
                 //Check that this file exists
                 if(File.Exists(workingDirectory + fileName))
                 {
-                    Console.WriteLine("Loading {0}compressed file \"{1}\"", (compressedFile ? "" : "un"), fileName);
+                    Console.WriteLine("Loading file \"{0}\"", fileName);
 
                     //Release the currently loaded string for garbage collection
                     loadedString = null;
 
-                    if(compressedFile)
-                    {
-                        loadedString = Compression.ReadStringLZMA(workingDirectory + fileName);
-                    }
-                    else
-                    {
-                        loadedString = Compression.ReadStringNoCompression(workingDirectory + fileName);
-                    }
+                    loadedString = Compression.ReadStringNoCompression(workingDirectory + fileName);
                     break;
                 }
                 else
@@ -648,18 +600,6 @@ namespace StringSearchConsole
             for(int i = 0; i < fourBitDigitArray.Length; i++)
             {
                 Console.WriteLine("{0}:\t\t\t\t{1}", i, fourBitDigitArray[i]);
-            }
-        }
-
-        private static void CompressIfNotExists(string filePath)
-        {
-            string compressedFilePath = filePath + COMPRESSED_FILE_EXTENSION;
-
-            if(!File.Exists(compressedFilePath))
-            {
-                Console.WriteLine("Compressed version of {0} doesn't exist, compressing now for future runs . . .", filePath);
-
-                Compression.CompressFileLZMA(filePath, compressedFilePath);
             }
         }
 

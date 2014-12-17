@@ -46,12 +46,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchString.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\7zip\7zip.csproj">
-      <Project>{2f495572-ac33-4535-a337-c508f8457e03}</Project>
-      <Name>7zip</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
