@@ -44,7 +44,7 @@ namespace StringSearch.Collections
 
                 //Read in the bytes for this value
                 byte[] bytes = new byte[8];
-                stream.Read(bytes, 8 - bytesPerValue, bytesPerValue);
+                stream.Read(bytes, 0, bytesPerValue);
 
                 //Convert the bytes into a ulong
                 ulong toRet = BitConverter.ToUInt64(bytes, 0);
@@ -72,7 +72,7 @@ namespace StringSearch.Collections
                 byte[] bytes = BitConverter.GetBytes(value);
 
                 //Write the bytes for this value onto the stream
-                stream.Write(bytes, 8 - bytesPerValue, bytesPerValue);
+                stream.Write(bytes, 0, bytesPerValue);
             }
         }
 
