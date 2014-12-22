@@ -15,7 +15,7 @@ namespace StringSearchConsole
     public class Program
     {
         //Constants
-        private static readonly Type SUFFIX_ARRAY_TYPE = typeof(MemoryEfficientByteAlignedBigULongArray); //Could later be set by an option in the program
+        private static readonly Type SUFFIX_ARRAY_TYPE = typeof(MemoryEfficientByteAlignedBigULongArray); //Could later be set by an option in the program. Note: Byte Aligned better for generation (fater), non-byte aligned better for searching (due to better memory efficiency)
 
         //Variables
         private static string workingDirectory = "";
