@@ -498,13 +498,11 @@ namespace UnitTests.StringSearch
         #region Helper Methods
         private static BigArray<ulong> buildSuffixArray(string str)
         {
-            throw new NotImplementedException("SAIS.sufsort needs implementing again for Strings");
-            /*
             //Initialise the array that will hold the suffix array
-            int[] suffixArray = new int[str.Length];
+            MemoryEfficientBigULongArray suffixArray = new MemoryEfficientBigULongArray(str.Length);
 
             //Calculate the suffix array
-            int status = SAIS.sufsort(str, suffixArray, str.Length);
+            long status = SAIS.sufsort(str, suffixArray, str.Length);
 
             if (status != 0)
             {
@@ -513,10 +511,7 @@ namespace UnitTests.StringSearch
                 throw new Exception(error);
             }
 
-            //Convert the suffix array to the format expected in SearchString
-            BigArray<ulong> converted = Program.convertIntArrayToBigUlongArray(suffixArray);
-
-            return converted;*/
+            return suffixArray;
         }
 
         private static byte[] stringToByteArr(string str)
