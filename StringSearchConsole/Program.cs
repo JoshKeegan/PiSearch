@@ -550,24 +550,11 @@ namespace StringSearchConsole
 
         private static void subGenerateSuffixArray()
         {
-            //Calculate the number of digits in the loaded 4 bit digit stream
-            int length = (int)loaded4BitDigitStream.Length * 2;
-
-            //Check if the last item in the stream is empty
-            loaded4BitDigitStream.Position = loaded4BitDigitStream.Length - 1;
-            int lastByte = loaded4BitDigitStream.ReadByte();
-            int right = lastByte & 15; // mask 0000 1111
-
-            if(right == 15)
-            {
-                length--;
-            }
-
             //Initialise the array that will hold the suffix array
-            int[] suffixArray = new int[length];
+            int[] suffixArray = new int[fourBitDigitArray.Length];
 
             //Calculate the suffix array
-            int status = SAIS.sufsort(loaded4BitDigitStream, suffixArray, length);
+            int status = SAIS.sufsort(fourBitDigitArray, suffixArray, (int)fourBitDigitArray.Length);
 
             if(status != 0)
             {
