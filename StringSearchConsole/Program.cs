@@ -551,10 +551,10 @@ namespace StringSearchConsole
         private static void subGenerateSuffixArray()
         {
             //Initialise the array that will hold the suffix array
-            int[] suffixArray = new int[fourBitDigitArray.Length];
+            MemoryEfficientBigULongArray suffixArray = new MemoryEfficientBigULongArray(fourBitDigitArray.Length);
 
             //Calculate the suffix array
-            int status = SAIS.sufsort(fourBitDigitArray, suffixArray, (int)fourBitDigitArray.Length);
+            long status = SAIS.sufsort(fourBitDigitArray, suffixArray, fourBitDigitArray.Length);
 
             if(status != 0)
             {
@@ -562,14 +562,15 @@ namespace StringSearchConsole
             }
             else
             {
-                Console.WriteLine("Converting generated int[] suffix array to BigArray<ulong>");
-                Program.suffixArray = convertIntArrayToBigUlongArray(suffixArray);
+                Console.WriteLine("Using generated Suffix Array");
+                Program.suffixArray = suffixArray;
             }
         }
 
         private static void subGenerateSuffixArrayFromLoadedString()
         {
-            //Initialise the aray that will hold the suffix array
+            throw new NotImplementedException("SAIS.sufsort needs implementing again for Strings");
+            /*//Initialise the aray that will hold the suffix array
             int[] suffixArray = new int[loadedString.Length];
 
             //Calculate the suffix array
@@ -583,7 +584,7 @@ namespace StringSearchConsole
             {
                 Console.WriteLine("Converting generated int[] suffix array to BigArray<ulong>");
                 Program.suffixArray = convertIntArrayToBigUlongArray(suffixArray);
-            }
+            }*/
         }
 
         private static void subPrintSuffixArray()
