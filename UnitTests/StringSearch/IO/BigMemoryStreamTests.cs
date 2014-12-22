@@ -1,7 +1,7 @@
 ﻿/*
  * Unit Tests for BigMemoryStream
  * By Josh Keegan 15/12/2014
- * Last Edit 17/12/2014
+ * Last Edit 22/12/2014
  */
 
 using System;
@@ -236,7 +236,7 @@ namespace UnitTests.StringSearch.IO
         }
 
         [Test]
-        public void TestReadWriteOffset()
+        public void TestReadWriteOffset1()
         {
             BigMemoryStream stream = new BigMemoryStream(100);
 
@@ -244,24 +244,54 @@ namespace UnitTests.StringSearch.IO
 
             stream.Write(values, 3, 4);
 
-            byte[] expected1 = values.Skip(3).Take(4).ToArray();
+            byte[] expected = values.Skip(3).Take(4).ToArray();
 
             //Get just the bytes that were written
-            byte[] justBytes = new byte[4];
+            byte[] actual1 = new byte[4];
             stream.Position = 0;
-            stream.Read(justBytes, 0, 4);
+            stream.Read(actual1, 0, 4);
 
-            CollectionAssert.AreEqual(expected1, justBytes);
+            CollectionAssert.AreEqual(expected, actual1);
 
             //Get the bytes back using an offset on read too
-            byte[] expected2 = new byte[values.Length];
+            byte[] actual2 = new byte[values.Length];
             stream.Position = 0;
-            stream.Read(expected2, 3, 4);
+            stream.Read(actual2, 3, 4);
 
             for(int i = 3; i < 7; i++)
             {
-                Assert.AreEqual(values[i], expected2[i]);
+                Assert.AreEqual(values[i], actual2[i]);
             }
+        }
+
+        [Test]
+        public void TestReadWriteOffset2()
+        {
+            int length = 100;
+            int writeFrom = 27;
+
+            BigMemoryStream stream = new BigMemoryStream(length);
+
+            byte[] values = new byte[length];
+            for (byte i = 0; i < values.Length; i++)
+            {
+                values[i] = (byte)(i + 100);
+            }
+
+            List<byte> expected = Enumerable.Repeat((byte)0, writeFrom).ToList();
+            List<byte> expectedValues = values.Skip(writeFrom).Take(length - writeFrom).ToList();
+            expected.AddRange(expectedValues);
+
+            stream.Write(values, writeFrom, length - writeFrom);
+
+            //Back to the start to read the values back
+            stream.Position = 0;
+
+            byte[] buffer = new byte[length];
+            int numRead = stream.Read(buffer, writeFrom, length - writeFrom);
+
+            CollectionAssert.AreEqual(expected, buffer);
+            Assert.AreEqual(length - writeFrom, numRead);
         }
 
         [Test]
