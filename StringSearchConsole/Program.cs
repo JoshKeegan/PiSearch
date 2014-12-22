@@ -14,6 +14,9 @@ namespace StringSearchConsole
 {
     public class Program
     {
+        //Constants
+        private static readonly Type SUFFIX_ARRAY_TYPE = typeof(MemoryEfficientByteAlignedBigULongArray); //Could later be set by an option in the program
+
         //Variables
         private static string workingDirectory = "";
         private static string loadedString = null;
@@ -219,7 +222,7 @@ namespace StringSearchConsole
 
             int len = (int)(fs.Length / 8);
 
-            suffixArray = new MemoryEfficientBigULongArray(len, (uint)len);
+            suffixArray = (BigArray<ulong>)Activator.CreateInstance(SUFFIX_ARRAY_TYPE, new object[] { len, (uint)len });
 
             byte[] bytes = new byte[8];
             int state = 4;
@@ -551,7 +554,7 @@ namespace StringSearchConsole
         private static void subGenerateSuffixArray()
         {
             //Initialise the array that will hold the suffix array
-            MemoryEfficientBigULongArray suffixArray = new MemoryEfficientBigULongArray(fourBitDigitArray.Length);
+            BigArray<ulong> suffixArray = (BigArray<ulong>)Activator.CreateInstance(SUFFIX_ARRAY_TYPE, new object[] { fourBitDigitArray.Length });
 
             //Calculate the suffix array
             long status = SAIS.sufsort(fourBitDigitArray, suffixArray, fourBitDigitArray.Length);
@@ -570,7 +573,7 @@ namespace StringSearchConsole
         private static void subGenerateSuffixArrayFromLoadedString()
         {
             //Initialise the aray that will hold the suffix array
-            MemoryEfficientBigULongArray suffixArray = new MemoryEfficientBigULongArray(loadedString.Length);
+            BigArray<ulong> suffixArray = (BigArray<ulong>)Activator.CreateInstance(SUFFIX_ARRAY_TYPE, new object[] { loadedString.Length });
 
             //Calculate the suffix array
             long status = SAIS.sufsort(loadedString, suffixArray, loadedString.Length);
@@ -672,7 +675,7 @@ namespace StringSearchConsole
 
         internal static BigArray<ulong> convertIntArrayToBigUlongArray(int[] arr)
         {
-            BigArray<ulong> toRet = new MemoryEfficientBigULongArray(arr.Length, (uint)arr.Length);
+            BigArray<ulong> toRet = (BigArray<ulong>)Activator.CreateInstance(SUFFIX_ARRAY_TYPE, new object[] { arr.Length, (uint)arr.Length });
 
             for(int i = 0; i < arr.Length; i++)
             {
