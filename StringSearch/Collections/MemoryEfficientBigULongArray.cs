@@ -13,7 +13,7 @@ namespace StringSearch.Collections
     public class MemoryEfficientBigULongArray : BigArray<ulong>
     {
         //Private vars
-        Stream stream;
+        private Stream stream;
         private byte bitsPerValue;
 
         //Public accessors & modifiers
