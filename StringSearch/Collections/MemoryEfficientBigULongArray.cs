@@ -10,10 +10,9 @@ using StringSearch.IO;
 
 namespace StringSearch.Collections
 {
-    public class MemoryEfficientBigULongArray : BigArray<ulong>
+    public class MemoryEfficientBigULongArray : UnderlyingStream, BigArray<ulong>
     {
         //Private vars
-        private Stream stream;
         private byte bitsPerValue;
 
         //Public accessors & modifiers

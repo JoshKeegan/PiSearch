@@ -2,7 +2,7 @@
  * String Search Library
  * Compression class
  * By Josh Keegan 06/11/2014
- * Last Edit 17/12/2014
+ * Last Edit 30/12/2014
  */
 
 using System;
@@ -13,11 +13,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 using StringSearch.IO;
+using StringSearch.Collections;
 
 namespace StringSearch
 {
     public class Compression
     {
+        //Constants
+        private const int STREAM_COPY_BUFFER_SIZE = 16 * 1024 * 1024; //Read/Write 16MiB at a time for quicker copying of large streams (default is 16KiB)
+
         /*
          * Compress
          */
@@ -51,6 +55,24 @@ namespace StringSearch
             //Clean up
             reader.Close();
             outStream.Close();
+        }
+
+        public static void WriteStreamNoCompression(Stream stream, string filePath)
+        {
+            FileStream fileStream = new FileStream(filePath, FileMode.Create);
+
+            //Start reading the stream in from the beginning
+            stream.Position = 0;
+
+            stream.CopyTo(fileStream, STREAM_COPY_BUFFER_SIZE);
+
+            //Clean up
+            fileStream.Close();
+        }
+
+        public static void WriteStreamNoCompression(UnderlyingStream obj, string filePath)
+        {
+            WriteStreamNoCompression(obj.stream, filePath);
         }
 
         /*
@@ -92,7 +114,7 @@ namespace StringSearch
                 memStream = new MemoryStream();
             }
 
-            fileStream.CopyTo(memStream, 16 * 1024 * 1024); //Read in 16MiB at a time for quicker copying of large streams (default is 16KiB)
+            fileStream.CopyTo(memStream, STREAM_COPY_BUFFER_SIZE);
 
             //Clean up
             fileStream.Close();

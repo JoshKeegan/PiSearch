@@ -21,7 +21,7 @@ using StringSearch.IO;
 
 namespace StringSearch.Collections
 {
-    public class MemoryEfficientByteAlignedBigULongArray : BigArray<ulong>
+    public class MemoryEfficientByteAlignedBigULongArray : UnderlyingStream, BigArray<ulong>
     {
         // Private vars
         private Stream stream;

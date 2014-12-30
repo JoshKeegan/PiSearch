@@ -61,6 +61,7 @@ namespace StringSearchConsole
                 "17.\tConvert y-cruncher output to raw decimal places of pi\n" +
                 "18.\tTake first n digits from compressed 4-bit digit file\n" +
                 "19.\tSet Suffix Array Data Type\n" + 
+                "20.\tSave suffix array's underlying stream\n" + 
                 "q.\tQuit");
 
             bool quit = false;
@@ -130,6 +131,9 @@ namespace StringSearchConsole
                         break;
                     case "19": //Set suffix array data type
                         subSetSuffixArrayDataType();
+                        break;
+                    case "20": //Save suffix array's underlying stream
+                        subSaveSuffixArraysUnderlyingStream();
                         break;
                     case "q": //Quit
                         quit = true;
@@ -583,6 +587,19 @@ namespace StringSearchConsole
                     break;
                 }
             }
+        }
+
+        private static void subSaveSuffixArraysUnderlyingStream()
+        {
+            Console.Write("output file name: ");
+            string fileName = Console.ReadLine();
+
+            stopwatch.Reset();
+            stopwatch.Start();
+
+            UnderlyingStream suffixArray = (UnderlyingStream)Program.suffixArray;
+
+            Compression.WriteStreamNoCompression(suffixArray, workingDirectory + fileName);            
         }
 
         private static void subGenerateSuffixArray()

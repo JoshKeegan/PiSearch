@@ -46,6 +46,7 @@
     <Compile Include="Collections\MemoryEfficientBigULongArray.cs" />
     <Compile Include="Collections\MemoryEfficientByteAlignedBigULongArray.cs" />
     <Compile Include="Collections\ULongArrayWrapper.cs" />
+    <Compile Include="Collections\UnderlyingStream.cs" />
     <Compile Include="Compression.cs" />
     <Compile Include="Collections\FourBitDigitBigArray.cs" />
     <Compile Include="IO\BigMemoryStream.cs" />
