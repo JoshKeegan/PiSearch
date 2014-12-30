@@ -14,9 +14,6 @@ namespace StringSearchConsole
 {
     public class Program
     {
-        //Constants
-        private static readonly Type SUFFIX_ARRAY_TYPE = typeof(MemoryEfficientByteAlignedBigULongArray); //Could later be set by an option in the program. Note: Byte Aligned better for generation (fater), non-byte aligned better for searching (due to better memory efficiency)
-
         //Variables
         private static string workingDirectory = "";
         private static string loadedString = null;
@@ -24,6 +21,7 @@ namespace StringSearchConsole
         private static FourBitDigitBigArray fourBitDigitArray = null;
         private static BigArray<ulong> suffixArray = null;
         private static Stopwatch stopwatch = new Stopwatch();
+        private static Type suffixArrayType = typeof(MemoryEfficientBigULongArray); // Note: Byte Aligned better for generation (fater), non-byte aligned better for searching (due to better memory efficiency). However, depends on hardware available
 
         static void Main(string[] args)
         {
@@ -62,6 +60,7 @@ namespace StringSearchConsole
                 "16.\tPrint 4-bit digit array\n" + 
                 "17.\tConvert y-cruncher output to raw decimal places of pi\n" +
                 "18.\tTake first n digits from compressed 4-bit digit file\n" +
+                "19.\tSet Suffix Array Data Type\n" + 
                 "q.\tQuit");
 
             bool quit = false;
@@ -128,6 +127,9 @@ namespace StringSearchConsole
                         break;
                     case "18": //Take first n digits from a compress-ed 4-bit digit file
                         subTakeFirstNDigitsFrom4BitDigitFile();
+                        break;
+                    case "19": //Set suffix array data type
+                        subSetSuffixArrayDataType();
                         break;
                     case "q": //Quit
                         quit = true;
@@ -222,7 +224,7 @@ namespace StringSearchConsole
 
             int len = (int)(fs.Length / 8);
 
-            suffixArray = (BigArray<ulong>)Activator.CreateInstance(SUFFIX_ARRAY_TYPE, new object[] { len, (uint)len });
+            suffixArray = (BigArray<ulong>)Activator.CreateInstance(suffixArrayType, new object[] { len, (uint)len });
 
             byte[] bytes = new byte[8];
             int state = 4;
@@ -551,10 +553,42 @@ namespace StringSearchConsole
             takeFirstDigitsFrom4BitDigitFile(fileInName, fileOutName, takeNumDigits);
         }
 
+        private static void subSetSuffixArrayDataType()
+        {
+            Console.WriteLine("1.\tMemory Efficient Byte-Aligned Big ULong Array (uses a bit less CPU than default, but a bit more memory)\n" +
+                "2.\tMemory Efficient Big ULong Array (default)");
+
+            while(true)
+            {
+                Console.Write("Selection: ");
+                string selection = Console.ReadLine();
+
+                bool validSelection = true;
+
+                switch(selection)
+                {
+                    case "1":
+                        suffixArrayType = typeof(MemoryEfficientByteAlignedBigULongArray);
+                        break;
+                    case "2":
+                        suffixArrayType = typeof(MemoryEfficientBigULongArray);
+                        break;
+                    default:
+                        validSelection = false;
+                        break;
+                }
+
+                if(validSelection)
+                {
+                    break;
+                }
+            }
+        }
+
         private static void subGenerateSuffixArray()
         {
             //Initialise the array that will hold the suffix array
-            BigArray<ulong> suffixArray = (BigArray<ulong>)Activator.CreateInstance(SUFFIX_ARRAY_TYPE, new object[] { fourBitDigitArray.Length });
+            BigArray<ulong> suffixArray = (BigArray<ulong>)Activator.CreateInstance(suffixArrayType, new object[] { fourBitDigitArray.Length });
 
             //Calculate the suffix array
             long status = SAIS.sufsort(fourBitDigitArray, suffixArray, fourBitDigitArray.Length);
@@ -573,7 +607,7 @@ namespace StringSearchConsole
         private static void subGenerateSuffixArrayFromLoadedString()
         {
             //Initialise the aray that will hold the suffix array
-            BigArray<ulong> suffixArray = (BigArray<ulong>)Activator.CreateInstance(SUFFIX_ARRAY_TYPE, new object[] { loadedString.Length });
+            BigArray<ulong> suffixArray = (BigArray<ulong>)Activator.CreateInstance(suffixArrayType, new object[] { loadedString.Length });
 
             //Calculate the suffix array
             long status = SAIS.sufsort(loadedString, suffixArray, loadedString.Length);
@@ -675,7 +709,7 @@ namespace StringSearchConsole
 
         internal static BigArray<ulong> convertIntArrayToBigUlongArray(int[] arr)
         {
-            BigArray<ulong> toRet = (BigArray<ulong>)Activator.CreateInstance(SUFFIX_ARRAY_TYPE, new object[] { arr.Length, (uint)arr.Length });
+            BigArray<ulong> toRet = (BigArray<ulong>)Activator.CreateInstance(suffixArrayType, new object[] { arr.Length, (uint)arr.Length });
 
             for(int i = 0; i < arr.Length; i++)
             {
