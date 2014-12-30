@@ -24,7 +24,6 @@ namespace StringSearch.Collections
     public class MemoryEfficientByteAlignedBigULongArray : UnderlyingStream, BigArray<ulong>
     {
         // Private vars
-        private Stream stream;
         private byte bytesPerValue;
 
         //Public accessors and modifiers
