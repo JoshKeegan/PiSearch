@@ -244,16 +244,31 @@ namespace StringSearch.Collections
             this.bitsPerValue = calculateBitsPerValue(MaxValue);
 
             //Calculate the number of bytes that will be used to store all of the values
-            long numBits = length * bitsPerValue;
-            long numBytes = numBits / 8;
-            //If extra bits are required, assign an extra byte
-            if(numBits % 8 != 0)
-            {
-                numBytes++;
-            }
+            long numBytes = calculateMinimumStreamLength();
 
             //Store the array in memory by default
             this.stream = new BigMemoryStream(numBytes);
+        }
+
+        public MemoryEfficientBigULongArray(long length, ulong maxValue, Stream underlyingStream)
+        {
+            this.Length = length;
+            this.MaxValue = maxValue;
+
+            //Calculate the number of bits to leave per value
+            this.bitsPerValue = calculateBitsPerValue(MaxValue);
+
+            //Use the specified stream to store the values in this array
+            this.stream = underlyingStream;
+
+            //Calculate the required minimum length of the underlying stream
+            long minStreamLength = calculateMinimumStreamLength();
+
+            //If the provided underlying stream isn't long enough, make it bigger
+            if(this.stream.Length < minStreamLength)
+            {
+                this.stream.SetLength(minStreamLength);
+            }
         }
 
         public MemoryEfficientBigULongArray(long length)
@@ -289,6 +304,19 @@ namespace StringSearch.Collections
             }
 
             return numBits;
+        }
+
+        private long calculateMinimumStreamLength()
+        {
+            long numBits = this.Length * this.bitsPerValue;
+            long numBytes = numBits / 8;
+            //If extra bits are required, assign an extra byte
+            if (numBits % 8 != 0)
+            {
+                numBytes++;
+            }
+
+            return numBytes;
         }
     }
 }

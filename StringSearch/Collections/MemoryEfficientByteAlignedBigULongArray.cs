@@ -6,6 +6,7 @@
  *  Big - Capable of storing more than int.MaxValue values
  *  ULong Array - simples
  * By Josh Keegan 22/12/2014
+ * Last Edit 30/12/2014
  */
 
 using System;
@@ -93,6 +94,18 @@ namespace StringSearch.Collections
 
             //Store the array in memory by default (could be changed to another type of stream later)
             this.stream = new BigMemoryStream(numBytes);
+        }
+
+        public MemoryEfficientByteAlignedBigULongArray(long length, ulong maxValue, Stream underlyingStream)
+        {
+            this.Length = length;
+            this.MaxValue = maxValue;
+
+            //Calculate the number of bytes to leave per value
+            this.bytesPerValue = calculateBytesPerValue(MaxValue);
+
+            //Use the specified stream to store the values in this array
+            this.stream = underlyingStream;
         }
 
         public MemoryEfficientByteAlignedBigULongArray(long length)

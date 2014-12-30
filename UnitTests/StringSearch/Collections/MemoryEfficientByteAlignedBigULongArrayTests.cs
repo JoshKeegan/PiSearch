@@ -1,10 +1,12 @@
 ﻿/*
  * MemoryEfficientByteAlignedBigULongArray Unit Tests
  * By Josh Keegan 22/12/2014
+ * Last Edit 30/12/2014
  */
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +32,12 @@ namespace UnitTests.StringSearch.Collections
         }
 
         [Test]
+        public void TestConstructorWithStream()
+        {
+            MemoryEfficientByteAlignedBigULongArray arr = new MemoryEfficientByteAlignedBigULongArray(10, 1000, new MemoryStream());
+        }
+
+        [Test]
         public void TestLength()
         {
             MemoryEfficientByteAlignedBigULongArray arr = new MemoryEfficientByteAlignedBigULongArray(10);
@@ -44,9 +52,31 @@ namespace UnitTests.StringSearch.Collections
         }
 
         [Test]
+        public void TestGetUnset()
+        {
+            MemoryEfficientByteAlignedBigULongArray arr = new MemoryEfficientByteAlignedBigULongArray(10, 1000);
+            Assert.AreEqual(0, arr[5]);
+        }
+
+        [Test]
+        public void TestGetUnsetWithSpecifiedStream()
+        {
+            MemoryEfficientByteAlignedBigULongArray arr = new MemoryEfficientByteAlignedBigULongArray(10, 1000, new MemoryStream());
+            Assert.AreEqual(0, arr[5]);
+        }
+
+        [Test]
         public void TestGetSet()
         {
             MemoryEfficientByteAlignedBigULongArray arr = new MemoryEfficientByteAlignedBigULongArray(10, 1000);
+            arr[3] = 400;
+            Assert.AreEqual(400, arr[3]);
+        }
+
+        [Test]
+        public void TestGetSetWithSpecifiedStream()
+        {
+            MemoryEfficientByteAlignedBigULongArray arr = new MemoryEfficientByteAlignedBigULongArray(10, 1000, new MemoryStream());
             arr[3] = 400;
             Assert.AreEqual(400, arr[3]);
         }
