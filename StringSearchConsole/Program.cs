@@ -66,6 +66,7 @@ namespace StringSearchConsole
                 "19.\tSet Suffix Array Data Type\n" + 
                 "20.\tSave suffix array's underlying stream\n" + 
                 "21.\tSet Suffix Array memory location\n" +
+                "22.\tUse previous file system suffix array file\n" + 
                 "q.\tQuit");
 
             bool quit = false;
@@ -141,6 +142,9 @@ namespace StringSearchConsole
                         break;
                     case "21": //Set suffix array memory location
                         subSetSuffixArrayMemoryLocation();
+                        break;
+                    case "22": //Use previous file system suffix array file
+                        subUsePreviousFileSystemSuffixArrayFile();
                         break;
                     case "q": //Quit
                         quit = true;
@@ -644,6 +648,36 @@ namespace StringSearchConsole
                     break;
                 }
             }
+        }
+
+        private static void subUsePreviousFileSystemSuffixArrayFile()
+        {
+            //Check that the suffix array stream type is set to be stored on the File System
+            if(suffixArrayStreamType != typeof(FileStream))
+            {
+                Console.WriteLine("Suffix array memory location is not set to use the File System");
+                return;
+            }
+
+            //Check that a four bit digit array has been loaded
+            //TODO: String support?? (seems pointless at this stage)
+            if(fourBitDigitArray == null)
+            {
+                Console.WriteLine("Must have a 4-bit digit array loaded");
+                return;
+            }
+
+            //Check that the selected suffix array file exists
+            if(!File.Exists(workingDirectory + suffixArrayFileName))
+            {
+                Console.WriteLine("The selected suffix array file \"{0}\" doesn't exist", suffixArrayFileName);
+                return;
+            }
+
+            //Can now load up the file as the FileStream underlying the selected BigArray<ulong> implementation
+            suffixArray = createBigArrayFromSettings(fourBitDigitArray.Length, (ulong)fourBitDigitArray.Length);
+
+            Console.WriteLine("Now using previous file system suffix array file");
         }
 
         private static void subGenerateSuffixArray()
