@@ -32,6 +32,12 @@ namespace UnitTests.StringSearch.Collections
         }
 
         [Test]
+        public void TestConstructorWithStreamNoMaxValue()
+        {
+            MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, new MemoryStream());
+        }
+
+        [Test]
         public void TestLength()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10);

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using StringSearch;
 using StringSearch.Collections;
+using StringSearch.IO;
 using SuffixArray;
 
 namespace StringSearchConsole
@@ -22,6 +23,8 @@ namespace StringSearchConsole
         private static BigArray<ulong> suffixArray = null;
         private static Stopwatch stopwatch = new Stopwatch();
         private static Type suffixArrayType = typeof(MemoryEfficientBigULongArray); // Note: Byte Aligned better for generation (fater), non-byte aligned better for searching (due to better memory efficiency). However, depends on hardware available
+        private static Type suffixArrayStreamType = null; //Null for store in memory (uses the default underlying store of the BigArray<ulong> implementation that is being used
+        private static string suffixArrayFileName = null; //When using FileStream for the suffix array
 
         static void Main(string[] args)
         {
@@ -52,8 +55,8 @@ namespace StringSearchConsole
                 "8.\tLoad compressed 4-bit digit file\n" + 
                 "9.\tSearch loaded 4-bit compressed stream\n" +
                 "10.\tGenerate suffix array from loaded 4-bit compressed stream\n" + 
-                "11.\tSave suffix array\n" +
-                "12.\tLoad suffix array\n" +
+                "11.\tSave suffix array (64-bit)\n" +
+                "12.\tLoad suffix array (64-bit)\n" +
                 "13.\tSearch loaded suffix array\n" + 
                 "14.\tGenerate suffix array from loaded string\n" +
                 "15.\tPrint Suffix Array\n" + 
@@ -62,6 +65,7 @@ namespace StringSearchConsole
                 "18.\tTake first n digits from compressed 4-bit digit file\n" +
                 "19.\tSet Suffix Array Data Type\n" + 
                 "20.\tSave suffix array's underlying stream\n" + 
+                "21.\tSet Suffix Array memory location\n" +
                 "q.\tQuit");
 
             bool quit = false;
@@ -134,6 +138,9 @@ namespace StringSearchConsole
                         break;
                     case "20": //Save suffix array's underlying stream
                         subSaveSuffixArraysUnderlyingStream();
+                        break;
+                    case "21": //Set suffix array memory location
+                        subSetSuffixArrayMemoryLocation();
                         break;
                     case "q": //Quit
                         quit = true;
@@ -228,7 +235,7 @@ namespace StringSearchConsole
 
             int len = (int)(fs.Length / 8);
 
-            suffixArray = (BigArray<ulong>)Activator.CreateInstance(suffixArrayType, new object[] { len, (uint)len });
+            suffixArray = createBigArrayFromSettings(len, (uint)len);
 
             byte[] bytes = new byte[8];
             int state = 4;
@@ -602,10 +609,47 @@ namespace StringSearchConsole
             Compression.WriteStreamNoCompression(suffixArray, workingDirectory + fileName);            
         }
 
+        private static void subSetSuffixArrayMemoryLocation()
+        {
+            Console.WriteLine("1.\tMemory (RAM) (default)\n" +
+                "2.\tFile System (for big computations)");
+
+            while(true)
+            {
+                Console.Write("Selection: ");
+                string selection = Console.ReadLine();
+
+                bool validSelection = true;
+
+                switch(selection)
+                {
+                    case "1":
+                        suffixArrayStreamType = null; //Use the default storage defained by the BigArray<ulong> implementation being used
+                        suffixArrayFileName = null;
+                        break;
+                    case "2":
+                        suffixArrayStreamType = typeof(FileStream);
+
+                        //Get the name of the file that will be used to store the suffix array
+                        Console.Write("File Name: ");
+                        suffixArrayFileName = Console.ReadLine();
+                        break;
+                    default:
+                        validSelection = false;
+                        break;
+                }
+
+                if(validSelection)
+                {
+                    break;
+                }
+            }
+        }
+
         private static void subGenerateSuffixArray()
         {
             //Initialise the array that will hold the suffix array
-            BigArray<ulong> suffixArray = (BigArray<ulong>)Activator.CreateInstance(suffixArrayType, new object[] { fourBitDigitArray.Length });
+            BigArray<ulong> suffixArray = createBigArrayFromSettings(fourBitDigitArray.Length);
 
             //Calculate the suffix array
             long status = SAIS.sufsort(fourBitDigitArray, suffixArray, fourBitDigitArray.Length);
@@ -624,7 +668,7 @@ namespace StringSearchConsole
         private static void subGenerateSuffixArrayFromLoadedString()
         {
             //Initialise the aray that will hold the suffix array
-            BigArray<ulong> suffixArray = (BigArray<ulong>)Activator.CreateInstance(suffixArrayType, new object[] { loadedString.Length });
+            BigArray<ulong> suffixArray = createBigArrayFromSettings(loadedString.Length);
 
             //Calculate the suffix array
             long status = SAIS.sufsort(loadedString, suffixArray, loadedString.Length);
@@ -726,7 +770,7 @@ namespace StringSearchConsole
 
         internal static BigArray<ulong> convertIntArrayToBigUlongArray(int[] arr)
         {
-            BigArray<ulong> toRet = (BigArray<ulong>)Activator.CreateInstance(suffixArrayType, new object[] { arr.Length, (uint)arr.Length });
+            BigArray<ulong> toRet = createBigArrayFromSettings(arr.Length, (uint)arr.Length);
 
             for(int i = 0; i < arr.Length; i++)
             {
@@ -734,6 +778,53 @@ namespace StringSearchConsole
             }
 
             return toRet;
+        }
+
+        private static BigArray<ulong> createBigArrayFromSettings(long length)
+        {
+            return createBigArrayFromSettings(length, null);
+        }
+
+        private static BigArray<ulong> createBigArrayFromSettings(long length, ulong? maxValue)
+        {
+            //First make the stream that will be used as the data structure underlying the BigArray
+            Stream stream;
+
+            //If storing in memory, do not supply a stream as then the BigArray<ulong> implementation that is being used will determine how best to store the data in memory
+            if(suffixArrayStreamType == null)
+            {
+                stream = null;
+            }
+            //Else if storing on the File System
+            else if(suffixArrayStreamType == typeof(FileStream))
+            {
+                stream = new FileStream(workingDirectory + suffixArrayFileName, FileMode.OpenOrCreate);
+            }
+            else
+            {
+                throw new ArgumentException("Suffix Array stream type not recognised");
+            }
+
+            //Have now constructed the underlying Stream, Construct the Big Array
+            List<object> bigArrayArgs = new List<object>();
+            bigArrayArgs.Add(length);
+
+            if(maxValue != null)
+            {
+                bigArrayArgs.Add(maxValue.GetValueOrDefault());
+            }
+
+            //If we've made a stream to supply to the constructor, add it to the list of args
+            if(stream != null)
+            {
+                bigArrayArgs.Add(stream);
+            }
+
+            object[] arrBigArrayArgs =  bigArrayArgs.ToArray();
+
+            BigArray<ulong> bigArray = (BigArray<ulong>)Activator.CreateInstance(suffixArrayType, arrBigArrayArgs);
+
+            return bigArray;
         }
 
         private static void takeFirstDigitsFrom4BitDigitFile(string fileInName, string fileOutName, long numDigits)

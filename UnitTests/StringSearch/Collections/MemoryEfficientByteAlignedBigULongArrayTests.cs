@@ -1,7 +1,7 @@
 ﻿/*
  * MemoryEfficientByteAlignedBigULongArray Unit Tests
  * By Josh Keegan 22/12/2014
- * Last Edit 30/12/2014
+ * Last Edit 31/12/2014
  */
 
 using System;
@@ -35,6 +35,12 @@ namespace UnitTests.StringSearch.Collections
         public void TestConstructorWithStream()
         {
             MemoryEfficientByteAlignedBigULongArray arr = new MemoryEfficientByteAlignedBigULongArray(10, 1000, new MemoryStream());
+        }
+
+        [Test]
+        public void TestConstructorWithStreamNoMaxValue()
+        {
+            MemoryEfficientByteAlignedBigULongArray arr = new MemoryEfficientByteAlignedBigULongArray(10, new MemoryStream());
         }
 
         [Test]

@@ -6,7 +6,7 @@
  *  Big - Capable of storing more than int.MaxValue values
  *  ULong Array - simples
  * By Josh Keegan 22/12/2014
- * Last Edit 30/12/2014
+ * Last Edit 31/12/2014
  */
 
 using System;
@@ -109,6 +109,9 @@ namespace StringSearch.Collections
 
         public MemoryEfficientByteAlignedBigULongArray(long length)
             : this(length, ulong.MaxValue) {  }
+
+        public MemoryEfficientByteAlignedBigULongArray(long length, Stream underlyingStream)
+            : this(length, ulong.MaxValue, underlyingStream) {  }
 
         //Public Methods
         public IEnumerator<ulong> GetEnumerator()

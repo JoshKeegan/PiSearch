@@ -271,7 +271,10 @@ namespace StringSearch.Collections
         }
 
         public MemoryEfficientBigULongArray(long length)
-            : this(length, ulong.MaxValue) { }
+            : this(length, ulong.MaxValue) {  }
+        
+        public MemoryEfficientBigULongArray(long length, Stream underlyingStream)
+            : this(length, ulong.MaxValue, underlyingStream) {  }
 
         //Public Methods
         public IEnumerator<ulong> GetEnumerator()
