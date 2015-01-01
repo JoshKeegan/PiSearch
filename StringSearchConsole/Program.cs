@@ -52,7 +52,7 @@ namespace StringSearchConsole
                 "5.\tConvert PiFast43 output to raw decimal places of pi\n" +
                 "6.\tSearch loaded string for next occurrence\n" + 
                 "7.\t4-bit digit compress file\n" + 
-                "8.\tLoad compressed 4-bit digit file\n" + 
+                "8.\tLoad compressed 4-bit digit file (into memory)\n" + 
                 "9.\tSearch loaded 4-bit compressed stream\n" +
                 "10.\tGenerate suffix array from loaded 4-bit compressed stream\n" + 
                 "11.\tSave suffix array (64-bit)\n" +
@@ -67,6 +67,7 @@ namespace StringSearchConsole
                 "20.\tSave suffix array's underlying stream\n" + 
                 "21.\tSet Suffix Array memory location\n" +
                 "22.\tUse previous file system suffix array file\n" + 
+                "23.\tUse compressed 4-bit digit file straight from file system\n" + 
                 "q.\tQuit");
 
             bool quit = false;
@@ -145,6 +146,9 @@ namespace StringSearchConsole
                         break;
                     case "22": //Use previous file system suffix array file
                         subUsePreviousFileSystemSuffixArrayFile();
+                        break;
+                    case "23": //Use compressed 4-bit digit file straight from the file system
+                        subUse4BitDigitFileStraightFromFileSystem();
                         break;
                     case "q": //Quit
                         quit = true;
@@ -311,6 +315,42 @@ namespace StringSearchConsole
                     }
 
                     loaded4BitDigitStream = Compression.ReadStreamNoComression(workingDirectory + fileName);
+
+                    //Now wrap it in a FourBitDigitArray
+                    fourBitDigitArray = new FourBitDigitBigArray(loaded4BitDigitStream);
+
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("File not found \"{0}\"", fileName);
+                }
+            }
+        }
+
+        private static void subUse4BitDigitFileStraightFromFileSystem()
+        {
+            while(true)
+            {
+                Console.Write("Use 4-bit digit file: ");
+                string fileName = Console.ReadLine();
+
+                stopwatch.Reset();
+                stopwatch.Start();
+
+                //Check that this file exists
+                if(File.Exists(workingDirectory + fileName))
+                {
+                    Console.WriteLine("Using 4-bit digit compressed file \"{0}\" straight from the file system", fileName);
+
+                    //Release any currently loaded stream for garbage collection
+                    if(loaded4BitDigitStream != null)
+                    {
+                        loaded4BitDigitStream.Close();
+                        loaded4BitDigitStream = null;
+                    }
+
+                    loaded4BitDigitStream = new FileStream(workingDirectory + fileName, FileMode.Open);
 
                     //Now wrap it in a FourBitDigitArray
                     fourBitDigitArray = new FourBitDigitBigArray(loaded4BitDigitStream);
