@@ -25,6 +25,7 @@ namespace StringSearchConsole
         private static Type suffixArrayType = typeof(MemoryEfficientBigULongArray); // Note: Byte Aligned better for generation (fater), non-byte aligned better for searching (due to better memory efficiency). However, depends on hardware available
         private static Type suffixArrayStreamType = null; //Null for store in memory (uses the default underlying store of the BigArray<ulong> implementation that is being used
         private static string suffixArrayFileName = null; //When using FileStream for the suffix array
+        private static int suffixArrayFileStreamBufferSize = 4096; //Default as specified at http://msdn.microsoft.com/en-us/library/f20d7x6t%28v=vs.110%29.aspx
 
         static void Main(string[] args)
         {
@@ -68,6 +69,7 @@ namespace StringSearchConsole
                 "21.\tSet Suffix Array memory location\n" +
                 "22.\tUse previous file system suffix array file\n" + 
                 "23.\tUse compressed 4-bit digit file straight from file system\n" + 
+                "24.\tSet Suffix Array File Stream Buffer Size\n" + 
                 "q.\tQuit");
 
             bool quit = false;
@@ -149,6 +151,9 @@ namespace StringSearchConsole
                         break;
                     case "23": //Use compressed 4-bit digit file straight from the file system
                         subUse4BitDigitFileStraightFromFileSystem();
+                        break;
+                    case "24": //Set suffix array file stream buffer size
+                        subSetSuffixArrayFileStreamBufferSize();
                         break;
                     case "q": //Quit
                         quit = true;
@@ -361,6 +366,27 @@ namespace StringSearchConsole
                 {
                     Console.WriteLine("File not found \"{0}\"", fileName);
                 }
+            }
+        }
+
+        private static void subSetSuffixArrayFileStreamBufferSize()
+        {
+            while(true)
+            {
+                Console.Write("Suffix Array File Stream Buffer Size (bytes): ");
+
+                string strBufferSize = Console.ReadLine();
+
+                try
+                {
+                    suffixArrayFileStreamBufferSize = int.Parse(strBufferSize);
+
+                    if(suffixArrayFileStreamBufferSize > 0)
+                    {
+                        break;
+                    }
+                }
+                catch {  }
             }
         }
 
@@ -872,7 +898,11 @@ namespace StringSearchConsole
             //Else if storing on the File System
             else if(suffixArrayStreamType == typeof(FileStream))
             {
-                stream = new FileStream(workingDirectory + suffixArrayFileName, FileMode.OpenOrCreate);
+                //Note: the suffx array file is always opened for Read & Write, even if we only actually need read permission. This could perhaps be improved later
+                //On a web server it may be desirable to allow multiple streams to be using the same file, so that requests can be handled in parallel. 
+                //  As such FileShare is set to allow other process to both read and write to the file. Both are given even though read is the only one needed because it is always opened
+                //  for both read & write
+                stream = new FileStream(workingDirectory + suffixArrayFileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite, suffixArrayFileStreamBufferSize);
             }
             else
             {
