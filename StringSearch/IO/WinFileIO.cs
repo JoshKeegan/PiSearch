@@ -4,7 +4,7 @@
  * 
  * By Robert G. Bryan in Feb, 2011.
  * Modified by "Steve" for use in TVRename
- * First included in PiSearch 02/01/2015 by Josh Keegan
+ * First included in PiSearch (& modified) 02/01/2015 by Josh Keegan
  */
 
 // 
@@ -63,7 +63,7 @@ namespace StringSearch.IO
         private const uint OPEN_ALWAYS = 4;
         private const uint TRUNCATE_EXISTING = 5;
         
-        private const int BlockSize = 65536;
+        internal const int BlockSize = 65536;
 
         private const uint FILE_BEGIN = 0;
         private const uint FILE_CURRENT = 1;
