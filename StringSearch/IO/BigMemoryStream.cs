@@ -4,7 +4,7 @@
  * For simplicity it does not differentiate between length & capacity; treating them as the same thing
  * 
  * By Josh Keegan 02/12/2014
- * Last Edit 17/12/2014
+ * Last Edit 02/01/2014
  */
 
 using System;
@@ -264,6 +264,27 @@ namespace StringSearch.IO
             //Initialise memStreams to be empty, expand will set the actual values
             this.memStreams = new List<MemoryStream>(0);
             this.expand(capacity);
+        }
+        #endregion
+
+        #region Dispose
+        ~BigMemoryStream()
+        {
+            Dispose(false);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!isClosed)
+            {
+                foreach (MemoryStream memStream in memStreams)
+                {
+                    memStream.Close();
+                }
+                isClosed = true;
+            }
+
+            base.Dispose(disposing);
         }
         #endregion
 

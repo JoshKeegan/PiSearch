@@ -1,7 +1,7 @@
 ﻿/*
  * Unit Tests for BigMemoryStream
  * By Josh Keegan 15/12/2014
- * Last Edit 22/12/2014
+ * Last Edit 02/01/2015
  */
 
 using System;
@@ -533,6 +533,15 @@ namespace UnitTests.StringSearch.IO
 
             int b = stream.ReadByte();
             Assert.AreEqual(0, b);
+        }
+
+        [Test]
+        [ExpectedException (typeof(ObjectDisposedException))]
+        public void TestDisposed()
+        {
+            BigMemoryStream stream = new BigMemoryStream(5);
+            stream.Close();
+            stream.Position = 5;
         }
 
         //TODO: Test SetLength
