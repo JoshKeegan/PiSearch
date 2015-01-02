@@ -53,6 +53,7 @@
     <Compile Include="StringSearch\Collections\FixedLengthQueueTests.cs" />
     <Compile Include="StringSearch\Collections\FourBitDigitBigArrayTests.cs" />
     <Compile Include="StringSearch\IO\BigMemoryStreamTests.cs" />
+    <Compile Include="StringSearch\IO\WinFileIOTests.cs" />
     <Compile Include="StringSearch\SearchStringTests.cs" />
   </ItemGroup>
   <ItemGroup>
