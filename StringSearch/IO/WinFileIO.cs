@@ -266,11 +266,16 @@ namespace StringSearch.IO
 
         public void OpenForReading(string FileName)
         {
+            OpenForReading(FileName, 0);
+        }
+
+        public void OpenForReading(string FileName, WinFileFlagsAndAttributes flagsAndAttributes)
+        {
             // This function uses the Windows API CreateFile function to open an existing file for reading.
             // A return value of true indicates success.
             // It allows other processes to read the file
             Close(true, false);
-            pHandleRead = CreateFile(FileName, GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
+            pHandleRead = CreateFile(FileName, GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, (uint)flagsAndAttributes, 0);
             position = 0;
 
             if (pHandleRead == IntPtr.Zero)
@@ -284,12 +289,17 @@ namespace StringSearch.IO
 
         public void OpenForWriting(string FileName)
         {
+            OpenForWriting(FileName, 0);
+        }
+
+        public void OpenForWriting(string FileName, WinFileFlagsAndAttributes flagsAndAttributes)
+        {
             // This function uses the Windows API CreateFile function to open a file for writing.
             // If it doesn't exist, it will be created.
             // If it does exist, it will be loaded.
             // It does not allow other processes to access the file
             Close(false, true);
-            pHandleWrite = CreateFile(FileName, GENERIC_WRITE, 0, 0, OPEN_ALWAYS, 0, 0);
+            pHandleWrite = CreateFile(FileName, GENERIC_WRITE, 0, 0, OPEN_ALWAYS, (uint)flagsAndAttributes, 0);
             position = 0;
 
             if (pHandleWrite == IntPtr.Zero)
@@ -303,13 +313,18 @@ namespace StringSearch.IO
 
         public void OpenForReadingWriting(string FileName)
         {
+            OpenForReadingWriting(FileName, 0);
+        }
+
+        public void OpenForReadingWriting(string FileName, WinFileFlagsAndAttributes flagsAndAttributes)
+        {
             // This function uses the Windows API CreateFile function to open a file for reading and writing.
             // If it doesn't exist, it will be created.
             // If it does exist, it will be loaded.
             // It does not allow other processes to access the file
             Close(true, true);
             pHandleRead = pHandleWrite = CreateFile(FileName, GENERIC_READ | GENERIC_WRITE, 0, 0,
-                OPEN_ALWAYS, 0, 0);
+                OPEN_ALWAYS, (uint)flagsAndAttributes, 0);
             position = 0;
 
             if(pHandleRead == IntPtr.Zero)

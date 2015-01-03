@@ -52,6 +52,7 @@
     <Compile Include="Collections\FourBitDigitBigArray.cs" />
     <Compile Include="IO\BigMemoryStream.cs" />
     <Compile Include="IO\FastFileStream.cs" />
+    <Compile Include="IO\WinFileFlagsAndAttributes.cs" />
     <Compile Include="IO\WinFileIO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchString.cs" />

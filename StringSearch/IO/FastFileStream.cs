@@ -206,7 +206,7 @@ namespace StringSearch.IO
             base.Dispose(disposing);
         }
 
-        public FastFileStream(string path, FileAccess fileAccess, int maxReadWriteCallSize)
+        public FastFileStream(string path, FileAccess fileAccess, int maxReadWriteCallSize, WinFileFlagsAndAttributes? flagsAndAttributes)
         {
             if(path == null)
             {
@@ -250,21 +250,43 @@ namespace StringSearch.IO
             buffer = new byte[maxReadWriteCallSize];
             wfio =  new WinFileIO(buffer);
             
-            switch(fileAccess)
+            //If no flags and attributes were provided
+            if(flagsAndAttributes == null)
             {
-                case FileAccess.Read:
-                    wfio.OpenForReading(path);
-                    break;
-                case FileAccess.Write:
-                    wfio.OpenForWriting(path);
-                    break;
-                case FileAccess.ReadWrite:
-                    wfio.OpenForReadingWriting(path);
-                    break;
+                switch (fileAccess)
+                {
+                    case FileAccess.Read:
+                        wfio.OpenForReading(path);
+                        break;
+                    case FileAccess.Write:
+                        wfio.OpenForWriting(path);
+                        break;
+                    case FileAccess.ReadWrite:
+                        wfio.OpenForReadingWriting(path);
+                        break;
+                }
+            }
+            else //Otherwise use the flags and attributes provided
+            {
+                switch (fileAccess)
+                {
+                    case FileAccess.Read:
+                        wfio.OpenForReading(path, flagsAndAttributes.GetValueOrDefault());
+                        break;
+                    case FileAccess.Write:
+                        wfio.OpenForWriting(path, flagsAndAttributes.GetValueOrDefault());
+                        break;
+                    case FileAccess.ReadWrite:
+                        wfio.OpenForReadingWriting(path, flagsAndAttributes.GetValueOrDefault());
+                        break;
+                }
             }
 
             this.fileAccess = fileAccess;
         }
+
+        public FastFileStream(string path, FileAccess fileAccess, int maxReadWriteCallSize)
+            : this(path, fileAccess, maxReadWriteCallSize, null) {  }
 
         public FastFileStream(string path, FileAccess fileAccess)
             : this(path, fileAccess, WinFileIO.BlockSize) {  }

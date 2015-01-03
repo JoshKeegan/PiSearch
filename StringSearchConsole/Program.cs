@@ -942,7 +942,7 @@ namespace StringSearchConsole
             //Else if storing on the File SYstem and accessing it with the FastFileStream
             else if(suffixArrayStreamType == typeof(FastFileStream))
             {
-                stream = new FastFileStream(workingDirectory + suffixArrayFileName, FileAccess.ReadWrite, suffixArrayFastFileStreamIoBufferSize);
+                stream = new FastFileStream(workingDirectory + suffixArrayFileName, FileAccess.ReadWrite, suffixArrayFastFileStreamIoBufferSize, WinFileFlagsAndAttributes.FILE_FLAG_RANDOM_ACCESS);
             }
             else
             {
