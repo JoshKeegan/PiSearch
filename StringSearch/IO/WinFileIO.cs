@@ -5,6 +5,7 @@
  * By Robert G. Bryan in Feb, 2011.
  * Modified by "Steve" for use in TVRename
  * First included in PiSearch (& modified) 02/01/2015 by Josh Keegan
+ * Last Edit 03/01/2014
  */
 
 // 
@@ -74,6 +75,7 @@ namespace StringSearch.IO
         private System.IntPtr pHandleWrite;
         private void* pBuffer; // Pointer to the buffer used to perform I/O.
         private long position;
+        private long length = -1;
 
         // Define the Windows system functions that are called by this class via COM Interop:
         [System.Runtime.InteropServices.DllImport("kernel32", SetLastError = true)]
@@ -122,6 +124,49 @@ namespace StringSearch.IO
             long* lpNewFilePointer,     // a pointer to a variable to receive the new file pointer. If null, new file pointer is not returned
             uint dwMoveMethod           // The starting point for the file pointer to move (FILE_BEGIN, FILE_CURRENT, FILE_END)
         );
+
+        [System.Runtime.InteropServices.DllImport("kernel32", SetLastError = true)]
+        private static extern unsafe bool GetFileSizeEx
+        (
+            IntPtr hFile,               // handle to file
+            long* lpFileSize            // a pointer to a large integer that will be set to the file size
+        );
+
+        public long Length
+        {
+            get
+            {
+                //If we have already fetched the length of the file open, use that
+                if(length != -1)
+                {
+                    return length;
+                }
+
+                //Use the handle for the file being read by defualt
+                IntPtr hFile = pHandleRead;
+                //If there is no file open for read, use the one open for write
+                if(hFile == IntPtr.Zero)
+                {
+                    hFile = pHandleWrite;
+
+                    //If there isn't a file open for write either, throw an exception
+                    if(hFile == IntPtr.Zero)
+                    {
+                        throw new ApplicationException("WinFileIO:Length - No file open");
+                    }
+                }
+
+                long fileSize;
+                if(!GetFileSizeEx(hFile, &fileSize))
+                {
+                    Win32Exception WE = new Win32Exception();
+                    throw new ArgumentException("WinFileIO:Length - Error occurred whilst reading file size. - " 
+                        + WE.Message);
+                }
+                length = fileSize;
+                return length;
+            }
+        }
 
         public long Position
         {
@@ -389,6 +434,12 @@ namespace StringSearch.IO
 
             position += BytesOutput;
 
+            //If we know the length of this file, increment it if we'll have changed it
+            if (length != -1 && position > length)
+            {
+                length = position;
+            }
+
             return BytesOutput;
         }
 
@@ -410,6 +461,7 @@ namespace StringSearch.IO
                 {
                     Success = CloseHandle(pHandleWrite);
                     pHandleWrite = pHandleRead = IntPtr.Zero;
+                    length = -1;
                 }
                 else
                 {
@@ -422,12 +474,14 @@ namespace StringSearch.IO
                 {
                     Success = CloseHandle(pHandleWrite) && Success;
                     pHandleWrite = IntPtr.Zero;
+                    length = -1;
                 }
 
                 if (read && pHandleRead != IntPtr.Zero)
                 {
                     Success = CloseHandle(pHandleRead) && Success;
                     pHandleRead = IntPtr.Zero;
+                    length = -1;
                 }
             }
             

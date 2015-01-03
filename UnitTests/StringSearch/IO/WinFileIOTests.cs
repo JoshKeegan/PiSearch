@@ -1,6 +1,7 @@
 ﻿/*
  * Unit Tests for WinFileIO
  * By Josh Keegan 02/01/2015
+ * Last Edit 03/01/2015
  */
 
 using System;
@@ -302,6 +303,106 @@ namespace UnitTests.StringSearch.IO
             byte[] actual = readFile(FILE_NAME);
 
             CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void TestLengthRead()
+        {
+            const string FILE_NAME = "WinFileIOTests.TestLengthRead";
+
+            createFile(FILE_NAME);
+
+            byte[] buffer = new byte[1];
+            WinFileIO wfio = new WinFileIO(buffer);
+            wfio.OpenForReading(FILE_NAME);
+
+            Assert.AreEqual((long)FILE_CONTENT.Length, wfio.Length);
+
+            wfio.Close();
+        }
+
+        [Test]
+        public void TestLengthWrite()
+        {
+            const string FILE_NAME = "WinFileIOTests.TestLengthWrite";
+
+            byte[] buffer = new byte[FILE_CONTENT.Length];
+            WinFileIO wfio = new WinFileIO(buffer);
+            wfio.OpenForWriting(FILE_NAME);
+            Array.Copy(FILE_CONTENT, buffer, buffer.Length);
+            wfio.WriteBlocks(buffer.Length);
+
+            Assert.AreEqual((long)FILE_CONTENT.Length, wfio.Length);
+            wfio.Close();
+
+            fileNames.Add(FILE_NAME);
+        }
+
+        [Test]
+        public void TestLengthWriteIncrements()
+        {
+            const string FILE_NAME = "WinFileIOTests.TestLengthWriteIncrements";
+
+            byte[] buffer = new byte[FILE_CONTENT.Length];
+            WinFileIO wfio = new WinFileIO(buffer);
+            wfio.OpenForWriting(FILE_NAME);
+            Array.Copy(FILE_CONTENT, buffer, buffer.Length);
+            wfio.WriteBlocks(buffer.Length);
+
+            Assert.AreEqual((long)FILE_CONTENT.Length, wfio.Length);
+
+            wfio.WriteBlocks(1);
+            Assert.AreEqual((long)FILE_CONTENT.Length + 1, wfio.Length);
+
+            wfio.Close();
+
+            fileNames.Add(FILE_NAME);
+        }
+
+        [Test]
+        public void TestLengthWriteOverwriteNotIncrement()
+        {
+            const string FILE_NAME = "WinFileIOTests.TestLengthWriteOverwriteNotIncrement";
+
+            byte[] buffer = new byte[FILE_CONTENT.Length];
+            WinFileIO wfio = new WinFileIO(buffer);
+            wfio.OpenForWriting(FILE_NAME);
+            Array.Copy(FILE_CONTENT, buffer, buffer.Length);
+            wfio.WriteBlocks(buffer.Length);
+
+            Assert.AreEqual((long)FILE_CONTENT.Length, wfio.Length);
+
+            wfio.Position = 1;
+            wfio.WriteBlocks(2);
+
+            Assert.AreEqual((long)FILE_CONTENT.Length, wfio.Length);
+
+            wfio.Close();
+
+            fileNames.Add(FILE_NAME);
+        }
+
+        [Test]
+        public void TestLengthWritePartialOverwrite()
+        {
+            const string FILE_NAME = "WinFileIOTests.TestLengthWritePartialOverwrite";
+
+            byte[] buffer = new byte[FILE_CONTENT.Length];
+            WinFileIO wfio = new WinFileIO(buffer);
+            wfio.OpenForWriting(FILE_NAME);
+            Array.Copy(FILE_CONTENT, buffer, buffer.Length);
+            wfio.WriteBlocks(buffer.Length);
+
+            Assert.AreEqual((long)FILE_CONTENT.Length, wfio.Length);
+
+            wfio.Position--;
+            wfio.WriteBlocks(2);
+
+            Assert.AreEqual((long)FILE_CONTENT.Length + 1, wfio.Length);
+
+            wfio.Close();
+
+            fileNames.Add(FILE_NAME);
         }
 
         [TestFixtureTearDown]
