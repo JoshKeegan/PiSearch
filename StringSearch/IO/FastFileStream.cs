@@ -2,6 +2,7 @@
  * PiSearch
  * FastFileStream - a fast implementation of Stream, with the underlying data being stored on a file (like FileStream)
  * By Josh Keegan 02/01/2015
+ * Last Edit 03/01/2015
  */
 
 using System;
@@ -53,9 +54,10 @@ namespace StringSearch.IO
         public override long Length
         {
             get 
-            { 
-                throw new NotImplementedException(); 
-                //TODO
+            {
+                throwIfClosed();
+
+                return wfio.Length;
             }
         }
 
@@ -77,11 +79,60 @@ namespace StringSearch.IO
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            throw new NotImplementedException();
-            //TODO
-        }
+            //Validation
+            if (buffer == null)
+            {
+                throw new ArgumentNullException("buffer cannot be null");
+            }
 
-        //TODO: ReadByte() Implementation would be more efficient than relying on Read(byte[], int, int) & would get used
+            if (offset < 0)
+            {
+                throw new ArgumentException("offset must be >= 0");
+            }
+
+            if (count < 0)
+            {
+                throw new ArgumentException("count must be >= 0");
+            }
+
+            if (buffer.Length - offset < count)
+            {
+                throw new ArgumentException("The buffer is too small to write count bytes starting at index offset");
+            }
+
+            throwIfClosed();
+
+            if (wfio.Position >= wfio.Length || count == 0)
+            {
+                return 0;
+            }
+
+            //If the end of the stream is going to come before reading count bytes, correct count
+            if (wfio.Position > wfio.Length - count)
+            {
+                count = (int)(wfio.Length - wfio.Position);
+            }
+
+            //Read in the requested bytes
+            //  WFIO reads into the buffer from this class, so can only read a maximum of this.buffer.Length bytes at a time
+            int bytesRead = 0;
+            do
+            {
+                //How many to read in this iteration
+                int readCount = Math.Min(this.buffer.Length, count - bytesRead);
+
+                //Read them in
+                int actualReadCount = wfio.ReadBlocks(readCount);
+
+                //Copy the contents of the WFIO buffer into the Read buffer
+                Array.Copy(this.buffer, 0, buffer, bytesRead + offset, actualReadCount);
+
+                bytesRead += actualReadCount;
+            }
+            while (bytesRead < count);
+
+            return bytesRead;
+        }
 
         public override long Seek(long offset, SeekOrigin origin)
         {
@@ -97,8 +148,45 @@ namespace StringSearch.IO
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            throw new NotImplementedException();
-            //TODO
+            //Validation
+            if (buffer == null)
+            {
+                throw new ArgumentNullException("buffer cannot be null");
+            }
+
+            if (offset < 0)
+            {
+                throw new ArgumentException("offset must be >= 0");
+            }
+
+            if (count < 0)
+            {
+                throw new ArgumentException("count must be >= 0");
+            }
+
+            if (buffer.Length - offset < count)
+            {
+                throw new ArgumentException("The buffer is too small to read count bytes starting at index offset");
+            }
+
+            throwIfClosed();
+
+            // WFIO writes from the buffer from the class, so can only write a maximum of this.buffer.Length bytes at a time
+            int bytesWritten = 0;
+            do
+            {
+                //How many to write in this iteration
+                int writeCount = Math.Min(this.buffer.Length, count - bytesWritten);
+
+                //Copy the contents of the write buffer into the WFIO buffer
+                Array.Copy(buffer, bytesWritten + offset, this.buffer, 0, writeCount);
+
+                //Write them out
+                int actualWriteCount = wfio.WriteBlocks(writeCount);
+
+                bytesWritten += actualWriteCount;
+            }
+            while (bytesWritten < count);
         }
 
         ~FastFileStream()
