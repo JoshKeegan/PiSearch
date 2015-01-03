@@ -134,6 +134,8 @@ namespace StringSearch.IO
             return bytesRead;
         }
 
+        //TODO: ReadByte() Implementation would be more efficient than relying on Read(byte[], int, int) & would get used
+
         public override long Seek(long offset, SeekOrigin origin)
         {
             throw new NotImplementedException();
