@@ -336,6 +336,39 @@ namespace StringSearchConsole
 
         private static void subUse4BitDigitFileStraightFromFileSystem()
         {
+            //First find out which type of Stream to use when accessing the file system
+            Console.WriteLine("What type of File Stream would you like to use to access the 4-bit digit file on the File System");
+            Console.WriteLine("1.\tFileStream (default)\n" +
+                "2.\tFastFileStream (Windows Only)");
+
+            Type streamType = null; //Must have default value, will never actually be used
+
+            while(true)
+            {
+                Console.Write("Selection: ");
+                string selection = Console.ReadLine();
+
+                bool validSelection = true;
+
+                switch(selection)
+                {
+                    case "1":
+                        streamType = typeof(FileStream);
+                        break;
+                    case "2":
+                        streamType = typeof(FastFileStream);
+                        break;
+                    default:
+                        validSelection = false;
+                        break;
+                }
+
+                if(validSelection)
+                {
+                    break;
+                }
+            }
+
             while(true)
             {
                 Console.Write("Use 4-bit digit file: ");
@@ -356,7 +389,19 @@ namespace StringSearchConsole
                         loaded4BitDigitStream = null;
                     }
 
-                    loaded4BitDigitStream = new FileStream(workingDirectory + fileName, FileMode.Open);
+                    if(streamType == typeof(FileStream))
+                    {
+                        loaded4BitDigitStream = new FileStream(workingDirectory + fileName, FileMode.Open);
+                    }
+                    else //FastFileStream
+                    {
+                        //Open with random access file flag specified.
+                        //  Note that this is only optimal if using as part of suffix array generation or search, a 
+                        //      sequantial search would be best done without specifying a flag, or perhaps SEQUENTIAL_SCAN (testing needed to determine best selection)
+                        //TODO: Add option to choose the Flags * Attributes passed to the file rather than just always using Random Access
+                        loaded4BitDigitStream = new FastFileStream(workingDirectory + fileName, FileAccess.Read, 1, WinFileFlagsAndAttributes.FILE_FLAG_RANDOM_ACCESS);
+                    }
+                    
 
                     //Now wrap it in a FourBitDigitArray
                     fourBitDigitArray = new FourBitDigitBigArray(loaded4BitDigitStream);
@@ -722,7 +767,7 @@ namespace StringSearchConsole
         {
             Console.WriteLine("What File Stream type would you like to use to access the FileSystem?");
             Console.WriteLine("1.\tFileStream (default)\n" +
-                "2.\tFastFileStream (Windows only, new development)");
+                "2.\tFastFileStream (Windows only)");
 
             while(true)
             {
