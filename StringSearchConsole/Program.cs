@@ -26,6 +26,7 @@ namespace StringSearchConsole
         private static Type suffixArrayStreamType = null; //Null for store in memory (uses the default underlying store of the BigArray<ulong> implementation that is being used
         private static string suffixArrayFileName = null; //When using FileStream for the suffix array
         private static int suffixArrayFileStreamBufferSize = 4096; //Default as specified at http://msdn.microsoft.com/en-us/library/f20d7x6t%28v=vs.110%29.aspx
+        private static int suffixArrayFastFileStreamIoBufferSize = 8;
 
         static void Main(string[] args)
         {
@@ -698,11 +699,45 @@ namespace StringSearchConsole
                         suffixArrayFileName = null;
                         break;
                     case "2":
-                        suffixArrayStreamType = typeof(FileStream);
+                        //Ask the user which Stream they'd like to use to access the FileSystem
+                        subSetSuffixArrayFileStreamType();
 
                         //Get the name of the file that will be used to store the suffix array
                         Console.Write("File Name: ");
                         suffixArrayFileName = Console.ReadLine();
+                        break;
+                    default:
+                        validSelection = false;
+                        break;
+                }
+
+                if(validSelection)
+                {
+                    break;
+                }
+            }
+        }
+
+        private static void subSetSuffixArrayFileStreamType()
+        {
+            Console.WriteLine("What File Stream type would you like to use to access the FileSystem?");
+            Console.WriteLine("1.\tFileStream (default)\n" +
+                "2.\tFastFileStream (Windows only, new development)");
+
+            while(true)
+            {
+                Console.Write("Selection: ");
+                string selection = Console.ReadLine();
+
+                bool validSelection = true;
+
+                switch(selection)
+                {
+                    case "1":
+                        suffixArrayStreamType = typeof(FileStream);
+                        break;
+                    case "2":
+                        suffixArrayStreamType = typeof(FastFileStream);
                         break;
                     default:
                         validSelection = false;
@@ -895,7 +930,7 @@ namespace StringSearchConsole
             {
                 stream = null;
             }
-            //Else if storing on the File System
+            //Else if storing on the File System and accessing it with the default FileStream
             else if(suffixArrayStreamType == typeof(FileStream))
             {
                 //Note: the suffx array file is always opened for Read & Write, even if we only actually need read permission. This could perhaps be improved later
@@ -903,6 +938,11 @@ namespace StringSearchConsole
                 //  As such FileShare is set to allow other process to both read and write to the file. Both are given even though read is the only one needed because it is always opened
                 //  for both read & write
                 stream = new FileStream(workingDirectory + suffixArrayFileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite, suffixArrayFileStreamBufferSize);
+            }
+            //Else if storing on the File SYstem and accessing it with the FastFileStream
+            else if(suffixArrayStreamType == typeof(FastFileStream))
+            {
+                stream = new FastFileStream(workingDirectory + suffixArrayFileName, FileAccess.ReadWrite, suffixArrayFastFileStreamIoBufferSize);
             }
             else
             {

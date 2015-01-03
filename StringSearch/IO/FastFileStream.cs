@@ -239,7 +239,8 @@ namespace StringSearch.IO
                 throw new UnauthorizedAccessException("The specified path points to a directory, must be a file");
             }
 
-            if(!File.Exists(path))
+            //If opening file for read only, but the file doesn't exist, throw FileNotFoundException
+            if (fileAccess == FileAccess.Read && !File.Exists(path))
             {
                 throw new FileNotFoundException("path not found");
             }
