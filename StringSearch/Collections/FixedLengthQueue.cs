@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*
+ * PiSearch
+ * FixedLengthQueue - a generic Queue that has a fixed number of elements
+ *  Can use the additional contraint of a fixed length to improve performance over that of a regular Queue
+ * By Josh Keegan 01/12/2014
+ * Last Edit 17/12/2014
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

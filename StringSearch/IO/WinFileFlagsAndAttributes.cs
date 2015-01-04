@@ -1,4 +1,5 @@
 ﻿/*
+ * PiSearch
  * WinFileFlagsAndAttributes - File Flags and attributes used by the Windows API when opening/creating a file
  *  For a full list of possible values, see http://msdn.microsoft.com/en-us/library/windows/desktop/aa363858%28v=vs.85%29.aspx
  * By Josh Keegan 03/01/2014

@@ -1,5 +1,6 @@
 ﻿/*
- * MemoryEfficientByteAlignedBigULongArray -implementation of BigArray for the ulong data type, fulfilling the following goals:
+ * PiSearch
+ * MemoryEfficientByteAlignedBigULongArray - implementation of BigArray for the ulong data type, fulfilling the following goals:
  *  Memory Efficient - Doesn't use 64 bits per value unless actually necessary to do so
  *  Byte Aligned - Uses the minimum number of whole bytes to store the given values possible. Doesn't optimise
  *      memory usage to a per-bit level, which requires more CPU overhead.

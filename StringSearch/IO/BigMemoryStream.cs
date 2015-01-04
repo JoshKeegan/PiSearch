@@ -1,8 +1,8 @@
 ﻿/*
- * An Implementation of Stream that stores its values in Memory.
- * Is not limited to int.MaxValue bytes like MemoryStream.
- * For simplicity it does not differentiate between length & capacity; treating them as the same thing
- * 
+ * PiSearch
+ * BigMemoryStream - An Implementation of Stream that stores its values in Memory.
+ *  Is not limited to int.MaxValue bytes like MemoryStream.
+ *  For simplicity it does not differentiate between length & capacity; treating them as the same thing
  * By Josh Keegan 02/12/2014
  * Last Edit 02/01/2014
  */

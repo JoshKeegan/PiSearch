@@ -1,4 +1,5 @@
 ﻿/*
+ * PiSearch
  * CollectionExtensionsInt - Extensions Methods for ICollection<int>
  * By Josh Keegan 08/12/2014
  */

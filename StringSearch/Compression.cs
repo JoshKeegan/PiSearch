@@ -1,5 +1,5 @@
 ﻿/*
- * String Search Library
+ * PiSearch
  * Compression class
  * By Josh Keegan 06/11/2014
  * Last Edit 30/12/2014

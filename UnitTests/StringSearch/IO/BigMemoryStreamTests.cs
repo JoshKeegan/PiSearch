@@ -1,5 +1,6 @@
 ﻿/*
- * Unit Tests for BigMemoryStream
+ * PiSearch
+ * BigMemoryStream Unit Tests
  * By Josh Keegan 15/12/2014
  * Last Edit 02/01/2015
  */

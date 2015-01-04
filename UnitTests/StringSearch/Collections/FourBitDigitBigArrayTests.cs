@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * PiSearch
+ * FourBitDigitArray Unit Tests
+ * By Josh Keegan 27/11/2014
+ * Last Edit 17/12/2014
+ */
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

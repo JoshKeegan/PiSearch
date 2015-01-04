@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*
+ * PiSearch
+ * SearchString - static class containing methods to search through a given string (or other data type)
+ *  for some string (or other data type) to be found.
+ * By Josh Keegan 07/11/2014
+ * Last Edit 08/12/2014 
+ */
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,7 +17,7 @@ using StringSearch.Collections;
 
 namespace StringSearch
 {
-    public class SearchString
+    public static class SearchString
     {
         public static int[] Search(string toSearch, string lookFor)
         {

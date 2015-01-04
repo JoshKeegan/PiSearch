@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*
+ * PiSearch
+ * FourBitDigitArray - an implementation of BigArray designed to hold integers in the range 0 <= x < 15
+ *  i.e. 4 bits per value, with 1111 (15) being reserved
+ * By Josh Keegan 27/11/2014
+ * Last Edit 08/12/2014
+ */
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;

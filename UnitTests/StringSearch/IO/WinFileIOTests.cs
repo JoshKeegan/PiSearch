@@ -1,5 +1,6 @@
 ﻿/*
- * Unit Tests for WinFileIO
+ * PiSearch
+ * WinFileIO Unit Tests
  * By Josh Keegan 02/01/2015
  * Last Edit 03/01/2015
  */

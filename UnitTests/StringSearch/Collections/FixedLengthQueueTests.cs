@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * PiSearch
+ * FixedLengthQueue Unit Tests
+ * By Josh Keegan 01/12/2014
+ * Last Edit 17/12/2014
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

@@ -1,4 +1,15 @@
-﻿using System;
+﻿/*
+ * PiSearch
+ * MemoryEfficientBigULongArray - an implementation of BigArray for the ulong data type, fulfilling the following goals:
+ *  Memory Efficient - Doesn't use 64 bits per value unless actually necessary to do so
+ *  Bit Aligned - Uses the minimum number of bits to store each value (without compression)
+ *  Big - Capable of storing more than int.MaxValue values
+ *  ULong Array - simples
+ * By Josh Keegan 26/11/2014
+ * Last Edit 31/12/2014
+ */
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;

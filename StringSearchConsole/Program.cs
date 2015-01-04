@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * Program entry point for the String Search Console application, the development interface for the PiSearch project
+ * By Josh Keegan 07/11/2014
+ * Last Edit 03/01/2015
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
