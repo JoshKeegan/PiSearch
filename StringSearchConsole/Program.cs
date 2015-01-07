@@ -1,7 +1,7 @@
 ﻿/*
  * Program entry point for the String Search Console application, the development interface for the PiSearch project
  * By Josh Keegan 07/11/2014
- * Last Edit 03/01/2015
+ * Last Edit 07/01/2015
  */
 
 using System;
@@ -805,7 +805,7 @@ namespace StringSearchConsole
         private static void subUsePreviousFileSystemSuffixArrayFile()
         {
             //Check that the suffix array stream type is set to be stored on the File System
-            if(suffixArrayStreamType != typeof(FileStream))
+            if(suffixArrayStreamType != typeof(FileStream) && suffixArrayStreamType != typeof(FastFileStream))
             {
                 Console.WriteLine("Suffix array memory location is not set to use the File System");
                 return;
