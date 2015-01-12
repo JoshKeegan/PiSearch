@@ -1,7 +1,7 @@
 ﻿/*
  * Program entry point for the String Search Console application, the development interface for the PiSearch project
  * By Josh Keegan 07/11/2014
- * Last Edit 07/01/2015
+ * Last Edit 12/01/2015
  */
 
 using System;
@@ -835,7 +835,16 @@ namespace StringSearchConsole
         private static void subGenerateSuffixArray()
         {
             //Initialise the array that will hold the suffix array
-            BigArray<ulong> suffixArray = createBigArrayFromSettings(fourBitDigitArray.Length);
+            BigArray<ulong> underlyingSuffixArray = createBigArrayFromSettings(fourBitDigitArray.Length, (ulong)fourBitDigitArray.Length);
+            
+            //Now we use the complement array rather than just making the suffix array have to have 64 bits per value,
+            //  this is far more memory efficient
+            // The complements can (and will) be thrown away after the suffix array is generated, leaving the generated suffix array
+            //  in the format specified by the settings
+            //TODO: Settings for the underlying complement array stream type. SO can store on disk
+            BigArray<bool> underlyingComplementArray = new BigBoolArray(fourBitDigitArray.Length);
+            BigArray<ulong> suffixArray = new MemoryEfficientComplementBigULongArray(fourBitDigitArray.Length,
+                (ulong)fourBitDigitArray.Length, underlyingSuffixArray, underlyingComplementArray);
 
             //Calculate the suffix array
             long status = SAIS.sufsort(fourBitDigitArray, suffixArray, fourBitDigitArray.Length);
@@ -847,7 +856,7 @@ namespace StringSearchConsole
             else
             {
                 Console.WriteLine("Using generated Suffix Array");
-                Program.suffixArray = suffixArray;
+                Program.suffixArray = underlyingSuffixArray;
             }
         }
 
