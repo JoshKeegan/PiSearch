@@ -50,6 +50,7 @@
     <Compile Include="StringSearch\Collections\BigBoolArrayTests.cs" />
     <Compile Include="StringSearch\Collections\MemoryEfficientBigULongArrayTests.cs" />
     <Compile Include="StringSearch\Collections\MemoryEfficientByteAlignedBigULongArrayTests.cs" />
+    <Compile Include="StringSearch\Collections\MemoryEfficientComplementBigULongArrayTests.cs" />
     <Compile Include="StringSearch\CompressionTests.cs" />
     <Compile Include="StringSearch\Collections\FixedLengthQueueTests.cs" />
     <Compile Include="StringSearch\Collections\FourBitDigitBigArrayTests.cs" />

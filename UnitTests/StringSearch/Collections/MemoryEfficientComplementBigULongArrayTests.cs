@@ -1,0 +1,93 @@
+﻿/*
+ * PiSearch
+ * MemoryEfficientComplementBigULongArray Tests
+ * By Josh Keegan 12/01/2015
+ */
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using NUnit.Framework;
+using StringSearch.Collections;
+
+namespace UnitTests.StringSearch.Collections
+{
+    [TestFixture]
+    public class MemoryEfficientComplementBigULongArrayTests
+    {
+        [Test]
+        public void TestConstructor()
+        {
+            MemoryEfficientComplementBigULongArray a = new MemoryEfficientComplementBigULongArray(12);
+        }
+
+        [Test]
+        public void TestConstructorWithMaxValue()
+        {
+            new MemoryEfficientComplementBigULongArray(12, 7);
+        }
+
+        [Test]
+        public void TestConstructorWithMaxValueAndValues()
+        {
+            new MemoryEfficientComplementBigULongArray(12, 7, new MemoryEfficientByteAlignedBigULongArray(12, 7));
+        }
+
+        [Test]
+        public void TestConstructorWithMaxValueAndValuesAndComplements()
+        {
+            new MemoryEfficientComplementBigULongArray(12, 7, new MemoryEfficientBigULongArray(12, 7), new BigBoolArray(12));
+        }
+
+        [Test]
+        [ExpectedException (typeof(ArgumentNullException))]
+        public void TestConstructorWithNullValuesArray()
+        {
+            new MemoryEfficientComplementBigULongArray(100, 5, null);
+        }
+
+        [Test]
+        [ExpectedException (typeof(ArgumentNullException))]
+        public void TestConstructorWithNullComplementsArray()
+        {
+            new MemoryEfficientComplementBigULongArray(100, 5, new MemoryEfficientBigULongArray(100), null);
+        }
+
+        [Test]
+        [ExpectedException (typeof(ArgumentException))]
+        public void TestConstructorWithTooSmallValuesArray()
+        {
+            new MemoryEfficientComplementBigULongArray(100, 5, new MemoryEfficientBigULongArray(99));
+        }
+
+        [Test]
+        [ExpectedException (typeof(ArgumentException))]
+        public void TestConstructorWithTooSMallComplementsArray()
+        {
+            new MemoryEfficientComplementBigULongArray(100, 5, new MemoryEfficientBigULongArray(100), new BigBoolArray(99));
+        }
+
+        [Test]
+        public void TestReadWrite()
+        {
+            MemoryEfficientComplementBigULongArray a = new MemoryEfficientComplementBigULongArray(10, 5);
+
+            a[3] = 5;
+            a[9] = 0;
+            a[0] = 4;
+            a[2] = ~5ul;
+            a[7] = ~0ul;
+            a[8] = ~3ul;
+
+            Assert.AreEqual(5, a[3]);
+            Assert.AreEqual(0, a[9]);
+            Assert.AreEqual(4, a[0]);
+            Assert.AreEqual(~5ul, a[2]);
+            Assert.AreEqual(~0ul, a[7]);
+            Assert.AreEqual(~3ul, a[8]);
+        }
+    }
+}
