@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="BaseObjectExtensions\CollectionExtensionsInt.cs" />
     <Compile Include="Collections\BigArray.cs" />
+    <Compile Include="Collections\BigBoolArray.cs" />
     <Compile Include="Collections\FixedLengthQueue.cs" />
     <Compile Include="Collections\MemoryEfficientBigULongArray.cs" />
     <Compile Include="Collections\MemoryEfficientByteAlignedBigULongArray.cs" />
