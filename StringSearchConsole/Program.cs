@@ -1,7 +1,7 @@
 ﻿/*
  * Program entry point for the String Search Console application, the development interface for the PiSearch project
  * By Josh Keegan 07/11/2014
- * Last Edit 12/01/2015
+ * Last Edit 13/01/2015
  */
 
 using System;
@@ -530,7 +530,7 @@ namespace StringSearchConsole
 
                 long[] foundIdxs = SearchString.Search(suffixArray, fourBitDigitArray, toFind);
                 Console.WriteLine("Found {0} results", foundIdxs.Length);
-                foreach (int idx in foundIdxs)
+                foreach (long idx in foundIdxs)
                 {
                     Console.WriteLine(idx);
                 }
