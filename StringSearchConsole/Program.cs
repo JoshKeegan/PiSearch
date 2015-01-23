@@ -1,7 +1,7 @@
 ﻿/*
  * Program entry point for the String Search Console application, the development interface for the PiSearch project
  * By Josh Keegan 07/11/2014
- * Last Edit 13/01/2015
+ * Last Edit 23/01/2015
  */
 
 using System;
@@ -77,6 +77,7 @@ namespace StringSearchConsole
                 "22.\tUse previous file system suffix array file\n" + 
                 "23.\tUse compressed 4-bit digit file straight from file system\n" + 
                 "24.\tSet Suffix Array File Stream Buffer Size\n" + 
+                "25.\tVerify Suffix Array\n" + 
                 "q.\tQuit");
 
             bool quit = false;
@@ -161,6 +162,9 @@ namespace StringSearchConsole
                         break;
                     case "24": //Set suffix array file stream buffer size
                         subSetSuffixArrayFileStreamBufferSize();
+                        break;
+                    case "25":
+                        subVerifySuffixArray();
                         break;
                     case "q": //Quit
                         quit = true;
@@ -440,6 +444,69 @@ namespace StringSearchConsole
                 }
                 catch {  }
             }
+        }
+
+        private static void subVerifySuffixArray()
+        {
+            //A suffix array is valid if for each consecutive pair of values the first points to a lexicographically
+            //  smaller string in the digits than the second
+            //  Note: This will be extremely expensive to compute for large numbers of digits
+
+            int prevCurrPercent = -1;
+            bool valid = true;
+            for(long i = 0; i < suffixArray.Length - 1; i++)
+            {
+                //Percentage progress indicator
+                int currPercent = (int)((i * 100) / suffixArray.Length);
+                if(currPercent != prevCurrPercent)
+                {
+                    Console.WriteLine("{0}% complete", currPercent);
+                    prevCurrPercent = currPercent;
+                }
+
+                //Get the two suffix array values (digits indices) to compare
+                long a = (long)suffixArray[i];
+                long b = (long)suffixArray[i + 1];
+
+                //Check that a points to a lexicographically smaller string than b
+                bool aSmaller = false;
+                for(long j = a, k = b; true; j++, k++)
+                {
+                    //Bounds check
+                    if(j >= fourBitDigitArray.Length)
+                    {
+                        aSmaller = true;
+                        break;
+                    }
+                    if(k >= fourBitDigitArray.Length)
+                    {
+                        aSmaller = false;
+                        break;
+                    }
+
+                    byte valA = fourBitDigitArray[j];
+                    byte valB = fourBitDigitArray[k];
+
+                    if (valA < valB)
+                    {
+                        aSmaller = true;
+                        break;
+                    }
+                    else if(valA > valB)
+                    {
+                        aSmaller = false;
+                        break;
+                    }
+                }
+
+                if(!aSmaller)
+                {
+                    valid = false;
+                    break;
+                }
+            }
+
+            Console.WriteLine("Suffix Array is {0}valid", valid ? "" : "in");
         }
 
         private static void subSearchLoadedString()
