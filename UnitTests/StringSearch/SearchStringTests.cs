@@ -2,7 +2,7 @@
  * PiSearch
  * SearchString Unit Tests
  * By Josh Keegan 20/11/2014
- * Last Edit 22/12/2014
+ * Last Edit 23/01/2015
  */
 
 using System;
@@ -136,7 +136,7 @@ namespace UnitTests.StringSearch
                     string find = STR.Substring(i, j - i);
 
                     long[] seqSearchRes = SearchString.Search(STR, find).ToLongArr();
-                    long[] suffixArraySearchRes = SearchString.Search(suffixArray, fourBitDigitArray, find);
+                    long[] suffixArraySearchRes = SearchString.Search(suffixArray, fourBitDigitArray, find).SortedValues;
 
                     CollectionAssert.AreEqual(seqSearchRes, suffixArraySearchRes);
                 }
@@ -164,7 +164,7 @@ namespace UnitTests.StringSearch
                 string find = kvp.Key;
                 long[] expected = kvp.Value;
 
-                long[] actual = SearchString.Search(suffixArray, fourBitDigitArray, find);
+                long[] actual = SearchString.Search(suffixArray, fourBitDigitArray, find).SortedValues;
 
                 CollectionAssert.AreEqual(expected, actual);
             }
@@ -182,7 +182,7 @@ namespace UnitTests.StringSearch
 
             long[] expected = new long[] { 11 };
 
-            long[] actual = SearchString.Search(suffixArray, fourBitDigitArray, FIND);
+            long[] actual = SearchString.Search(suffixArray, fourBitDigitArray, FIND).SortedValues;
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -199,7 +199,7 @@ namespace UnitTests.StringSearch
 
             long[] expected = new long[] { 0 };
 
-            long[] actual = SearchString.Search(suffixArray, fourBitDigitArray, FIND);
+            long[] actual = SearchString.Search(suffixArray, fourBitDigitArray, FIND).SortedValues;
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -214,7 +214,7 @@ namespace UnitTests.StringSearch
 
             long[] expected = new long[] { 0 };
 
-            long[] actual = SearchString.Search(suffixArray, fourBitDigitArray, STR);
+            long[] actual = SearchString.Search(suffixArray, fourBitDigitArray, STR).SortedValues;
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -242,7 +242,7 @@ namespace UnitTests.StringSearch
 
             long[] expected = new long[0];
 
-            long[] actual = SearchString.Search(suffixArray, fourBitDigitArray, FIND);
+            long[] actual = SearchString.Search(suffixArray, fourBitDigitArray, FIND).SortedValues;
 
             CollectionAssert.AreEqual(expected, actual);
         }

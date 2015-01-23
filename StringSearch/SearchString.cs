@@ -3,7 +3,7 @@
  * SearchString - static class containing methods to search through a given string (or other data type)
  *  for some string (or other data type) to be found.
  * By Josh Keegan 07/11/2014
- * Last Edit 08/12/2014 
+ * Last Edit 23/01/2015 
  */
 
 using System;
@@ -79,7 +79,7 @@ namespace StringSearch
             }
         }
 
-        public static long[] Search(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, string lookFor)
+        public static SuffixArrayRange Search(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, string lookFor)
         {
             byte[] byteArrLookFor = new byte[lookFor.Length];
 
@@ -91,7 +91,7 @@ namespace StringSearch
             return Search(suffixArray, digitArray, byteArrLookFor);
         }
 
-        public static long[] Search(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, byte[] lookFor)
+        public static SuffixArrayRange Search(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, byte[] lookFor)
         {
             //Validation
             if(lookFor.Length == 0)
@@ -101,7 +101,7 @@ namespace StringSearch
 
             if(digitArray.Length == 0)
             {
-                return new long[0];
+                return new SuffixArrayRange(false);
             }
 
             if(suffixArray.Length != digitArray.Length)
@@ -114,7 +114,7 @@ namespace StringSearch
             //If there were no matches
             if(matchingPosition == -1)
             {
-                return new long[0];
+                return new SuffixArrayRange(false);
             }
             else //Otherwise match found, look for more
             {
@@ -131,16 +131,8 @@ namespace StringSearch
                     max++;
                 }
 
-                long[] toRet = new long[max - min + 1];
-                for(long i = min; i <= max; i++)
-                {
-                    toRet[i - min] = (long)suffixArray[i];
-                }
-
-                //Sort the array of string indices (Array.Sort implements Quicksort)
-                Array.Sort(toRet);
-
-                return toRet;
+                SuffixArrayRange suffixArrayRange = new SuffixArrayRange(min, max, suffixArray, digitArray);
+                return suffixArrayRange;
             }
         }
 

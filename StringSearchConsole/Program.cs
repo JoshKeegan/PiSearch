@@ -595,7 +595,8 @@ namespace StringSearchConsole
                 stopwatch.Reset();
                 stopwatch.Start();
 
-                long[] foundIdxs = SearchString.Search(suffixArray, fourBitDigitArray, toFind);
+                SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, toFind);
+                long[] foundIdxs = suffixArrayRange.SortedValues;
                 Console.WriteLine("Found {0} results", foundIdxs.Length);
                 foreach (long idx in foundIdxs)
                 {
