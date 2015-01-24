@@ -1,6 +1,6 @@
 ﻿/*
  * PiSearch
- * Win32FileIO - High speed file IO using the windows API
+ * WinFileIO - High speed file IO using the windows API
  *  P/Invoke methods in kernel32 for better performance
  * 
  * By Robert G. Bryan in Feb, 2011.
