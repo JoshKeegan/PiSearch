@@ -186,7 +186,7 @@ namespace StringSearch
             //If the prefix being searched for cannot start here because there isn't enough remaining digits
             if(startIdx + findPrefix.Length - 1 >= digitArray.Length)
             {
-                return 1; //Searching too high (in the array)
+                return -1; //Searching too low (in the suffix array)
             }
 
             for(int i = 0; i < findPrefix.Length; i++)
