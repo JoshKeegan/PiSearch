@@ -522,25 +522,28 @@ namespace StringSearchConsole
         {
             if(fourBitDigitArray != null && suffixArray != null)
             {
-                Console.Write("Precompute results for strings of length: ");
-                string strStringLength = Console.ReadLine().Trim();
                 int stringLength = -1;
 
-                while(stringLength <= 0)
+                while(stringLength <= 0 || stringLength >= 10)
                 {
+                    Console.Write("Precompute results for strings of length: ");
+                    string strStringLength = Console.ReadLine().Trim();
+
                     try
                     {
                         stringLength = int.Parse(strStringLength);
                     }
                     catch {  }
 
-                    if(stringLength <= 0)
+                    if(stringLength <= 0 || stringLength >= 10)
                     {
-                        Console.WriteLine("Length must be > 0");
+                        Console.WriteLine("Length must be > 0 and < 10");
                     }
                 }
 
                 Console.WriteLine("Precomputing suffix array results for strings of length {0}", stringLength);
+                stopwatch.Reset();
+                stopwatch.Start();
 
                 //TODO: option to specify which implementation of BigArray<ulong> is to be used
                 singleLengthPrecomputedSearchResults = PrecomputeSearchResults.GenerateSearchResults(
