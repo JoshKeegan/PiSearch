@@ -20,6 +20,7 @@ namespace StringSearch
         public static MemoryEfficientBigULongArray GenerateSearchResults(FourBitDigitBigArray fourBitDigitArray,
             BigArray<ulong> suffixArray, int stringLength)
         {
+            //TODO: Should be 10 pow stringLength
             int lessThan = stringLength * 10;
             string toStringFormatter = "D" + stringLength;
 
