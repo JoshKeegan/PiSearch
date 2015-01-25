@@ -183,6 +183,12 @@ namespace StringSearch
 
         internal static int doesStartWithSuffix(FourBitDigitBigArray digitArray, byte[] findPrefix, long startIdx)
         {
+            //If the prefix being searched for cannot start here because there isn't enough remaining digits
+            if(startIdx + findPrefix.Length - 1 >= digitArray.Length)
+            {
+                return 1; //Searching too high (in the array)
+            }
+
             for(int i = 0; i < findPrefix.Length; i++)
             {
                 byte findPrefixByte = findPrefix[i];
