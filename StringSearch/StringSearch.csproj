@@ -57,6 +57,7 @@
     <Compile Include="IO\FastFileStream.cs" />
     <Compile Include="IO\WinFileFlagsAndAttributes.cs" />
     <Compile Include="IO\WinFileIO.cs" />
+    <Compile Include="PrecomputeSearchResults.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchString.cs" />
     <Compile Include="SuffixArrayRange.cs" />

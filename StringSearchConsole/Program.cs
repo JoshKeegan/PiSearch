@@ -1,7 +1,7 @@
 ﻿/*
  * Program entry point for the String Search Console application, the development interface for the PiSearch project
  * By Josh Keegan 07/11/2014
- * Last Edit 23/01/2015
+ * Last Edit 25/01/2015
  */
 
 using System;
@@ -27,6 +27,7 @@ namespace StringSearchConsole
         private static Stream loaded4BitDigitStream = null;
         private static FourBitDigitBigArray fourBitDigitArray = null;
         private static BigArray<ulong> suffixArray = null;
+        private static BigArray<ulong> singleLengthPrecomputedSearchResults = null;
         private static Stopwatch stopwatch = new Stopwatch();
         private static Type suffixArrayType = typeof(MemoryEfficientBigULongArray); // Note: Byte Aligned better for generation (fater), non-byte aligned better for searching (due to better memory efficiency). However, depends on hardware available
         private static Type suffixArrayStreamType = null; //Null for store in memory (uses the default underlying store of the BigArray<ulong> implementation that is being used
@@ -77,7 +78,9 @@ namespace StringSearchConsole
                 "22.\tUse previous file system suffix array file\n" + 
                 "23.\tUse compressed 4-bit digit file straight from file system\n" + 
                 "24.\tSet Suffix Array File Stream Buffer Size\n" + 
-                "25.\tVerify Suffix Array\n" + 
+                "25.\tVerify Suffix Array\n" +
+                "26.\tPrecompute suffix array indices for search strings of a specified length\n" + 
+                "27.\tSave underlying stream of precomputed suffi xrray search indices for a specified length\n" + 
                 "q.\tQuit");
 
             bool quit = false;
@@ -165,6 +168,12 @@ namespace StringSearchConsole
                         break;
                     case "25":
                         subVerifySuffixArray();
+                        break;
+                    case "26":
+                        subPrecomputeSuffixArrayIndices();
+                        break;
+                    case "27":
+                        subSaveSingleLengthPrecomputedSearchResultsUnderlyingStream();
                         break;
                     case "q": //Quit
                         quit = true;
@@ -509,6 +518,40 @@ namespace StringSearchConsole
             Console.WriteLine("Suffix Array is {0}valid", valid ? "" : "in");
         }
 
+        private static void subPrecomputeSuffixArrayIndices()
+        {
+            if(fourBitDigitArray != null && suffixArray != null)
+            {
+                Console.Write("Precompute results for strings of length: ");
+                string strStringLength = Console.ReadLine().Trim();
+                int stringLength = -1;
+
+                while(stringLength <= 0)
+                {
+                    try
+                    {
+                        stringLength = int.Parse(strStringLength);
+                    }
+                    catch {  }
+
+                    if(stringLength <= 0)
+                    {
+                        Console.WriteLine("Length must be > 0");
+                    }
+                }
+
+                Console.WriteLine("Precomputing suffix array results for strings of length {0}", stringLength);
+
+                //TODO: option to specify which implementation of BigArray<ulong> is to be used
+                singleLengthPrecomputedSearchResults = PrecomputeSearchResults.GenerateSearchResults(
+                    fourBitDigitArray, suffixArray, stringLength);
+            }
+            else
+            {
+                Console.WriteLine("Must have a 4 bit digit stream and suffix array loaded");
+            }
+        }
+
         private static void subSearchLoadedString()
         {
             if(loadedString != null)
@@ -797,6 +840,19 @@ namespace StringSearchConsole
             UnderlyingStream suffixArray = (UnderlyingStream)Program.suffixArray;
 
             Compression.WriteStreamNoCompression(suffixArray, workingDirectory + fileName);            
+        }
+
+        private static void subSaveSingleLengthPrecomputedSearchResultsUnderlyingStream()
+        {
+            Console.Write("output file name: ");
+            string fileName = Console.ReadLine();
+
+            stopwatch.Reset();
+            stopwatch.Start();
+
+            UnderlyingStream precomputed = (UnderlyingStream)Program.singleLengthPrecomputedSearchResults;
+
+            Compression.WriteStreamNoCompression(precomputed, workingDirectory + fileName);
         }
 
         private static void subSetSuffixArrayMemoryLocation()

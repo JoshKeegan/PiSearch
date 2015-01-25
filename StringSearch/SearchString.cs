@@ -3,7 +3,7 @@
  * SearchString - static class containing methods to search through a given string (or other data type)
  *  for some string (or other data type) to be found.
  * By Josh Keegan 07/11/2014
- * Last Edit 23/01/2015 
+ * Last Edit 25/01/2015 
  */
 
 using System;
@@ -81,14 +81,19 @@ namespace StringSearch
 
         public static SuffixArrayRange Search(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, string lookFor)
         {
-            byte[] byteArrLookFor = new byte[lookFor.Length];
+            return Search(suffixArray, digitArray, StrToByteArr(lookFor));
+        }
 
-            for (int i = 0; i < byteArrLookFor.Length; i++)
+        internal static byte[] StrToByteArr(string str)
+        {
+            byte[] arr = new byte[str.Length];
+
+            for (int i = 0; i < arr.Length; i++)
             {
-                byteArrLookFor[i] = byte.Parse(lookFor[i].ToString());
+                arr[i] = byte.Parse(str[i].ToString());
             }
 
-            return Search(suffixArray, digitArray, byteArrLookFor);
+            return arr;
         }
 
         public static SuffixArrayRange Search(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, byte[] lookFor)
