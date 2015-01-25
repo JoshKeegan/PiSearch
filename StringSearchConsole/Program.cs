@@ -80,7 +80,8 @@ namespace StringSearchConsole
                 "24.\tSet Suffix Array File Stream Buffer Size\n" + 
                 "25.\tVerify Suffix Array\n" +
                 "26.\tPrecompute suffix array indices for search strings of a specified length\n" + 
-                "27.\tSave underlying stream of precomputed suffi xrray search indices for a specified length\n" + 
+                "27.\tSave underlying stream of precomputed suffix array search indices for a specified length\n" + 
+                "28.\tPrint precomputed suffix array indices\n" +
                 "q.\tQuit");
 
             bool quit = false;
@@ -174,6 +175,9 @@ namespace StringSearchConsole
                         break;
                     case "27":
                         subSaveSingleLengthPrecomputedSearchResultsUnderlyingStream();
+                        break;
+                    case "28":
+                        subPrintSingleLengthPrecomputedSearchResults();
                         break;
                     case "q": //Quit
                         quit = true;
@@ -552,6 +556,21 @@ namespace StringSearchConsole
             else
             {
                 Console.WriteLine("Must have a 4 bit digit stream and suffix array loaded");
+            }
+        }
+
+        private static void subPrintSingleLengthPrecomputedSearchResults()
+        {
+            if(singleLengthPrecomputedSearchResults != null)
+            {
+                foreach(ulong l in singleLengthPrecomputedSearchResults)
+                {
+                    Console.WriteLine(l);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Must have a single length precomputed search results file loaded");
             }
         }
 
