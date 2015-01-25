@@ -23,13 +23,10 @@ namespace StringSearch
             int lessThan = intPow(10, (uint)stringLength);
             string toStringFormatter = "D" + stringLength;
 
-            int[] lengthChangeIndices = getLengthChangeIndices(stringLength);
-
             MemoryEfficientBigULongArray precomputedResults = new MemoryEfficientBigULongArray(
-                lessThan + lengthChangeIndices.Length, (ulong)fourBitDigitArray.Length, new MemoryStream());
+                lessThan * 2, (ulong)fourBitDigitArray.Length, new MemoryStream());
 
             long suffixArrayIdx = 0;
-            int lengthChangeIdx = 0;
 
             for (int i = 0; i < lessThan; i++)
             {
@@ -41,27 +38,19 @@ namespace StringSearch
 
                     long suffixArrayVal = (long)suffixArray[suffixArrayIdx];
 
-                    //If we're a length change index (e.g. going from search 09 to 10, we'll have skipped value
-                    //  in the suffix array that points to "1", if it exists in the digits being searched)
-                    //  These value(s) will need to be skipped here (if they exist)
-                    if(lengthChangeIdx < lengthChangeIndices.Length && lengthChangeIndices[lengthChangeIdx] == i)
-                    {
-                        while (suffixArrayVal < fourBitDigitArray.Length && suffixArrayIdx < suffixArray.Length &&
+                    //Find when this string starts
+                    while (suffixArrayVal < fourBitDigitArray.Length &&
+                        suffixArrayIdx < suffixArray.Length &&
                         SearchString.doesStartWithSuffix(fourBitDigitArray, bArrSearch, suffixArrayVal) == -1)
+                    {
+                        suffixArrayIdx++;
+                        if (suffixArrayIdx < suffixArray.Length)
                         {
-                            suffixArrayIdx++;
-                            if (suffixArrayIdx < suffixArray.Length)
-                            {
-                                suffixArrayVal = (long)suffixArray[suffixArrayIdx];
-                            }
+                            suffixArrayVal = (long)suffixArray[suffixArrayIdx];
                         }
-
-                        //Store the suffix array min idx for this value
-                        precomputedResults[lessThan + lengthChangeIdx] = (ulong)suffixArrayIdx;
-
-                        //Stop looking for this length change & start looking for the next
-                        lengthChangeIdx++;
                     }
+
+                    precomputedResults[i * 2] = (ulong)suffixArrayIdx;
 
                     //Find when this string ends
                     while (suffixArrayVal < fourBitDigitArray.Length &&
@@ -75,11 +64,13 @@ namespace StringSearch
                         }
                     }
 
-                    precomputedResults[i] = (ulong)suffixArrayIdx;
+                    //Noe that here the exclusive maximum is stored, so if min == max the string wasn't found
+                    precomputedResults[(i * 2) + 1] = (ulong)suffixArrayIdx;
                 }
                 else
                 {
-                    precomputedResults[i] = (ulong)suffixArray.Length;
+                    precomputedResults[i * 2] = (ulong)suffixArray.Length;
+                    precomputedResults[(i * 2) + 1] = (ulong)suffixArray.Length;
                 }
             }
 
@@ -95,24 +86,6 @@ namespace StringSearch
             {
                 toRet *= n;
             }
-            return toRet;
-        }
-
-        private static int[] getLengthChangeIndices(int stringLength)
-        {
-            //TODO: I think there should always be a length change at 0, since you're going from length 0 to length 1
-            //  and if you were doing 2 digits, the first thing you'd search for is "00", but the string could end with "0"
-            //  so that's the same scneario the length change indices were built to handle
-            //  Check the maths or run a test to see if this is right
-            int[] toRet = new int[stringLength - 1];
-
-            int n = 1;
-            for (int i = 0; i < toRet.Length; i++)
-            {
-                n *= 10;
-                toRet[i] = n;
-            }
-
             return toRet;
         }
     }

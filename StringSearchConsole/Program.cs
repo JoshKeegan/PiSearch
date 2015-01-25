@@ -563,9 +563,12 @@ namespace StringSearchConsole
         {
             if(singleLengthPrecomputedSearchResults != null)
             {
-                foreach(ulong l in singleLengthPrecomputedSearchResults)
+                for(long i = 0; i < singleLengthPrecomputedSearchResults.Length; i += 2)
                 {
-                    Console.WriteLine(l);
+                    ulong min = singleLengthPrecomputedSearchResults[i];
+                    ulong max = singleLengthPrecomputedSearchResults[i + 1];
+
+                    Console.WriteLine("Min: {0}, Max: {1}", min, max);
                 }
             }
             else
