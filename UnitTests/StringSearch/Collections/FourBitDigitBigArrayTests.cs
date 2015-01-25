@@ -2,7 +2,7 @@
  * PiSearch
  * FourBitDigitArray Unit Tests
  * By Josh Keegan 27/11/2014
- * Last Edit 17/12/2014
+ * Last Edit 25/01/2015
  */
 
 using System;
@@ -276,7 +276,7 @@ namespace UnitTests.StringSearch.Collections
 
             Compression.CompressFile4BitDigit("temp.txt", "temp.4bitDigit");
 
-            Stream memStream = Compression.ReadStreamNoComression("temp.4bitDigit");
+            Stream memStream = Compression.ReadStreamNoCompression("temp.4bitDigit");
 
             File.Delete("temp.txt");
             File.Delete("temp.4bitDigit");

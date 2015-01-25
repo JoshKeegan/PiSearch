@@ -2,7 +2,7 @@
  * PiSearch
  * Compression class
  * By Josh Keegan 06/11/2014
- * Last Edit 30/12/2014
+ * Last Edit 25/01/2015
  */
 
 using System;
@@ -100,7 +100,7 @@ namespace StringSearch
             return builder.ToString();
         }
 
-        public static Stream ReadStreamNoComression(string filePath)
+        public static Stream ReadStreamNoCompression(string filePath)
         {
             FileStream fileStream = new FileStream(filePath, FileMode.Open);
             Stream memStream;
