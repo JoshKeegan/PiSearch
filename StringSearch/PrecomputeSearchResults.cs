@@ -20,8 +20,7 @@ namespace StringSearch
         public static MemoryEfficientBigULongArray GenerateSearchResults(FourBitDigitBigArray fourBitDigitArray,
             BigArray<ulong> suffixArray, int stringLength)
         {
-            //TODO: Should be 10 pow stringLength
-            int lessThan = stringLength * 10;
+            int lessThan = intPow(10, (uint)stringLength);
             string toStringFormatter = "D" + stringLength;
 
             MemoryEfficientBigULongArray precomputedResults = new MemoryEfficientBigULongArray(
@@ -60,6 +59,18 @@ namespace StringSearch
             }
 
             return precomputedResults;
+        }
+
+        //Very simple implementation of a Pow function for integers. Has very tight range of inputs that it'll
+        //  work on & no overflow checking, but will do fine for this usage
+        private static int intPow(int n, uint pow)
+        {
+            int toRet = 1;
+            for(int i = 0; i < pow; i++)
+            {
+                toRet *= n;
+            }
+            return toRet;
         }
     }
 }
