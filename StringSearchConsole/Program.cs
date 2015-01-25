@@ -343,7 +343,7 @@ namespace StringSearchConsole
                         loaded4BitDigitStream = null;
                     }
 
-                    loaded4BitDigitStream = Compression.ReadStreamNoComression(workingDirectory + fileName);
+                    loaded4BitDigitStream = Compression.ReadStreamNoCompression(workingDirectory + fileName);
 
                     //Now wrap it in a FourBitDigitArray
                     fourBitDigitArray = new FourBitDigitBigArray(loaded4BitDigitStream);
