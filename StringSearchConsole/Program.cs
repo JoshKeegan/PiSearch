@@ -1,7 +1,7 @@
 ﻿/*
  * Program entry point for the String Search Console application, the development interface for the PiSearch project
  * By Josh Keegan 07/11/2014
- * Last Edit 25/01/2015
+ * Last Edit 26/01/2015
  */
 
 using System;
@@ -82,6 +82,7 @@ namespace StringSearchConsole
                 "26.\tPrecompute suffix array indices for search strings of a specified length\n" + 
                 "27.\tSave underlying stream of precomputed suffix array search indices for a specified length\n" + 
                 "28.\tPrint precomputed suffix array indices\n" +
+                "29.\tLoad suffix array (of selected suffix array data type)\n" + 
                 "q.\tQuit");
 
             bool quit = false;
@@ -178,6 +179,9 @@ namespace StringSearchConsole
                         break;
                     case "28":
                         subPrintSingleLengthPrecomputedSearchResults();
+                        break;
+                    case "29":
+                        subLoadSuffixArraySelectedSuffixArrayDataType();
                         break;
                     case "q": //Quit
                         quit = true;
@@ -291,6 +295,40 @@ namespace StringSearchConsole
                     break;
                 }
             }
+        }
+
+        private static void subLoadSuffixArraySelectedSuffixArrayDataType()
+        {
+            //Must have a four bit digit array loaded
+            if(fourBitDigitArray == null)
+            {
+                Console.WriteLine("Must have a 4 bit digit array loaded");
+                return;
+            }
+
+            string fileName;
+
+            while (true)
+            {
+                Console.Write("Load suffix array file: ");
+                fileName = Console.ReadLine();
+
+                if (File.Exists(workingDirectory + fileName))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("File not found \"{0}\"", fileName);
+                }
+            }
+
+            stopwatch.Reset();
+            stopwatch.Start();
+
+            Stream memStream = Compression.ReadStreamNoCompression(workingDirectory + fileName);
+
+            suffixArray = createBigArrayFromSettings(fourBitDigitArray.Length, (ulong)fourBitDigitArray.Length, memStream);
         }
 
         private static void subLoadFile()
@@ -1159,21 +1197,26 @@ namespace StringSearchConsole
             }
 
             //Have now constructed the underlying Stream, Construct the Big Array
+            return createBigArrayFromSettings(length, maxValue, stream);
+        }
+
+        private static BigArray<ulong> createBigArrayFromSettings(long length, ulong? maxValue, Stream stream)
+        {
             List<object> bigArrayArgs = new List<object>();
             bigArrayArgs.Add(length);
 
-            if(maxValue != null)
+            if (maxValue != null)
             {
                 bigArrayArgs.Add(maxValue.GetValueOrDefault());
             }
 
             //If we've made a stream to supply to the constructor, add it to the list of args
-            if(stream != null)
+            if (stream != null)
             {
                 bigArrayArgs.Add(stream);
             }
 
-            object[] arrBigArrayArgs =  bigArrayArgs.ToArray();
+            object[] arrBigArrayArgs = bigArrayArgs.ToArray();
 
             BigArray<ulong> bigArray = (BigArray<ulong>)Activator.CreateInstance(suffixArrayType, arrBigArrayArgs);
 
