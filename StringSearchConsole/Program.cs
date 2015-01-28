@@ -420,7 +420,7 @@ namespace StringSearchConsole
                     FileMode.Open, FileAccess.Read);
 
                 BigArray<ulong> underlyingArray = new MemoryEfficientBigULongArray(
-                    PrecomputeSearchResults.NumPrecomputedResults(searchStringLength), (ulong)fourBitDigitArray.Length);
+                    PrecomputeSearchResults.NumPrecomputedResults(searchStringLength), (ulong)fourBitDigitArray.Length, s);
 
                 BigArray<PrecomputedSearchResult> singleLengthPrecomputedSearchResults = new BigPrecomputedSearchResultsArray(underlyingArray);
                 precomputedSearchResults[i] = singleLengthPrecomputedSearchResults;
