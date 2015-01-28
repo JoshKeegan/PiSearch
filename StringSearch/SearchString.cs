@@ -183,13 +183,10 @@ namespace StringSearch
 
         internal static int doesStartWithSuffix(FourBitDigitBigArray digitArray, byte[] findPrefix, long startIdx)
         {
-            //If the prefix being searched for cannot start here because there isn't enough remaining digits
-            if(startIdx + findPrefix.Length - 1 >= digitArray.Length)
-            {
-                return -1; //Searching too low (in the suffix array)
-            }
+            //Number of digits in the digit array from startIdx (inclusive)
+            long numDigitsAfter = digitArray.Length - startIdx;
 
-            for(int i = 0; i < findPrefix.Length; i++)
+            for(int i = 0; i < findPrefix.Length && i < numDigitsAfter; i++)
             {
                 byte findPrefixByte = findPrefix[i];
                 byte actualByte = digitArray[startIdx + i];
@@ -203,7 +200,19 @@ namespace StringSearch
                     return -1; //Searching too low (in the array)
                 }
             }
-            return 0; //Jackpot
+
+            //If the search terminated because there wasn't enough remaining digits
+            if (numDigitsAfter < findPrefix.Length)
+            {
+                //Searching too low (in the suffix array)
+                //  This is because a string s starting with string t is lexicographically greater than t
+                //  i.e. 954 > 95
+                return -1;
+            }
+            else //Otherwise the search terminated because we'd matched all digits we'd been given to find
+            {
+                return 0; //Jackpot
+            }
         }
 
         public static int FindNextOccurrence(string toSearch, string lookFor, int fromIdx)
