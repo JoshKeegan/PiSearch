@@ -266,8 +266,8 @@ namespace UnitTests.StringSearch
         [Test]
         public void TestSuffixArraySearchDigitNotInString()
         {
-            const string STR = "1234567812340";
-            const string FIND = "9";
+            const string STR = "1234567912340";
+            const string FIND = "8";
 
             BigArray<ulong> suffixArray = buildSuffixArray(STR);
             FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
@@ -505,6 +505,50 @@ namespace UnitTests.StringSearch
             byte[] toFind = stringToByteArr(strToFind);
 
             Assert.AreEqual(-1, SearchString.doesStartWithSuffix(fourBitDigitArray, toFind, 0));
+        }
+
+        [Test]
+        public void TestDoesStartWithSuffixDigitArrayTooSmallMatchUntilEnd()
+        {
+            const string STR = "1234567890";
+
+            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+
+            string strToFind = "901";
+            byte[] toFind = stringToByteArr(strToFind);
+
+            Assert.AreEqual(-1, SearchString.doesStartWithSuffix(fourBitDigitArray, toFind, STR.Length - 2));
+        }
+
+        [Test]
+        public void TestDoesStartWithSuffixLastDigitsInDigitArray()
+        {
+            const string STR = "1234567890";
+
+            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+
+            string strToFind = "90";
+            byte[] toFind = stringToByteArr(strToFind);
+
+            Assert.AreEqual(0, SearchString.doesStartWithSuffix(fourBitDigitArray, toFind, STR.Length - 2));
+        }
+
+        [Test]
+        public void TestDoesStartWithSuffixDigitArrayDigitArrayTooSmallNotMatchUntilEnd()
+        {
+            const string STR = "1234567890";
+
+            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+
+            string strToFindHigh = "911";
+            byte[] toFindHigh = stringToByteArr(strToFindHigh);
+
+            Assert.AreEqual(-1, SearchString.doesStartWithSuffix(fourBitDigitArray, toFindHigh, STR.Length - 2));
+
+            string strToFindLow = "871";
+            byte[] toFindLow = stringToByteArr(strToFindLow);
+
+            Assert.AreEqual(1, SearchString.doesStartWithSuffix(fourBitDigitArray, toFindLow, STR.Length - 2));
         }
 
         [Test]
