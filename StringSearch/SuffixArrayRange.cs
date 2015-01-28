@@ -2,6 +2,7 @@
  * PiSearch
  * SuffixArrayRange - Represents a range of values in a suffix array
  * By Josh Keegan 23/01/2015
+ * Last Edit 28/01/2015
  */
 
 using StringSearch.Collections;
@@ -65,6 +66,26 @@ namespace StringSearch
         public SuffixArrayRange(bool hasResults)
         {
             this.HasResults = hasResults;
+        }
+
+        public SuffixArrayRange(PrecomputedSearchResult precomputedResult, BigArray<ulong> suffixArray, 
+            FourBitDigitBigArray digits)
+        {
+            //If there are no results
+            if(precomputedResult.MinSuffixArrayIdx == precomputedResult.MaxSuffixArrayIdx)
+            {
+                this.HasResults = false;
+            }
+            else //Otherwise there are search results
+            {
+                this.HasResults = true;
+                this.Min = precomputedResult.MinSuffixArrayIdx;
+                //Note that the precomputed results are stored with the max value exclusive so that it can also encode HasResults
+                //  whereas this class uses inclusive, so correct for that by taking 1
+                this.Max = precomputedResult.MaxSuffixArrayIdx - 1;
+                this.SuffixArray = suffixArray;
+                this.Digits = digits;
+            }
         }
     }
 }

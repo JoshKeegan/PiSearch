@@ -89,13 +89,30 @@ namespace StringSearch
             }
         }
 
+        public static SuffixArrayRange Search(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, byte[] lookFor)
+        {
+            return Search(suffixArray, digitArray, lookFor, null);
+        }
+
         public static SuffixArrayRange Search(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, string lookFor)
         {
-            return Search(suffixArray, digitArray, StrToByteArr(lookFor));
+            return Search(suffixArray, digitArray, lookFor, null);
+        }
+
+        public static SuffixArrayRange Search(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, string lookFor,
+            BigArray<PrecomputedSearchResult>[] precomputedResults)
+        {
+            return Search(suffixArray, digitArray, StrToByteArr(lookFor), precomputedResults);
         }
 
         internal static byte[] StrToByteArr(string str)
         {
+            //Validation
+            if(str == null)
+            {
+                throw new ArgumentNullException("str");
+            }
+
             byte[] arr = new byte[str.Length];
 
             for (int i = 0; i < arr.Length; i++)
@@ -106,7 +123,45 @@ namespace StringSearch
             return arr;
         }
 
-        public static SuffixArrayRange Search(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, byte[] lookFor)
+        internal static string ByteArrToStr(byte[] arr)
+        {
+            //Validation
+            if(arr == null)
+            {
+                throw new ArgumentNullException("arr");
+            }
+
+            StringBuilder builder = new StringBuilder();
+
+            foreach(byte b in arr)
+            {
+                //Byte-level validation
+                if(b > 9)
+                {
+                    throw new ArgumentOutOfRangeException("bytes in arr must be < 10");
+                }
+
+                builder.Append(b);
+            }
+
+            return builder.ToString();
+        }
+
+        internal static long ByteArrToLong(byte[] arr)
+        {
+            //Validation
+            if(arr == null)
+            {
+                throw new ArgumentNullException("arr");
+            }
+
+            string s = ByteArrToStr(arr);
+
+            return long.Parse(s);
+        }
+
+        public static SuffixArrayRange Search(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, byte[] lookFor, 
+            BigArray<PrecomputedSearchResult>[] precomputedResults)
         {
             //Validation
             if(lookFor.Length == 0)
@@ -124,30 +179,53 @@ namespace StringSearch
                 throw new ArgumentException("Suffix Array must be the same length as the Digit Array. This is not the correct suffix array for this digit array");
             }
 
-            long matchingPosition = binarySearchForPrefix(suffixArray, digitArray, lookFor, 0, suffixArray.Length - 1);
-
-            //If there were no matches
-            if(matchingPosition == -1)
+            //If we've been passed null for the precomputedResults, make an empty array for them
+            if(precomputedResults == null)
             {
-                return new SuffixArrayRange(false);
+                precomputedResults = new BigPrecomputedSearchResultsArray[0];
             }
-            else //Otherwise match found, look for more
+
+            //If we have been given the precomputed results for strings of the length we're looking for
+            if(precomputedResults.Length >= lookFor.Length)
             {
-                long min = matchingPosition;
-                long max = matchingPosition;
+                BigArray<PrecomputedSearchResult> precomputedResultsOfRequiredLength = precomputedResults[lookFor.Length - 1];
 
-                while(min > 0 && doesStartWithSuffix(digitArray, lookFor, (long)suffixArray[min - 1]) == 0)
-                {
-                    min--;
-                }
+                //Convert the string of bytes we're looking for to a long to use as the array index
+                long precomputedResultIdx = ByteArrToLong(lookFor);
 
-                while(max < digitArray.Length - 1 && doesStartWithSuffix(digitArray, lookFor, (long)suffixArray[max + 1]) == 0)
-                {
-                    max++;
-                }
+                PrecomputedSearchResult precomputedResult = precomputedResultsOfRequiredLength[precomputedResultIdx];
 
-                SuffixArrayRange suffixArrayRange = new SuffixArrayRange(min, max, suffixArray, digitArray);
+                //Convert this precomputed result into a SuffixArrayRange before retruning it
+                SuffixArrayRange suffixArrayRange = new SuffixArrayRange(precomputedResult, suffixArray, digitArray);
                 return suffixArrayRange;
+            }
+            else //Otherwise we don't have the precomputed results for this search, run the suffix array search
+            {
+                long matchingPosition = binarySearchForPrefix(suffixArray, digitArray, lookFor, 0, suffixArray.Length - 1);
+
+                //If there were no matches
+                if (matchingPosition == -1)
+                {
+                    return new SuffixArrayRange(false);
+                }
+                else //Otherwise match found, look for more
+                {
+                    long min = matchingPosition;
+                    long max = matchingPosition;
+
+                    while (min > 0 && doesStartWithSuffix(digitArray, lookFor, (long)suffixArray[min - 1]) == 0)
+                    {
+                        min--;
+                    }
+
+                    while (max < digitArray.Length - 1 && doesStartWithSuffix(digitArray, lookFor, (long)suffixArray[max + 1]) == 0)
+                    {
+                        max++;
+                    }
+
+                    SuffixArrayRange suffixArrayRange = new SuffixArrayRange(min, max, suffixArray, digitArray);
+                    return suffixArrayRange;
+                }
             }
         }
 
