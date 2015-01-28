@@ -97,6 +97,20 @@ namespace UnitTests.StringSearch
         }
 
         [Test]
+        [ExpectedException (typeof(ArgumentNullException))]
+        public void SequentialSearchSearchNull()
+        {
+            SearchString.Search(null, "1");
+        }
+
+        [Test]
+        [ExpectedException (typeof(ArgumentNullException))]
+        public void SequentialSearchLookForNull()
+        {
+            SearchString.Search("123", null);
+        }
+
+        [Test]
         [ExpectedException (typeof(ArgumentException))]
         public void SequentialSearchLookForEmptyString()
         {

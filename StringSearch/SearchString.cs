@@ -22,6 +22,16 @@ namespace StringSearch
         public static int[] Search(string toSearch, string lookFor)
         {
             //Validation
+            if(toSearch == null)
+            {
+                throw new ArgumentNullException("toSearch");
+            }
+
+            if(lookFor == null)
+            {
+                throw new ArgumentNullException("lookFor");
+            }
+
             if(lookFor == "")
             {
                 throw new ArgumentException("lookFor cannot be String.Empty");
