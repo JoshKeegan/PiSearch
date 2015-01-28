@@ -3,6 +3,7 @@
  * Precompute Search Results - for precomputing the suffix array indices that would be returned by
  *  performing the full search
  * By Josh Keegan 25/01/2015
+ * Last Edit 28/01/2015
  */
 
 using System;
@@ -20,7 +21,7 @@ namespace StringSearch
         public static MemoryEfficientBigULongArray GenerateSearchResults(FourBitDigitBigArray fourBitDigitArray,
             BigArray<ulong> suffixArray, int stringLength)
         {
-            int lessThan = intPow(10, (uint)stringLength);
+            int lessThan = NumPrecomputedResults(stringLength);
             string toStringFormatter = "D" + stringLength;
 
             MemoryEfficientBigULongArray precomputedResults = new MemoryEfficientBigULongArray(
@@ -75,6 +76,11 @@ namespace StringSearch
             }
 
             return precomputedResults;
+        }
+
+        public static int NumPrecomputedResults(int searchStringLength)
+        {
+            return intPow(10, (uint)searchStringLength);
         }
 
         //Very simple implementation of a Pow function for integers. Has very tight range of inputs that it'll

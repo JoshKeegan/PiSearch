@@ -1,7 +1,7 @@
 ﻿/*
  * Program entry point for the String Search Console application, the development interface for the PiSearch project
  * By Josh Keegan 07/11/2014
- * Last Edit 26/01/2015
+ * Last Edit 28/01/2015
  */
 
 using System;
@@ -21,6 +21,9 @@ namespace StringSearchConsole
 {
     public class Program
     {
+        //Constants
+        private const string PRECOMPUTED_SEARCH_RESULTS_FILE_EXTENSION = "precomputed";
+
         //Variables
         private static string workingDirectory = "";
         private static string loadedString = null;
@@ -28,6 +31,7 @@ namespace StringSearchConsole
         private static FourBitDigitBigArray fourBitDigitArray = null;
         private static BigArray<ulong> suffixArray = null;
         private static BigArray<ulong> singleLengthPrecomputedSearchResults = null;
+        private static BigArray<PrecomputedSearchResult>[] precomputedSearchResults = null;
         private static Stopwatch stopwatch = new Stopwatch();
         private static Type suffixArrayType = typeof(MemoryEfficientBigULongArray); // Note: Byte Aligned better for generation (fater), non-byte aligned better for searching (due to better memory efficiency). However, depends on hardware available
         private static Type suffixArrayStreamType = null; //Null for store in memory (uses the default underlying store of the BigArray<ulong> implementation that is being used
@@ -83,6 +87,7 @@ namespace StringSearchConsole
                 "27.\tSave underlying stream of precomputed suffix array search indices for a specified length\n" + 
                 "28.\tPrint precomputed suffix array indices\n" +
                 "29.\tLoad suffix array (of selected suffix array data type)\n" + 
+                "30.\tLoad precomputed search results\n" + 
                 "q.\tQuit");
 
             bool quit = false;
@@ -168,20 +173,23 @@ namespace StringSearchConsole
                     case "24": //Set suffix array file stream buffer size
                         subSetSuffixArrayFileStreamBufferSize();
                         break;
-                    case "25":
+                    case "25": //Verify suffix array
                         subVerifySuffixArray();
                         break;
-                    case "26":
+                    case "26": //Precompute suffix array indices for search strings of a specified length
                         subPrecomputeSuffixArrayIndices();
                         break;
-                    case "27":
+                    case "27": //Save underlying stream of precomputed suffix array search indices for a specified length
                         subSaveSingleLengthPrecomputedSearchResultsUnderlyingStream();
                         break;
-                    case "28":
+                    case "28": //Print precomputed suffix array indices
                         subPrintSingleLengthPrecomputedSearchResults();
                         break;
-                    case "29":
+                    case "29": //Load suffix array (of selected suffix array data type)
                         subLoadSuffixArraySelectedSuffixArrayDataType();
+                        break;
+                    case "30": //Load precomputed search results
+                        subLoadPrecomputedSearchResults();
                         break;
                     case "q": //Quit
                         quit = true;
@@ -329,6 +337,94 @@ namespace StringSearchConsole
             Stream memStream = Compression.ReadStreamNoCompression(workingDirectory + fileName);
 
             suffixArray = createBigArrayFromSettings(fourBitDigitArray.Length, (ulong)fourBitDigitArray.Length, memStream);
+        }
+
+        private static void subLoadPrecomputedSearchResults()
+        {
+            //Must have a four bit digit array loaded
+            if(fourBitDigitArray == null)
+            {
+                Console.WriteLine("Must have a 4 bit digit array loaded");
+                return;
+            }
+
+            //Must have a suffix array loaded
+            if(suffixArray == null)
+            {
+                Console.WriteLine("Must have a suffix array loaded");
+                return;
+            }
+
+            string dirName;
+
+            while(true)
+            {
+                Console.Write("Load precomputed search results from directory: ");
+                dirName = Console.ReadLine();
+
+                if(Directory.Exists(workingDirectory + dirName))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Directory not found \"{0}\"", dirName);
+                }
+            }
+
+            //TODO: Further options
+            //  Use from file system or load into memory
+            //  If file system which stream to use?
+            //  BigArray<ulong> data type
+
+            stopwatch.Reset();
+            stopwatch.Start();
+
+            string[] filePaths = Directory.GetFiles(workingDirectory + dirName, "*." + PRECOMPUTED_SEARCH_RESULTS_FILE_EXTENSION);
+
+            //If there are n .precomputed files then they should be for the digits 1-n
+            foreach(string filePath in filePaths)
+            {
+                string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
+
+                int searchStringLength;
+                try
+                {
+                    searchStringLength = int.Parse(fileNameWithoutExtension);
+                }
+                catch
+                {
+                    Console.WriteLine("Files must be names n." + PRECOMPUTED_SEARCH_RESULTS_FILE_EXTENSION);
+                    return;
+                }
+
+                if(searchStringLength < 1)
+                {
+                    Console.WriteLine("All search string lengths must be >= 1");
+                }
+                if(searchStringLength > filePaths.Length)
+                {
+                    Console.WriteLine("Cannot miss a precomputed file. i.e. if you have 1 and 3 you must have 2");
+                }
+            }
+
+            //We have all the files {1-filePaths.Length}.precomputed in this directory. 
+            precomputedSearchResults = new BigArray<PrecomputedSearchResult>[filePaths.Length];
+
+            for(int i = 0; i < precomputedSearchResults.Length; i++)
+            {
+                int searchStringLength = i + 1;
+
+                Stream s = new FileStream(
+                    workingDirectory + dirName + "/" + searchStringLength + "." + PRECOMPUTED_SEARCH_RESULTS_FILE_EXTENSION, 
+                    FileMode.Open, FileAccess.Read);
+
+                BigArray<ulong> underlyingArray = new MemoryEfficientBigULongArray(
+                    PrecomputeSearchResults.NumPrecomputedResults(searchStringLength), (ulong)fourBitDigitArray.Length);
+
+                BigArray<PrecomputedSearchResult> singleLengthPrecomputedSearchResults = new BigPrecomputedSearchResultsArray(underlyingArray);
+                precomputedSearchResults[i] = singleLengthPrecomputedSearchResults;
+            }
         }
 
         private static void subLoadFile()
@@ -701,7 +797,7 @@ namespace StringSearchConsole
                 stopwatch.Reset();
                 stopwatch.Start();
 
-                SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, toFind);
+                SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, toFind, precomputedSearchResults);
                 long[] foundIdxs = suffixArrayRange.SortedValues;
                 Console.WriteLine("Found {0} results", foundIdxs.Length);
                 foreach (long idx in foundIdxs)
