@@ -262,6 +262,24 @@ namespace UnitTests.StringSearch
 
             SearchString.Search(suffixArray, a, "23");
         }
+
+        [Test]
+        public void TestSuffixArraySearchDigitNotInString()
+        {
+            const string STR = "1234567812340";
+            const string FIND = "9";
+
+            BigArray<ulong> suffixArray = buildSuffixArray(STR);
+            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+
+            long[] expected = new long[] {  };
+
+            SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, FIND);
+            long[] actual = suffixArrayRange.SortedValues;
+
+            Assert.AreEqual(false, suffixArrayRange.HasResults);
+            CollectionAssert.AreEqual(expected, actual);
+        }
         #endregion
 
         #region FindNextOccurrence(string, string, int)
