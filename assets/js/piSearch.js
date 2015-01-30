@@ -36,7 +36,41 @@ var piSearch =
 
 		var localResult = localSearch.search(find);
 
-		$("#searchResultIndex").html(localResult);
+		//If a result was found locally
+		if(localResult !== -1)
+		{
+			piSearch.displayResult(
+			{
+				ResultStringIndex: localResult,
+				ProcessingTimeMs: -1 //TODO
+			});
+
+			piSearch.setLoading(false);
+		}
+		else //Otherwise it wasn't in the local digits, send the request to the PiSearch API
+		{
+			remoteSearch.search(find, 0, function(result)
+			{
+				piSearch.displayResult(result);
+
+				piSearch.setLoading(false);
+			},
+			function(strError)
+			{
+				piSearch.setLoading(false);
+
+				piSearch.errorMessage(strError, "API Error");
+			});
+		}		
+	},
+
+	displayResult: function(result)
+	{
+		console.log("piSearch.displayResult");
+		console.log(result);
+
+		//TODO: UI
+		$("#searchResultIndex").html(result.ResultStringIndex);
 	},
 
 	errorMessage: function(strError, strTitle, focusSelector)
