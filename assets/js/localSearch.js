@@ -82,7 +82,7 @@ var localSearch =
 
 			//Initial fill of digitsQueue
 			var digitsQueue = [];
-			console.log(find.length);
+			
 			for(var i = 0; i < find.length; i++)
 			{
 				var digit = digits[i + from];
