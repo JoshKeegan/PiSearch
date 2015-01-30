@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+	<head>
+		<title>PiSearch</title>
+
+		<link rel="stylesheet" type="text/css" href="assets/css/styles.css" />
+
+		<script type="text/javascript" src="assets/js/jquery-1.11.2.min.js"></script>
+		<script type="text/javascript" src="assets/js/piSearch.js"></script>
+		<script type="text/javascript" src="assets/js/localSearch.js"></script>
+		<script type="text/javascript">
+			$(window).load(function()
+			{
+				piSearch.init();
+				localSearch.init();
+			});
+		</script>
+	</head>
+	<body>
+		<h1>PiSearch</h1>
+
+		<div id="loadingStatus">
+
+		</div> <!-- loadingStatus -->
+
+		<input type="text" name="searchFor" id="searchFor" />
+		<input type="submit" value="Search" onclick="javascript: piSearch.search()" />
+
+		<div id="searchResult">
+			Index: <span id="searchResultIndex"></span>
+		</div> <!-- searchResults -->
+	</body>
+</html>
