@@ -3,7 +3,7 @@
  * SearchString - static class containing methods to search through a given string (or other data type)
  *  for some string (or other data type) to be found.
  * By Josh Keegan 07/11/2014
- * Last Edit 28/01/2015 
+ * Last Edit 02/02/2015 
  */
 
 using System;
@@ -231,7 +231,7 @@ namespace StringSearch
 
         internal static long binarySearchForPrefix(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, byte[] findPrefix, long min, long max)
         {
-            long range = max - min;
+            long range = max - min + 1;
 
             if(range == 0)
             {
