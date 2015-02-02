@@ -1,10 +1,12 @@
 /*
 	piSearch - Main entry point for searching pi on the website
 	By Josh Keegan 30/01/2015
+	Last Edit 02/02/2015
  */
 var piSearch = 
 {
 	//Constants
+	NUM_DIGITS: 5000000000,
 	
 	//Variables
 	
@@ -42,6 +44,8 @@ var piSearch =
 			piSearch.displayResult(
 			{
 				ResultStringIndex: localResult,
+				NumResults: -1,
+				ResultId: 0,
 				ProcessingTimeMs: -1 //TODO
 			});
 
@@ -70,7 +74,14 @@ var piSearch =
 		console.log(result);
 
 		//TODO: UI
-		$("#searchResultIndex").html(result.ResultStringIndex);
+		if(result.NumResults === 0)
+		{
+			$("#searchResultIndex").html("Not found in the first " + piSearch.NUM_DIGITS + " digits of Pi");
+		}
+		else //There are results
+		{
+			$("#searchResultIndex").html(result.ResultStringIndex);
+		}
 	},
 
 	errorMessage: function(strError, strTitle, focusSelector)
