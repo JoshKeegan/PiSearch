@@ -82,6 +82,10 @@ var piSearch =
 		{
 			$("#searchResultIndex").html(result.ResultStringIndex);
 		}
+
+		//If a local search has been performed, NumResults is set to -1
+		var numResults = result.NumResults < 0 ? "?" : result.NumResults;
+		$("#searchResultNumResults").html(numResults);
 	},
 
 	errorMessage: function(strError, strTitle, focusSelector)
