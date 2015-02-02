@@ -233,7 +233,7 @@ namespace StringSearch
         {
             long range = max - min + 1;
 
-            if(range == 0)
+            if(range == 1)
             {
                 //Only one possible value left, check it
                 if(doesStartWithSuffix(digitArray, findPrefix, (long)suffixArray[min]) == 0)
