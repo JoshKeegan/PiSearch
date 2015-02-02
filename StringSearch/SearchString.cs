@@ -231,9 +231,9 @@ namespace StringSearch
 
         internal static long binarySearchForPrefix(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, byte[] findPrefix, long min, long max)
         {
-            long range = max - min + 1;
+            long numLeftToSearch = max - min + 1;
 
-            if(range == 1)
+            if(numLeftToSearch == 1)
             {
                 //Only one possible value left, check it
                 if(doesStartWithSuffix(digitArray, findPrefix, (long)suffixArray[min]) == 0)
@@ -247,7 +247,7 @@ namespace StringSearch
             }
             else
             {
-                long idx = min + (range / 2);
+                long idx = min + (numLeftToSearch / 2);
 
                 int hit = doesStartWithSuffix(digitArray, findPrefix, (long)suffixArray[idx]);
 
