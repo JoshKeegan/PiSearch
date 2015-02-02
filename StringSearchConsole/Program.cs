@@ -1,7 +1,7 @@
 ﻿/*
  * Program entry point for the String Search Console application, the development interface for the PiSearch project
  * By Josh Keegan 07/11/2014
- * Last Edit 28/01/2015
+ * Last Edit 02/02/2015
  */
 
 using System;
@@ -420,7 +420,7 @@ namespace StringSearchConsole
                     FileMode.Open, FileAccess.Read);
 
                 BigArray<ulong> underlyingArray = new MemoryEfficientBigULongArray(
-                    PrecomputeSearchResults.NumPrecomputedResults(searchStringLength), (ulong)fourBitDigitArray.Length, s);
+                    PrecomputeSearchResults.NumPrecomputedResults(searchStringLength) * 2, (ulong)fourBitDigitArray.Length, s);
 
                 BigArray<PrecomputedSearchResult> singleLengthPrecomputedSearchResults = new BigPrecomputedSearchResultsArray(underlyingArray);
                 precomputedSearchResults[i] = singleLengthPrecomputedSearchResults;
