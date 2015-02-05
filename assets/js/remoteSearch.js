@@ -1,6 +1,7 @@
 /*
 	remoteSearch - search the digits of pi by sending the request to a remote API
 	By Josh Keegan 30/01/2015
+	Last Edit 05/02/2015
  */
 var remoteSearch = 
 {
@@ -14,6 +15,9 @@ var remoteSearch =
 	init: function()
 	{
 		console.log("remoteSearch.init");
+
+		//IE8 Compatibility: Enable CORS support since the pisearch API is on another domain
+		$.support.cors = true;
 	},
 
 	search: function(find, resultId, successCallback, failureCallback)
