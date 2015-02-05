@@ -52,6 +52,7 @@ var remoteSearch =
 				$.ajax(
 				{
 					type: "POST",
+					crossDomain: true,
 					data: remoteSearch.buildPostData(find, resultId),
 					async: true,
 					url: remoteSearch.API_URL,
