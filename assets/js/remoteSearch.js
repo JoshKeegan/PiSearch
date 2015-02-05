@@ -53,6 +53,7 @@ var remoteSearch =
 				{
 					type: "POST",
 					crossDomain: true,
+					contentType: "text/plain", //IE8 fix as it'll use XDomainRequest
 					data: remoteSearch.buildPostData(find, resultId),
 					async: true,
 					url: remoteSearch.API_URL,
