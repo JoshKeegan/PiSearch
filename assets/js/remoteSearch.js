@@ -1,6 +1,7 @@
 /*
 	remoteSearch - search the digits of pi by sending the request to a remote API
 	By Josh Keegan 30/01/2015
+	Last Edit 05/02/2015
  */
 var remoteSearch = 
 {
@@ -16,7 +17,7 @@ var remoteSearch =
 		console.log("remoteSearch.init");
 	},
 
-	search: function(find, resultId, successCallback, failureCallback)
+	search: function(find, resultId, justCount, successCallback, failureCallback)
 	{
 		console.log("remoteSearch.search");
 
@@ -48,7 +49,7 @@ var remoteSearch =
 				$.ajax(
 				{
 					type: "POST",
-					data: remoteSearch.buildPostData(find, resultId),
+					data: remoteSearch.buildPostData(find, resultId, justCount),
 					async: true,
 					url: remoteSearch.API_URL,
 					cache: true,
@@ -128,6 +129,11 @@ var remoteSearch =
 	getPrevResult: function(find, resultId)
 	{
 		console.log("remoteSearch.getPrevResult");
+		
+		if(typeof(resultId) === "undefined" || resultId === null)
+		{
+			resultId = -1;
+		}
 
 		var results = remoteSearch.getPrevResults(find);
 
@@ -139,14 +145,15 @@ var remoteSearch =
 		return null;
 	},
 
-	buildPostData: function(find, resultId)
+	buildPostData: function(find, resultId, justCount)
 	{
 		console.log("remoteSearch.buildPostData");
 
 		var postData =
 		{
 			find: find,
-			resultId: resultId
+			resultId: resultId,
+			justCount: justCount
 		};
 
 		//If there have been previous results for this search, include the additional suffix array information that will have been returned by those searches

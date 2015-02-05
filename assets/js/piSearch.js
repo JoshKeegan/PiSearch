@@ -43,13 +43,23 @@ var piSearch =
 		{
 			piSearch.displayResult(localResult);
 
-			//TODO: Count the number of times this string occurs in the first 5 billion digits on the server
+			//Count the number of times this string occurs in the first 5 billion digits on the server
+			remoteSearch.search(find, null, true, function(result)
+			{
+				piSearch.displayCountAndProcessingTime(result);
 
-			piSearch.setLoading(false);
+				piSearch.setLoading(false);
+			},
+			function(strError)
+			{
+				piSearch.setLoading(false);
+
+				piSearch.errorMessage(strError, "API Error");
+			});
 		}
 		else //Otherwise it wasn't in the local digits, send the request to the PiSearch API
 		{
-			remoteSearch.search(find, 0, function(result)
+			remoteSearch.search(find, 0, false, function(result)
 			{
 				piSearch.displayResult(result);
 
@@ -79,11 +89,24 @@ var piSearch =
 			$("#searchResultIndex").html(result.ResultStringIndex);
 		}
 
+		//Set the current processing time to 0, as it gets added to
+		$("#searchResultProcessingTimeMs").html(0);
+
+		piSearch.displayCountAndProcessingTime(result);
+	},
+
+	displayCountAndProcessingTime: function(result)
+	{
 		//If a local search has been performed, NumResults is set to -1
-		var numResults = result.NumResults < 0 ? "?" : result.NumResults;
+		var numResults = result.NumResults < 0 ? "Loading . . ." : result.NumResults;
 		$("#searchResultNumResults").html(numResults);
 
-		$("#searchResultProcessingTimeMs").html(result.ProcessingTimeMs.toFixed(0));
+		//Get the existing processing time
+		var currProcTime = parseFloat($("#searchResultProcessingTimeMs").html());
+		//Add this processing time to it
+		var procTime = currProcTime + result.ProcessingTimeMs;
+		//Display the summed procesing time
+		$("#searchResultProcessingTimeMs").html(procTime.toFixed(0));
 	},
 
 	errorMessage: function(strError, strTitle, focusSelector)
