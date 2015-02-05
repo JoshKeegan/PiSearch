@@ -1,7 +1,7 @@
 /*
 	piSearch - Main entry point for searching pi on the website
 	By Josh Keegan 30/01/2015
-	Last Edit 02/02/2015
+	Last Edit 05/02/2015
  */
 var piSearch = 
 {
@@ -36,18 +36,14 @@ var piSearch =
 
 		piSearch.setLoading(true);
 
-		var localResult = localSearch.search(find);
+		var localResult = localSearch.compatibleSearch(find);
 
 		//If a result was found locally
-		if(localResult !== -1)
+		if(localResult.ResultStringIndex !== -1)
 		{
-			piSearch.displayResult(
-			{
-				ResultStringIndex: localResult,
-				NumResults: -1,
-				ResultId: 0,
-				ProcessingTimeMs: -1 //TODO
-			});
+			piSearch.displayResult(localResult);
+
+			//TODO: Count the number of times this string occurs in the first 5 billion digits on the server
 
 			piSearch.setLoading(false);
 		}

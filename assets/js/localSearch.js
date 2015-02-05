@@ -1,6 +1,7 @@
 /*
 	localSearch - search the digits of pi that are stored locally (fetched from the server)
 	By Josh Keegan 30/01/2015
+	Last Edit 05/02/2015
  */
 var localSearch = 
 {
@@ -126,5 +127,20 @@ var localSearch =
 		{
 			throw "Digits not fetched yet";
 		}
-	}
+	},
+
+	//Search whose results match the format of the remote search
+	compatibleSearch: function(find, from)
+	{
+		var result = localSearch.search(find, from);
+
+		var toRet = 
+		{
+			ResultStringIndex: result,
+			NumResults: -1,
+			ResultId: 0,
+			ProcessingTimeMs: -1 //TODO
+		};
+		return toRet;
+}
 };
