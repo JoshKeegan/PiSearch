@@ -132,15 +132,17 @@ var localSearch =
 	//Search whose results match the format of the remote search
 	compatibleSearch: function(find, from)
 	{
+		var startTime = performance.now();
 		var result = localSearch.search(find, from);
+		var endTime = performance.now();
 
 		var toRet = 
 		{
 			ResultStringIndex: result,
 			NumResults: -1,
 			ResultId: 0,
-			ProcessingTimeMs: -1 //TODO
+			ProcessingTimeMs: Math.max(0, endTime - startTime)
 		};
 		return toRet;
-}
+	}
 };
