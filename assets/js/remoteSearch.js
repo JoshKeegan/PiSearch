@@ -162,6 +162,28 @@ var remoteSearch =
 			postData.maxSuffixArrayIdx = prevResults.SuffixArrayMaxIdx;
 		}
 		
-		return postData;
+		//Convert the map of keys to values to a post string before posting it (IE Compatibility)
+		var postString = remoteSearch.toPostString(postData);
+		return postString;
+	},
+
+	toPostString: function(map)
+	{
+		var strBuilder = "";
+
+		for(var key in map)
+		{
+			var val = map[key];
+
+			//If not first, separate with &
+			if(strBuilder !== "")
+			{
+				strBuilder += "&";
+			}
+
+			strBuilder += encodeURIComponent(key) + "=" + encodeURIComponent(val);
+		}
+
+		return strBuilder;
 	}
 };
