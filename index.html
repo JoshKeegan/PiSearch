@@ -5,7 +5,30 @@
 
 		<link rel="stylesheet" type="text/css" href="assets/css/styles.css" />
 
-		<script type="text/javascript" src="assets/js/console-polyfil.js"></script>
+		<script type="text/javascript">
+			// Avoid `console` errors in browsers that lack a console. From http://stackoverflow.com/a/16916941
+			(function() {
+			    var method;
+			    var noop = function () {};
+			    var methods = [
+			        'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
+			        'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
+			        'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
+			        'timeStamp', 'trace', 'warn'
+			    ];
+			    var length = methods.length;
+			    var console = (window.console = window.console || {});
+
+			    while (length--) {
+			        method = methods[length];
+
+			        // Only stub undefined methods.
+			        if (!console[method]) {
+			            console[method] = noop;
+			        }
+			    }
+			}());
+		</script>
 		<script type="text/javascript" src="assets/js/performance.now()-polyfill.js"></script>
 		<script type="text/javascript" src="assets/js/jquery-1.11.2.min.js"></script>
 		<script type="text/javascript" src="assets/js/piSearch.js"></script>
