@@ -82,11 +82,11 @@ var piSearch =
 		//TODO: UI
 		if(result.NumResults === 0)
 		{
-			$("#searchResultIndex").html("Not found in the first " + piSearch.NUM_DIGITS + " digits of Pi");
+			$("#searchResultIndex").html("Not found in the first " + numberHelpers.insertCommas(piSearch.NUM_DIGITS) + " digits of Pi");
 		}
 		else //There are results
 		{
-			$("#searchResultIndex").html(result.ResultStringIndex);
+			$("#searchResultIndex").html(numberHelpers.insertCommas(result.ResultStringIndex));
 		}
 
 		//Set the current processing time to 0, as it gets added to
@@ -98,15 +98,15 @@ var piSearch =
 	displayCountAndProcessingTime: function(result)
 	{
 		//If a local search has been performed, NumResults is set to -1
-		var numResults = result.NumResults < 0 ? "Loading . . ." : result.NumResults;
-		$("#searchResultNumResults").html(numResults);
+		var strNumResults = result.NumResults < 0 ? "Loading . . ." : numberHelpers.insertCommas(result.NumResults);
+		$("#searchResultNumResults").html(strNumResults);
 
 		//Get the existing processing time
-		var currProcTime = parseFloat($("#searchResultProcessingTimeMs").html());
+		var currProcTime = parseFloat(numberHelpers.removeCommas($("#searchResultProcessingTimeMs").html()));
 		//Add this processing time to it
 		var procTime = currProcTime + result.ProcessingTimeMs;
 		//Display the summed procesing time
-		$("#searchResultProcessingTimeMs").html(procTime.toFixed(0));
+		$("#searchResultProcessingTimeMs").html(numberHelpers.insertCommas(procTime.toFixed(0)));
 	},
 
 	errorMessage: function(strError, strTitle, focusSelector)
