@@ -87,19 +87,29 @@
 		</div> <!-- navbar -->
 
 		<div class="container body-content">
-			<div class="jumbotron">
+			<div class="jumbotron" id="viewOnGithubContainer">
 				<h1>PiSearch</h1>
 				<p>
 					Search Engine for the first 5,000,000,000 digits of Pi
 				</p>
+
+				<a id="viewOnGithub" href="http://github.com/JoshKeegan/PiSearch">
+					<small>View project on </small>
+					GitHub
+				</a>
 			</div> <!-- jumbotron -->
 
 			<div id="loadingStatus">
 
 			</div> <!-- loadingStatus -->
 
-			<input type="text" name="searchFor" id="searchFor" />
-			<input type="submit" value="Search" onclick="javascript: piSearch.search()" />
+			<form class="form" onsubmit="return false;">
+				<div class="form-group">
+					<input type="text" class="form-control" name="searchFor" id="searchFor" placeholder="Digits to find . . ." />
+				</div> <!-- form-group -->
+
+				<button type="submit" class="btn btn-default" onclick="javascript: piSearch.search()">Search</button>
+			</form>
 
 			<div id="searchResult">
 				Index: <span id="searchResultIndex"></span>

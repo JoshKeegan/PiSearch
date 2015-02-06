@@ -31,3 +31,45 @@ textarea
 {
 	max-width: 280px;
 }
+
+#viewOnGithubContainer
+{
+	background-color: #5a5a5a;
+	color: #eee; 
+}
+
+#viewOnGithub
+{
+	background: url("../img/github-button.png") no-repeat scroll 0 0 transparent;
+
+	display: inline-block;
+	width: 202px;
+	height: 80px;
+
+	color: white;
+	font-size: 25px;
+	line-height: 1.2;
+	padding: 19px 0 0 73px;
+	text-decoration: none;
+}
+
+#viewOnGithub small
+{
+	display: block;
+	font-size: 14px;
+}
+
+@media screen and (min-width: 765px)
+{
+	#viewOnGithubContainer
+	{
+		position: relative;
+	}
+
+	#viewOnGithub
+	{
+		position: absolute;
+		right: 20px;
+		top: 20px;
+	}
+}
