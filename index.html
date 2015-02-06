@@ -66,19 +66,46 @@
 		</script>
 	</head>
 	<body>
-		<h1>PiSearch</h1>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	                    <span class="icon-bar"></span>
+	                    <span class="icon-bar"></span>
+	                    <span class="icon-bar"></span>
+	                </button>
 
-		<div id="loadingStatus">
+	                <a href="/" class="navbar-brand">PiSearch</a>
+				</div> <!-- navbar-header -->
 
-		</div> <!-- loadingStatus -->
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="/">Home</a></li>
+					</ul> <!-- navbar-nav -->
+				</div> <!-- navbar-collapse -->
+			</div> <!-- container -->
+		</div> <!-- navbar -->
 
-		<input type="text" name="searchFor" id="searchFor" />
-		<input type="submit" value="Search" onclick="javascript: piSearch.search()" />
+		<div class="container body-content">
+			<div class="jumbotron">
+				<h1>PiSearch</h1>
+				<p>
+					Search Engine for the first 5,000,000,000 digits of Pi
+				</p>
+			</div> <!-- jumbotron -->
 
-		<div id="searchResult">
-			Index: <span id="searchResultIndex"></span>
-			<br />Num Occurrences: <span id="searchResultNumResults"></span>
-			<br />Processing Time: <span id="searchResultProcessingTimeMs"></span> ms
-		</div> <!-- searchResults -->
+			<div id="loadingStatus">
+
+			</div> <!-- loadingStatus -->
+
+			<input type="text" name="searchFor" id="searchFor" />
+			<input type="submit" value="Search" onclick="javascript: piSearch.search()" />
+
+			<div id="searchResult">
+				Index: <span id="searchResultIndex"></span>
+				<br />Num Occurrences: <span id="searchResultNumResults"></span>
+				<br />Processing Time: <span id="searchResultProcessingTimeMs"></span> ms
+			</div> <!-- searchResults -->
+		</div> <!-- body-content -->
 	</body>
 </html>
