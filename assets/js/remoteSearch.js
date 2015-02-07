@@ -1,7 +1,7 @@
 /*
 	remoteSearch - search the digits of pi by sending the request to a remote API
 	By Josh Keegan 30/01/2015
-	Last Edit 05/02/2015
+	Last Edit 07/02/2015
  */
 var remoteSearch = 
 {
@@ -108,7 +108,8 @@ var remoteSearch =
 		{
 			NumResults: result.NumResults,
 			ResultStringIndex: result.ResultStringIndex,
-			ProcessingTimeMs: result.ProcessingTimeMs
+			ProcessingTimeMs: result.ProcessingTimeMs,
+			SurroundingDigits: result.SurroundingDigits
 		};
 	},
 
@@ -129,7 +130,7 @@ var remoteSearch =
 	getPrevResult: function(find, resultId)
 	{
 		console.log("remoteSearch.getPrevResult");
-		
+
 		if(typeof(resultId) === "undefined" || resultId === null)
 		{
 			resultId = -1;

@@ -1,7 +1,7 @@
 /*
 	Main stylesheet for the PiSearch website
 	By Josh Keegan 30/01/2015
-	Last Edit 06/02/2015
+	Last Edit 07/02/2015
  */
 body
 {
@@ -72,4 +72,9 @@ textarea
 		right: 20px;
 		top: 20px;
 	}
+}
+
+#searchResultDigitsFound
+{
+	color: #f00;
 }
