@@ -64,7 +64,9 @@ var remoteSearch =
 						if("Error" in json)
 						{
 							console.log(json);
-							failureCallback(json.Error);
+
+							var userFriendlyError = remoteSearch.getUserFriendlyError(json.Error);
+							failureCallback(userFriendlyError);
 						}
 						else //Otherwise the search was a success
 						{
@@ -171,5 +173,17 @@ var remoteSearch =
 		}
 		
 		return postData;
+	},
+
+	getUserFriendlyError: function(error)
+	{
+		if(/^max\ssuffix\sarray\srange\sallowed\sis\s[0-9]+$/i.test(error))
+		{
+			return "There's a very large number of results for this search, please try searching for more digits";
+		}
+		else //Otherwise there isn't a user-friendly version of this error message
+		{
+			return error;
+		}
 	}
 };
