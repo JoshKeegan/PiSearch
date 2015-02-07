@@ -41,6 +41,7 @@ var piSearch =
 		//If a result was found locally
 		if(localResult.ResultStringIndex !== -1)
 		{
+			//TODO: If the digits are found at the very end of what's available locally, the surrounding digits after should be fetched from the server
 			piSearch.displayResult(find, localResult);
 
 			//Count the number of times this string occurs in the first 5 billion digits on the server
