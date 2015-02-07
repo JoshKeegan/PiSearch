@@ -131,8 +131,15 @@ var localSearch =
 	},
 
 	//Search whose results match the format of the remote search
-	compatibleSearch: function(find, from)
+	compatibleSearch: function(find, from, afterResultId)
 	{
+		console.log("localSearch.compatibleSearch");
+
+		if(typeof(afterResultId) !== "number")
+		{
+			afterResultId = -1;
+		}
+
 		var startTime = performance.now();
 		var result = localSearch.search(find, from);
 
@@ -149,7 +156,7 @@ var localSearch =
 		{
 			ResultStringIndex: result,
 			NumResults: -1,
-			ResultId: 0,
+			ResultId: afterResultId + 1,
 			ProcessingTimeMs: Math.max(0, endTime - startTime),
 			SurroundingDigits: surroundingDigits
 		};
@@ -158,6 +165,8 @@ var localSearch =
 
 	getSurroundingDigits: function(idx, len)
 	{
+		console.log("localSearch.getSurroundingDigits");
+
 		var beforeStartIdx = Math.max(0, idx - localSearch.RETURN_NUM_SURROUNDING_DIGITS);
 		var before = "";
 		for(var i = beforeStartIdx; i < idx; i++)

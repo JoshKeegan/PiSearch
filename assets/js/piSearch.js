@@ -16,27 +16,51 @@ var piSearch =
 		console.log("piSearch.init");
 	},
 
-	search: function()
+	search: function(find, fromStringIdx, afterResultId)
 	{
 		console.log("piSearch.search");
 
-		var find = $("#searchFor").val();
+		if(typeof(find) === "undefined" || find === null)
+		{
+			var find = $("#searchFor").val();
 
-		//Validation
-		if(find == "")
-		{
-			piSearch.errorMessage("Enter some digits to search for", "Validation", "#searchFor");
-			return;
+			//Validation
+			if(find == "")
+			{
+				piSearch.errorMessage("Enter some digits to search for", "Validation", "#searchFor");
+				return;
+			}
+			else if(!/^[0-9]+$/.test(find))
+			{
+				piSearch.errorMessage("Can only search for a string of decimal digits (0-9)", "Validation", "#searchFor");
+				return;
+			}
 		}
-		else if(!/^[0-9]+$/.test(find))
+
+		if(typeof(afterResultId) === "undefined" || afterResultId === null)
 		{
-			piSearch.errorMessage("Can only search for a string of decimal digits (0-9)", "Validation", "#searchFor");
-			return;
+			afterResultId = -1;
+		}
+		else if(typeof(afterResultId) !== "number" || afterResultId % 1 !== 0)
+		{
+			throw "afterResultId must be an integer number";
+		}
+
+		if(typeof(fromStringIdx) === "undefined" || fromStringIdx === null)
+		{
+			fromStringIdx = 0;
+		}
+		else if(typeof(fromStringIdx) !== "number" || fromStringIdx % 1 !== 0)
+		{
+			throw "fromStringIdx must be an integer number";
 		}
 
 		piSearch.setLoading(true);
 
-		var localResult = localSearch.compatibleSearch(find);
+		//Disable the find next button
+		$("#btnFindNext").prop("disabled", true);
+
+		var localResult = localSearch.compatibleSearch(find, fromStringIdx, afterResultId);
 
 		//If a result was found locally
 		if(localResult.ResultStringIndex !== -1)
@@ -60,7 +84,7 @@ var piSearch =
 		}
 		else //Otherwise it wasn't in the local digits, send the request to the PiSearch API
 		{
-			remoteSearch.search(find, 0, false, function(result)
+			remoteSearch.search(find, afterResultId + 1, false, function(result)
 			{
 				piSearch.displayResult(find, result);
 
@@ -73,6 +97,20 @@ var piSearch =
 				piSearch.errorMessage(strError, "API Error");
 			});
 		}		
+	},
+
+	searchNext: function()
+	{
+		console.log("piSearch.searchNext");
+
+		var find = $("#searchResultDigitsFound").html();
+		var strResultId = numberHelpers.removeCommas($("#searchResultOccurrenceNumber").html());
+		var strSearchResultIdx = numberHelpers.removeCommas($("#searchResultIndex").html());
+
+		var resultId = parseInt(strResultId);
+		var from = parseInt(strSearchResultIdx) + 1;
+
+		piSearch.search(find, from, resultId);
 	},
 
 	displayResult: function(find, result)
@@ -102,6 +140,9 @@ var piSearch =
 		$("#searchResultDigitsFound").html(find);
 		$("#searchResultDigitsAfter").html(digitsAfter);
 
+		//Occurrence Number
+		$("#searchResultOccurrenceNumber").html(result.ResultId);
+
 		//Set the current processing time to 0, as it gets added to
 		$("#searchResultProcessingTimeMs").html(0);
 
@@ -120,6 +161,13 @@ var piSearch =
 		var procTime = currProcTime + result.ProcessingTimeMs;
 		//Display the summed procesing time
 		$("#searchResultProcessingTimeMs").html(numberHelpers.insertCommas(procTime.toFixed(0)));
+
+		//If there are more results to be displayed after this one, enable the find next occurrence button
+		var resultId = $("#searchResultOccurrenceNumber").html();
+		if(resultId != result.NumResults - 1)
+		{
+			$("#btnFindNext").prop("disabled", false);
+		}
 	},
 
 	errorMessage: function(strError, strTitle, focusSelector)

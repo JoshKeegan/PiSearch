@@ -112,7 +112,8 @@
 			</form>
 
 			<div id="searchResult">
-				Index: <span id="searchResultIndex"></span>
+				Occurrence Number: <span id="searchResultOccurrenceNumber"></span>
+				<br />Index: <span id="searchResultIndex"></span>
 				<br />Num Occurrences: <span id="searchResultNumResults"></span>
 				<br />Processing Time: <span id="searchResultProcessingTimeMs"></span> ms
 
@@ -121,6 +122,7 @@
 				<span id="searchResultDigitsFound"></span>
 				<span id="searchResultDigitsAfter"></span>
 			</div> <!-- searchResults -->
+			<button type="submit" id="btnFindNext" class="btn btn-default" onclick="javascript: piSearch.searchNext()" disabled="disabled">Find Next Occurrence</button>
 		</div> <!-- body-content -->
 	</body>
 </html>

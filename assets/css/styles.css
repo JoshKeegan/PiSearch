@@ -3,6 +3,11 @@
 	By Josh Keegan 30/01/2015
 	Last Edit 07/02/2015
  */
+.hide
+{
+	display: none;
+}
+
 body
 {
 	padding-top: 65px;

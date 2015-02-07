@@ -26,6 +26,10 @@ var remoteSearch =
 		{
 			resultId = 0;
 		}
+		else if(!justCount && (typeof(resultId) !== "number" || resultId % 1 !== 0))
+		{
+			throw "resultId must be an integer number when not just counting";
+		}
 
 		//Check the cache
 		var cachedResult = remoteSearch.getPrevResult(find, resultId);
@@ -106,6 +110,7 @@ var remoteSearch =
 		//Store the results for this resultId in find
 		remoteSearch.prevSearchResults[find][result.ResultId] = 
 		{
+			ResultId: result.ResultId,
 			NumResults: result.NumResults,
 			ResultStringIndex: result.ResultStringIndex,
 			ProcessingTimeMs: result.ProcessingTimeMs,
