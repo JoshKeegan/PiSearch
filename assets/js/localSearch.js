@@ -1,12 +1,13 @@
 /*
 	localSearch - search the digits of pi that are stored locally (fetched from the server)
 	By Josh Keegan 30/01/2015
-	Last Edit 05/02/2015
+	Last Edit 07/02/2015
  */
 var localSearch = 
 {
 	//Constants
 	DIGITS_URL: "assets/digits/pi/pi_raw_100thou.txt",
+	RETURN_NUM_SURROUNDING_DIGITS: 20,
 	
 	//Variables
 	digits: null,
@@ -134,6 +135,14 @@ var localSearch =
 	{
 		var startTime = performance.now();
 		var result = localSearch.search(find, from);
+
+		//If there is a result, find its surrounding digits
+		var surroundingDigits = null;
+		if(result !== -1)
+		{
+			surroundingDigits = localSearch.getSurroundingDigits(result, find.length);
+		}
+
 		var endTime = performance.now();
 
 		var toRet = 
@@ -141,8 +150,34 @@ var localSearch =
 			ResultStringIndex: result,
 			NumResults: -1,
 			ResultId: 0,
-			ProcessingTimeMs: Math.max(0, endTime - startTime)
+			ProcessingTimeMs: Math.max(0, endTime - startTime),
+			SurroundingDigits: surroundingDigits
 		};
 		return toRet;
+	},
+
+	getSurroundingDigits: function(idx, len)
+	{
+		var beforeStartIdx = Math.max(0, idx - localSearch.RETURN_NUM_SURROUNDING_DIGITS);
+		var before = "";
+		for(var i = beforeStartIdx; i < idx; i++)
+		{
+			before += localSearch.digits[i];
+		}
+
+		var afterStartIdx = Math.min(localSearch.digits.length, idx + len);
+		var afterEndIdx = Math.min(localSearch.digits.length, afterStartIdx + localSearch.RETURN_NUM_SURROUNDING_DIGITS);
+		var after = "";
+		for(var i = afterStartIdx; i < afterEndIdx; i++)
+		{
+			after += localSearch.digits[i];
+		}
+
+		var surroundingDigits = 
+		{
+			Before: before,
+			After: after
+		};
+		return surroundingDigits;
 	}
 };
