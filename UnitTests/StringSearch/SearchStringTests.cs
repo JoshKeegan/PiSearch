@@ -2,7 +2,7 @@
  * PiSearch
  * SearchString Unit Tests
  * By Josh Keegan 20/11/2014
- * Last Edit 28/01/2015
+ * Last Edit 07/02/2015
  */
 
 using System;
@@ -580,6 +580,25 @@ namespace UnitTests.StringSearch
                 long answer = SearchString.binarySearchForPrefix(suffixArray, fourBitDigitArray, find, 0, STR.Length - 1);
 
                 Assert.AreEqual(fourBitDigitArray[i], fourBitDigitArray[(long)suffixArray[answer]]);
+            }
+        }
+
+        [Test]
+        public void TestBinarySearchForPrefixDontExist()
+        {
+            const string STR = "8651287431284472619471";
+
+            BigArray<ulong> suffixArray = buildSuffixArray(STR);
+            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+            string[] toFind = { "1234", "0", "0987654321", "5676", "10", "111", "33" };
+
+            foreach(string s in toFind)
+            {
+                byte[] find = stringToByteArr(s);
+
+                long answer = SearchString.binarySearchForPrefix(suffixArray, fourBitDigitArray, find, 0, fourBitDigitArray.Length - 1);
+
+                Assert.AreEqual(-1, answer);
             }
         }
         #endregion

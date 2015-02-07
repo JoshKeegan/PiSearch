@@ -3,7 +3,7 @@
  * SearchString - static class containing methods to search through a given string (or other data type)
  *  for some string (or other data type) to be found.
  * By Josh Keegan 07/11/2014
- * Last Edit 02/02/2015 
+ * Last Edit 07/02/2015 
  */
 
 using System;
@@ -233,21 +233,15 @@ namespace StringSearch
         {
             long numLeftToSearch = max - min + 1;
 
-            if(numLeftToSearch == 1)
+            //If there are no values left to search
+            if(numLeftToSearch <= 0)
             {
-                //Only one possible value left, check it
-                if(doesStartWithSuffix(digitArray, findPrefix, (long)suffixArray[min]) == 0)
-                {
-                    return min;
-                }
-                else //No matches
-                {
-                    return -1;
-                }
+                return -1;
             }
+            //There are multiuple values left to search
             else
             {
-                long idx = min + (numLeftToSearch / 2);
+                long idx = min + ((numLeftToSearch - 1) / 2);
 
                 int hit = doesStartWithSuffix(digitArray, findPrefix, (long)suffixArray[idx]);
 
