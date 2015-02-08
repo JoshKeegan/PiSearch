@@ -20,6 +20,9 @@ var piSearch =
 		remoteSearch.init();
 
 		piSearch.bindEvents();
+
+		//Enable the bootrap tooltip plugin
+		$('[data-toggle="tooltip"]').tooltip();
 	},
 
 	bindEvents: function()
