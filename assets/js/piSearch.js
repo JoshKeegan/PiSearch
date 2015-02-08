@@ -133,7 +133,14 @@ var piSearch =
 
 				piSearch.errorMessage(strError, "API Error");
 			});
-		}		
+		}
+
+		//Tell analytics about this search
+		//	Category: search
+		//	Action: local (if found) or remote (if not found locally, so a request will be sent to the server)
+		//	Label: The string being searched for
+		//	Value: The ResultID being fetched
+		ga("send", "event", "search", (localResult.ResultStringIndex !== -1 ? "local" : "remote"), find, afterResultId + 1);	
 	},
 
 	searchNext: function()
