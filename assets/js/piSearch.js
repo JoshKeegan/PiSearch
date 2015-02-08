@@ -30,8 +30,13 @@ var piSearch =
 			var len = $(this).val().length;
 			var probability = piProbability.calculateProbability(len);
 			var percentage = probability * 100;
+			var userFriendlyPercentage = numberHelpers.roundWithoutTrailingZeros(percentage, 2);
+			if(userFriendlyPercentage < 0.01)
+			{
+				userFriendlyPercentage = "< 0.01";
+			}
 
-			$(".searchHitProbability").html(percentage);
+			$(".searchHitProbability").html(userFriendlyPercentage);
 			$("#searchHitProbabilityProgressBar")
 				.attr("valuenow", percentage)
 				.css("width", percentage + "%");

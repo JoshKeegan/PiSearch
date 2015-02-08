@@ -1,6 +1,7 @@
 /*
 	numberHelpers - helper methods for manipulating numbers
 	By Josh Keegan 05/02/2015
+	Last Edit 08/02/2015
  */
 var numberHelpers = 
 {
@@ -59,7 +60,25 @@ var numberHelpers =
 
 	removeCommas: function(numStr)
 	{
+		console.log("numberHelpers.removeCommas");
+
 		//TODO: Validation
 		return numStr.replace(",", "");
+	},
+
+	roundWithoutTrailingZeros: function(num, numDecimalPlaces)
+	{
+		console.log("numberHelpers.roundWithoutTrailingZeros");
+
+		//Ensure that the value is a float before performing any numerical operations
+		var floatNum = parseFloat(num);
+
+		//Round it to the correct number of decimal places
+		var rounded = floatNum.toFixed(numDecimalPlaces);
+
+		//Remove trailing zeroes
+		rounded = parseFloat(rounded);
+
+		return rounded;
 	}
 };
