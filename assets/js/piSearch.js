@@ -167,14 +167,16 @@ var piSearch =
 
 		//Surrounding digits
 		var digitsBefore = "";
+		var digitsFound = "";
 		var digitsAfter = "";
 		if(result.SurroundingDigits !== null)
 		{
 			digitsBefore = result.SurroundingDigits.Before;
+			digitsFound = find;
 			digitsAfter = result.SurroundingDigits.After;
 		}
 		$("#searchResultDigitsBefore").html(digitsBefore);
-		$("#searchResultDigitsFound").html(find);
+		$("#searchResultDigitsFound").html(digitsFound);
 		$("#searchResultDigitsAfter").html(digitsAfter);
 
 		//Occurrence Number
