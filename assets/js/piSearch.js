@@ -35,6 +35,9 @@ var piSearch =
 			$("#searchHitProbabilityProgressBar")
 				.attr("valuenow", percentage)
 				.css("width", percentage + "%");
+
+			//TODO: Cleverer solution so that it changes colour as the animation goes over it??
+			$("#searchHitProbabilityProgress").css("color", (percentage > 50 ? "#fff" : "#000"));
 		});
 	},
 

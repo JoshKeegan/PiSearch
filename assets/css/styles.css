@@ -1,7 +1,7 @@
 /*
 	Main stylesheet for the PiSearch website
 	By Josh Keegan 30/01/2015
-	Last Edit 07/02/2015
+	Last Edit 08/02/2015
  */
 .hide
 {
@@ -82,4 +82,16 @@ textarea
 #searchResultDigitsFound
 {
 	color: #f00;
+}
+
+#searchHitProbabilityProgress
+{
+	position: relative;
+}
+
+#searchHitProbabilityContainer
+{
+	position: absolute;
+	width: 100%;
+	text-align: center;
 }
