@@ -1,7 +1,7 @@
 /*
 	piSearch - Main entry point for searching pi on the website
 	By Josh Keegan 30/01/2015
-	Last Edit 07/02/2015
+	Last Edit 08/02/2015
  */
 var piSearch = 
 {
@@ -14,6 +14,25 @@ var piSearch =
 	init: function()
 	{
 		console.log("piSearch.init");
+
+		piProbability.init(piSearch.NUM_DIGITS);
+		localSearch.init();
+		remoteSearch.init();
+
+		piSearch.bindEvents();
+	},
+
+	bindEvents: function()
+	{
+		//Listen for the content of the search input changing so we can display the probability of finding the entered string
+		$("#searchFor").on("input propertychange paste", function()
+		{
+			var len = $(this).val().length;
+			var probability = piProbability.calculateProbability(len);
+			var percentage = probability * 100;
+
+			$("#searchHitProbability").html(percentage);
+		});
 	},
 
 	search: function(find, fromStringIdx, afterResultId)
