@@ -31,7 +31,10 @@ var piSearch =
 			var probability = piProbability.calculateProbability(len);
 			var percentage = probability * 100;
 
-			$("#searchHitProbability").html(percentage);
+			$(".searchHitProbability").html(percentage);
+			$("#searchHitProbabilityProgressBar")
+				.attr("valuenow", percentage)
+				.css("width", percentage + "%");
 		});
 	},
 

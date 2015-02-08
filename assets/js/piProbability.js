@@ -20,6 +20,12 @@ var piProbability =
 	{
 		console.log("piProbability.calculateProbability");
 
+		//Cannot search for anything shorter than 1 digit
+		if(searchLength < 1)
+		{
+			return 0;
+		}
+
 		if(typeof(numPiDigits) === "undefined" || numPiDigits === null)
 		{
 			numPiDigits = piProbability.numPiDigits;
