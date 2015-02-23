@@ -6,7 +6,7 @@
  * By Robert G. Bryan in Feb, 2011.
  * Modified by "Steve" for use in TVRename
  * First included in PiSearch (& modified) 02/01/2015 by Josh Keegan
- * Last Edit 24/01/2014
+ * Last Edit 23/02/2015
  * 
  * This file is under a "free for any use" license, not the same lincense as is used elsewhere in the PiSearch project.
  */
@@ -87,10 +87,10 @@ namespace StringSearch.IO
              string FileName,           // file name
              uint DesiredAccess,        // access mode
              uint ShareMode,            // share mode
-             uint SecurityAttributes,   // Security Attributes
+             UIntPtr SecurityAttributes,   // Security Attributes
              uint CreationDisposition,  // how to create
              uint FlagsAndAttributes,   // file attributes
-             int hTemplateFile          // handle to template file
+             IntPtr hTemplateFile          // handle to template file
         );
 
         [System.Runtime.InteropServices.DllImport("kernel32", SetLastError = true)]
@@ -100,7 +100,7 @@ namespace StringSearch.IO
              void* pBuffer,             // data buffer
              int NumberOfBytesToRead,   // number of bytes to read
              int* pNumberOfBytesRead,   // number of bytes read
-             int Overlapped             // overlapped buffer which is used for async I/O.  Not used here.
+             IntPtr Overlapped             // overlapped buffer which is used for async I/O.  Not used here.
         );
 
         [System.Runtime.InteropServices.DllImport("kernel32", SetLastError = true)]
@@ -110,7 +110,7 @@ namespace StringSearch.IO
             void* pBuffer,              // data buffer
             int NumberOfBytesToWrite,   // Number of bytes to write.
             int* pNumberOfBytesWritten, // Number of bytes that were written..
-            int Overlapped              // Overlapped buffer which is used for async I/O.  Not used here.
+            IntPtr Overlapped              // Overlapped buffer which is used for async I/O.  Not used here.
         );
 
         [System.Runtime.InteropServices.DllImport("kernel32", SetLastError = true)]
@@ -278,7 +278,7 @@ namespace StringSearch.IO
             // A return value of true indicates success.
             // It allows other processes to read the file
             Close(true, false);
-            pHandleRead = CreateFile(FileName, GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, (uint)flagsAndAttributes, 0);
+            pHandleRead = CreateFile(FileName, GENERIC_READ, FILE_SHARE_READ, UIntPtr.Zero, OPEN_EXISTING, (uint)flagsAndAttributes, IntPtr.Zero);
             position = 0;
 
             if (pHandleRead == IntPtr.Zero)
@@ -302,7 +302,7 @@ namespace StringSearch.IO
             // If it does exist, it will be loaded.
             // It does not allow other processes to access the file
             Close(false, true);
-            pHandleWrite = CreateFile(FileName, GENERIC_WRITE, 0, 0, OPEN_ALWAYS, (uint)flagsAndAttributes, 0);
+            pHandleWrite = CreateFile(FileName, GENERIC_WRITE, 0, UIntPtr.Zero, OPEN_ALWAYS, (uint)flagsAndAttributes, IntPtr.Zero);
             position = 0;
 
             if (pHandleWrite == IntPtr.Zero)
@@ -326,8 +326,8 @@ namespace StringSearch.IO
             // If it does exist, it will be loaded.
             // It does not allow other processes to access the file
             Close(true, true);
-            pHandleRead = pHandleWrite = CreateFile(FileName, GENERIC_READ | GENERIC_WRITE, 0, 0,
-                OPEN_ALWAYS, (uint)flagsAndAttributes, 0);
+            pHandleRead = pHandleWrite = CreateFile(FileName, GENERIC_READ | GENERIC_WRITE, 0, UIntPtr.Zero,
+                OPEN_ALWAYS, (uint)flagsAndAttributes, IntPtr.Zero);
             position = 0;
 
             if(pHandleRead == IntPtr.Zero)
@@ -392,7 +392,7 @@ namespace StringSearch.IO
             do
             {
                 int BlockByteSize = Math.Min(BlockSize, BytesToRead - BytesRead);
-                if (!ReadFile(pHandleRead, pBuf, BlockByteSize, &BytesReadInBlock, 0))
+                if (!ReadFile(pHandleRead, pBuf, BlockByteSize, &BytesReadInBlock, IntPtr.Zero))
                 {
                     Win32Exception WE = new Win32Exception();
                     ApplicationException AE = new ApplicationException("WinFileIO:ReadBytes - Error occurred reading a file. - "
@@ -436,7 +436,7 @@ namespace StringSearch.IO
             do
             {
                 int BytesToWrite = Math.Min(RemainingBytes, BlockSize);
-                if (!WriteFile(pHandleWrite, pBuf, BytesToWrite, &BytesWritten, 0))
+                if (!WriteFile(pHandleWrite, pBuf, BytesToWrite, &BytesWritten, IntPtr.Zero))
                 {
                     // This is an error condition.  The error msg can be obtained by creating a Win32Exception and
                     // using the Message property to obtain a description of the error that was encountered.
