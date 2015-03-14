@@ -168,15 +168,20 @@ var piSearch =
 		console.log("piSearch.displayResult");
 		console.log(result);
 
-		//TODO: UI
+		//TODO: UI Improvements
+		$("#noSearchPerformed").addClass("hide");
 		if(result.NumResults === 0)
 		{
-			$("#searchResultIndex").html("Not found in the first " + numberHelpers.insertCommas(piSearch.NUM_DIGITS) + " digits of Pi");
+			$("#searchResult").addClass("hide");
+			$("#searchNoResults").removeClass("hide");
 		}
 		else //There are results
 		{
 			$("#searchResultIndex").html(numberHelpers.insertCommas(result.ResultStringIndex + 1));
 			$("#searchResultOrdinal").html(piSearch.getOrdinal(result.ResultStringIndex + 1));
+
+			$("#searchNoResults").addClass("hide");
+			$("#searchResult").removeClass("hide");
 		}
 
 		//Surrounding digits
@@ -216,7 +221,7 @@ var piSearch =
 		$("#searchResultProcessingTimeMs").html(numberHelpers.insertCommas(procTime.toFixed(0)));
 
 		//If there are more results to be displayed after this one, enable the find next occurrence button
-		var resultId = $("#searchResultOccurrenceNumber").html();
+		var resultId = parseInt(numberHelpers.removeCommas($("#searchResultOccurrenceNumber").html())) - 1;
 		if(resultId != result.NumResults - 1)
 		{
 			$("#btnFindNext").prop("disabled", false);

@@ -127,17 +127,28 @@
 				<button type="submit" class="btn btn-default" onclick="javascript: piSearch.search()">Search</button>
 			</form>
 
-			<div id="searchResult">
-				Occurrence Number: <span id="searchResultOccurrenceNumber"></span>
-				<br />Start Position: <span id="searchResultIndex"></span><sup id="searchResultOrdinal"></sup> digit of Pi
-				<br />Num Occurrences: <span id="searchResultNumResults"></span>
-				<br />Processing Time: <span id="searchResultProcessingTimeMs"></span> ms
+			<div id="resultsContainer">
+				<div id="searchResult" class="hide">
+					Occurrence Number: <span id="searchResultOccurrenceNumber"></span>
+					<br />Start Position: <span id="searchResultIndex"></span><sup id="searchResultOrdinal"></sup> digit of Pi
+					<br />Num Occurrences: <span id="searchResultNumResults"></span>
+					<br />Processing Time: <span id="searchResultProcessingTimeMs"></span> ms
 
-				<br />Surrounding Digits:
-				<span id="searchResultDigitsBefore"></span>
-				<span id="searchResultDigitsFound"></span>
-				<span id="searchResultDigitsAfter"></span>
-			</div> <!-- searchResults -->
+					<br />Surrounding Digits:
+					<span id="searchResultDigitsBefore"></span>
+					<span id="searchResultDigitsFound"></span>
+					<span id="searchResultDigitsAfter"></span>
+				</div> <!-- searchResults -->
+
+				<div id="searchNoResults" class="hide">
+					Not found in the first 5,000,000,000 digits of Pi
+				</div> <!-- searchNoResults -->
+
+				<div id="noSearchPerformed">
+					Please search for some digits . . .
+				</div> <!-- noSearchPerformed -->
+			</div> <!-- resultsContainer -->
+
 			<button type="submit" id="btnFindNext" class="btn btn-default" onclick="javascript: piSearch.searchNext()" disabled="disabled">Find Next Occurrence</button>
 		</div> <!-- body-content -->
 	</body>

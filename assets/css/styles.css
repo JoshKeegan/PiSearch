@@ -95,3 +95,8 @@ textarea
 	width: 100%;
 	text-align: center;
 }
+
+#resultsContainer
+{
+	margin: 5px 0;
+}
