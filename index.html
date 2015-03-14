@@ -52,6 +52,13 @@
 			$(window).load(function()
 			{
 				piSearch.init();
+
+				//Pi Day Banner
+				var currentDate = new Date();
+				if(currentDate.getMonth() === 2 && currentDate.getDate() === 14)
+				{
+					$("#viewOnGithubContainer").append('<p>Happy Pi Day!</p>');
+				}
 			});
 		</script>
 		<script>
