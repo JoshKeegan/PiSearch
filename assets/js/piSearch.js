@@ -1,12 +1,18 @@
 /*
 	piSearch - Main entry point for searching pi on the website
 	By Josh Keegan 30/01/2015
-	Last Edit 08/02/2015
+	Last Edit 14/03/2015
  */
 var piSearch = 
 {
 	//Constants
 	NUM_DIGITS: 5000000000,
+	ORDINALS: 
+	[
+		"st",
+		"nd",
+		"rd"
+	],
 	
 	//Variables
 	
@@ -151,8 +157,8 @@ var piSearch =
 		var strResultId = numberHelpers.removeCommas($("#searchResultOccurrenceNumber").html());
 		var strSearchResultIdx = numberHelpers.removeCommas($("#searchResultIndex").html());
 
-		var resultId = parseInt(strResultId);
-		var from = parseInt(strSearchResultIdx) + 1;
+		var resultId = parseInt(strResultId) - 1;
+		var from = parseInt(strSearchResultIdx);
 
 		piSearch.search(find, from, resultId);
 	},
@@ -169,7 +175,8 @@ var piSearch =
 		}
 		else //There are results
 		{
-			$("#searchResultIndex").html(numberHelpers.insertCommas(result.ResultStringIndex));
+			$("#searchResultIndex").html(numberHelpers.insertCommas(result.ResultStringIndex + 1));
+			$("#searchResultOrdinal").html(piSearch.getOrdinal(result.ResultStringIndex + 1));
 		}
 
 		//Surrounding digits
@@ -187,7 +194,7 @@ var piSearch =
 		$("#searchResultDigitsAfter").html(digitsAfter);
 
 		//Occurrence Number
-		$("#searchResultOccurrenceNumber").html(result.ResultId);
+		$("#searchResultOccurrenceNumber").html(result.ResultId + 1);
 
 		//Set the current processing time to 0, as it gets added to
 		$("#searchResultProcessingTimeMs").html(0);
@@ -243,5 +250,12 @@ var piSearch =
 		var strLoading = isLoading ? "Loading . . ." : "";
 
 		$("#loadingStatus").html(strLoading);
+	},
+
+	//Get the ordinal of an integer number.
+	//	Logic from http://cwestblog.com/2012/09/28/javascript-number-getordinalfor/
+	getOrdinal: function(num)
+	{
+		return piSearch.ORDINALS[(((num = Math.abs(num % 100)) - 20) % 10) - 1] || piSearch.ORDINALS[num - 1] || "th";
 	}
 };
