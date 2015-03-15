@@ -1,7 +1,7 @@
 ﻿/*
  * Program entry point for the String Search Console application, the development interface for the PiSearch project
  * By Josh Keegan 07/11/2014
- * Last Edit 02/02/2015
+ * Last Edit 15/03/2015
  */
 
 using System;
@@ -88,6 +88,7 @@ namespace StringSearchConsole
                 "28.\tPrint precomputed suffix array indices\n" +
                 "29.\tLoad suffix array (of selected suffix array data type)\n" + 
                 "30.\tLoad precomputed search results\n" + 
+                "31.\tFind first value (lexicographically ordered) not in pi\n" +
                 "q.\tQuit");
 
             bool quit = false;
@@ -190,6 +191,9 @@ namespace StringSearchConsole
                         break;
                     case "30": //Load precomputed search results
                         subLoadPrecomputedSearchResults();
+                        break;
+                    case "31": //Find first value (lexicographically ordered) not in pi
+                        subFindFirstValueNotInPi();
                         break;
                     case "q": //Quit
                         quit = true;
@@ -708,6 +712,44 @@ namespace StringSearchConsole
             else
             {
                 Console.WriteLine("Must have a single length precomputed search results file loaded");
+            }
+        }
+
+        private static void subFindFirstValueNotInPi()
+        {
+            //Require precomputed search results
+            if(precomputedSearchResults == null)
+            {
+                Console.WriteLine("Must have some precomputed search results loaded");
+            }
+
+            bool found = false;
+
+            //Note: Assumes Precomputed search results are loaded into the array in the correct order (1, 2, 3, ...)
+            for(int i = 0; i < precomputedSearchResults.Length && !found; i++)
+            {
+                Console.WriteLine("Searching results of length {0}", i + 1);
+                BigArray<PrecomputedSearchResult> precomputedResults = precomputedSearchResults[i];
+
+                for(long j = 0; j < precomputedResults.Length; j++)
+                {
+                    PrecomputedSearchResult result = precomputedResults[j];
+
+                    //The stored maximum is exclusive, so if min == max there was no results found
+                    if(result.MinSuffixArrayIdx == result.MaxSuffixArrayIdx)
+                    {
+                        string searched = j.ToString("D" + (i + 1));
+                        Console.WriteLine("{0} does not occur in the first {1} digits", searched, fourBitDigitArray.Length);
+                        found = true;
+                        break;
+                    }
+                }
+            }
+
+            if(!found)
+            {
+                Console.WriteLine("Could not find a string or digits that doesn't occur in the first {0} digits of pi, up to length {1}",
+                    fourBitDigitArray.Length, precomputedSearchResults.Length);
             }
         }
 
