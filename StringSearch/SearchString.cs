@@ -195,7 +195,7 @@ namespace StringSearch
 
                 PrecomputedSearchResult precomputedResult = precomputedResultsOfRequiredLength[precomputedResultIdx];
 
-                //Convert this precomputed result into a SuffixArrayRange before retruning it
+                //Convert this precomputed result into a SuffixArrayRange before returning it
                 SuffixArrayRange suffixArrayRange = new SuffixArrayRange(precomputedResult, suffixArray, digitArray);
                 return suffixArrayRange;
             }
