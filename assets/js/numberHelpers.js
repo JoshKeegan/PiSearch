@@ -1,7 +1,7 @@
 /*
 	numberHelpers - helper methods for manipulating numbers
 	By Josh Keegan 05/02/2015
-	Last Edit 08/02/2015
+	Last Edit 21/05/2015
  */
 var numberHelpers = 
 {
@@ -35,7 +35,7 @@ var numberHelpers =
 		{
 			digit++;
 			commaBefore = before.charAt(i) + commaBefore;
-			if(digit % 3 == 0)
+			if(digit % 3 === 0)
 			{
 				commaBefore = "," + commaBefore;
 			}
@@ -51,7 +51,7 @@ var numberHelpers =
 		}
 
 		var numWithCommas = commaBefore;
-		if(after != "")
+		if(after !== "")
 		{
 			numWithCommas += "." + after;
 		}
