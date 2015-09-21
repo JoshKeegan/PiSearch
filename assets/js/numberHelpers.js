@@ -1,7 +1,7 @@
 /*
 	numberHelpers - helper methods for manipulating numbers
 	By Josh Keegan 05/02/2015
-	Last Edit 21/05/2015
+	Last Edit 21/09/2015
  */
 var numberHelpers = 
 {
