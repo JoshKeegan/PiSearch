@@ -28,6 +28,13 @@ var numberHelpers =
 			after = parts[1];
 		}
 
+	    // If the number is -ve, get rid of the sign now to make the next bit of the algorithm simpler & we'll put it back in afterwards
+		var negative = before.length > 0 && before.charAt(0) === "-";
+		if (negative)
+		{
+		    before = before.substring(1, before.length - 1);
+		}
+
 		//Do not check the first digit (don't want number to start with a comma)
 		var commaBefore = "";
 		var digit = 0;
@@ -48,6 +55,12 @@ var numberHelpers =
 		else //Otherwise there is not part to the number before the decimal place, replace this with 0
 		{
 			commaBefore = "0";
+		}
+
+	    // If it was negative, put the sign back in 
+		if (negative)
+		{
+		    commaBefore = "-" + commaBefore;
 		}
 
 		var numWithCommas = commaBefore;
