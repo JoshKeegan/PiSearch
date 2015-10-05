@@ -1,14 +1,12 @@
 /*
 	numberHelpers - helper methods for manipulating numbers
 	By Josh Keegan 05/02/2015
-	Last Edit 21/09/2015
+	Last Edit 05/10/2015
  */
 var numberHelpers = 
 {
 	insertCommas: function(numStr)
 	{
-		console.log("numberHelpers.insertCommas");
-
 		//If this is a value that this function shouldn't be operating on, don't
 		if(!$.isNumeric(numStr))
 		{
@@ -32,7 +30,7 @@ var numberHelpers =
 		var negative = before.length > 0 && before.charAt(0) === "-";
 		if (negative)
 		{
-		    before = before.substring(1, before.length - 1);
+		    before = before.substring(1);
 		}
 
 		//Do not check the first digit (don't want number to start with a comma)
