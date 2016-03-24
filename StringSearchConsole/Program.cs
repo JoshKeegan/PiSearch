@@ -19,7 +19,7 @@ using SuffixArray;
 
 namespace StringSearchConsole
 {
-    public class Program
+    public static class Program
     {
         //Constants
         private const string PRECOMPUTED_SEARCH_RESULTS_FILE_EXTENSION = "precomputed";
@@ -32,14 +32,14 @@ namespace StringSearchConsole
         private static BigArray<ulong> suffixArray = null;
         private static BigArray<ulong> singleLengthPrecomputedSearchResults = null;
         private static BigArray<PrecomputedSearchResult>[] precomputedSearchResults = null;
-        private static Stopwatch stopwatch = new Stopwatch();
+        private static readonly Stopwatch stopwatch = new Stopwatch();
         private static Type suffixArrayType = typeof(MemoryEfficientBigULongArray); // Note: Byte Aligned better for generation (fater), non-byte aligned better for searching (due to better memory efficiency). However, depends on hardware available
         private static Type suffixArrayStreamType = null; //Null for store in memory (uses the default underlying store of the BigArray<ulong> implementation that is being used
         private static string suffixArrayFileName = null; //When using FileStream for the suffix array
         private static int suffixArrayFileStreamBufferSize = 4096; //Default as specified at http://msdn.microsoft.com/en-us/library/f20d7x6t%28v=vs.110%29.aspx
         private static int suffixArrayFastFileStreamIoBufferSize = 8;
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             while(true)
             {
