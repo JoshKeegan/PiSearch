@@ -2,7 +2,7 @@
  * PiSearch
  * FourBitDigitArray Unit Tests
  * By Josh Keegan 27/11/2014
- * Last Edit 25/01/2015
+ * Last Edit 24/03/2016
  */
 
 using System;
@@ -104,59 +104,71 @@ namespace UnitTests.StringSearch.Collections
         }
 
         [Test]
-        [ExpectedException (typeof(IndexOutOfRangeException))]
         public void TestAccessOutOfRangeNeg()
         {
             FourBitDigitBigArray a = convertStringTo4BitDigitArray("123");
 
-            byte b = a[-1];
+            Assert.Throws<IndexOutOfRangeException>(() =>
+            {
+                byte b = a[-1];
+            });
         }
 
         [Test]
-        [ExpectedException (typeof(IndexOutOfRangeException))]
         public void TestAccessOutOfRange()
         {
             FourBitDigitBigArray a = convertStringTo4BitDigitArray("123");
 
-            byte b = a[3];
+            Assert.Throws<IndexOutOfRangeException>(() =>
+            {
+                byte b = a[3];
+            });
         }
 
         [Test]
-        [ExpectedException (typeof(IndexOutOfRangeException))]
         public void TestSetOutOfRangeNeg()
         {
             FourBitDigitBigArray a = convertStringTo4BitDigitArray("123");
 
-            a[-1] = 3;
+            Assert.Throws<IndexOutOfRangeException>(() =>
+            {
+                a[-1] = 3;
+            });
         }
 
         [Test]
-        [ExpectedException (typeof(IndexOutOfRangeException))]
         public void TestSetOutOfRange()
         {
             FourBitDigitBigArray a = convertStringTo4BitDigitArray("123");
 
-            a[3] = 3;
+            Assert.Throws<IndexOutOfRangeException>(() =>
+            {
+                a[3] = 3;
+            });
         }
 
         [Test]
-        [ExpectedException (typeof(OverflowException))]
         public void TestSetOverflow()
         {
             FourBitDigitBigArray a = convertStringTo4BitDigitArray("123");
 
-            a[0] = 16;
+            Assert.Throws<OverflowException>(() =>
+            {
+                a[0] = 16;
+            });
         }
 
         [Test]
-        [ExpectedException (typeof(OverflowException))]
         public void TestSetReservedOverflow()
         {
             //Highest possible value in 4 bits (15) reserved for marking that half of the byte as not in use
             //  so it counts as overflow
             FourBitDigitBigArray a = convertStringTo4BitDigitArray("123");
 
-            a[0] = 15;
+            Assert.Throws<OverflowException>(() =>
+            {
+                a[0] = 15;
+            });
         }
 
         [Test]

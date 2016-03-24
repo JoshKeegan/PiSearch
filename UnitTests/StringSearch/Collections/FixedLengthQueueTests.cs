@@ -2,7 +2,7 @@
  * PiSearch
  * FixedLengthQueue Unit Tests
  * By Josh Keegan 01/12/2014
- * Last Edit 17/12/2014
+ * Last Edit 24/03/2016
  */
 
 using System;
@@ -59,30 +59,27 @@ namespace UnitTests.StringSearch.Collections
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentOutOfRangeException))]
         public void TestConstructorNegativeLength()
         {
-            new FixedLengthQueue<int>(-1);
+            Assert.Throws<ArgumentOutOfRangeException>(() => new FixedLengthQueue<int>(-1));
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentOutOfRangeException))]
         public void TestConstructorNegativeHead()
         {
             int[] initialValues = new int[] { 4, 7, 3, 11, 215, -4 };
             int head = -1;
 
-            FixedLengthQueue<int> q = new FixedLengthQueue<int>(initialValues, head);
+            Assert.Throws<ArgumentOutOfRangeException>(() => new FixedLengthQueue<int>(initialValues, head));
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentOutOfRangeException))]
         public void TestConstructorHeadTooBig()
         {
             int[] initialValues = new int[] { 4, 7, 3, 11, 215, -4 };
             int head = initialValues.Length;
 
-            FixedLengthQueue<int> q = new FixedLengthQueue<int>(initialValues, head);
+            Assert.Throws<ArgumentOutOfRangeException>(() => new FixedLengthQueue<int>(initialValues, head));
         }
 
         [Test]

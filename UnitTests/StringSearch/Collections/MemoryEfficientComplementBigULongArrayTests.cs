@@ -2,6 +2,7 @@
  * PiSearch
  * MemoryEfficientComplementBigULongArray Tests
  * By Josh Keegan 12/01/2015
+ * Last Edit 24/03/2016
  */
 
 using System;
@@ -43,31 +44,33 @@ namespace UnitTests.StringSearch.Collections
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentNullException))]
         public void TestConstructorWithNullValuesArray()
         {
-            new MemoryEfficientComplementBigULongArray(100, 5, null);
+
+            Assert.Throws<ArgumentNullException>(() => new MemoryEfficientComplementBigULongArray(100, 5, null));
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentNullException))]
         public void TestConstructorWithNullComplementsArray()
         {
-            new MemoryEfficientComplementBigULongArray(100, 5, new MemoryEfficientBigULongArray(100), null);
+            Assert.Throws<ArgumentNullException>(
+                () => new MemoryEfficientComplementBigULongArray(100, 5, new MemoryEfficientBigULongArray(100), null));
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentException))]
         public void TestConstructorWithTooSmallValuesArray()
         {
-            new MemoryEfficientComplementBigULongArray(100, 5, new MemoryEfficientBigULongArray(99));
+            Assert.Throws<ArgumentException>(
+                () => new MemoryEfficientComplementBigULongArray(100, 5, new MemoryEfficientBigULongArray(99)));
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentException))]
         public void TestConstructorWithTooSMallComplementsArray()
         {
-            new MemoryEfficientComplementBigULongArray(100, 5, new MemoryEfficientBigULongArray(100), new BigBoolArray(99));
+            Assert.Throws<ArgumentException>(
+                () =>
+                    new MemoryEfficientComplementBigULongArray(100, 5, new MemoryEfficientBigULongArray(100),
+                        new BigBoolArray(99)));
         }
 
         [Test]

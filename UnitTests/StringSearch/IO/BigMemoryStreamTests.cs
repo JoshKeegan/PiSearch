@@ -2,7 +2,7 @@
  * PiSearch
  * BigMemoryStream Unit Tests
  * By Josh Keegan 15/12/2014
- * Last Edit 02/01/2015
+ * Last Edit 24/03/2016
  */
 
 using System;
@@ -37,10 +37,9 @@ namespace UnitTests.StringSearch.IO
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentOutOfRangeException))]
         public void TestConstructorNegCapacity()
         {
-            BigMemoryStream stream = new BigMemoryStream(-1);
+            Assert.Throws<ArgumentOutOfRangeException>(() => new BigMemoryStream(-1));
         }
 
         [Test]
@@ -91,12 +90,11 @@ namespace UnitTests.StringSearch.IO
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentOutOfRangeException))]
         public void TestSetPositionNeg()
         {
             BigMemoryStream stream = new BigMemoryStream();
 
-            stream.Position = -1;
+            Assert.Throws<ArgumentOutOfRangeException>(() => stream.Position = -1);
         }
 
         [Test]
@@ -296,53 +294,48 @@ namespace UnitTests.StringSearch.IO
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentNullException))]
         public void TestReadBufferNull()
         {
             BigMemoryStream stream = new BigMemoryStream(5);
 
             byte[] buffer = null;
-            stream.Read(buffer, 0, 1);
+            Assert.Throws<ArgumentNullException>(() => stream.Read(buffer, 0, 1));
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentException))]
         public void TestReadNegOffset()
         {
             BigMemoryStream stream = new BigMemoryStream(5);
 
             byte[] buffer = new byte[5];
-            stream.Read(buffer, -1, 1);
+            Assert.Throws<ArgumentException>(() => stream.Read(buffer, -1, 1));
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentException))]
         public void TestReadNegCount()
         {
             BigMemoryStream stream = new BigMemoryStream(5);
 
             byte[] buffer = new byte[5];
-            stream.Read(buffer, 1, -1);
+            Assert.Throws<ArgumentException>(() => stream.Read(buffer, 1, -1));
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentException))]
         public void TestReadBufferTooSmall()
         {
             BigMemoryStream stream = new BigMemoryStream(5);
 
             byte[] buffer = new byte[4];
-            stream.Read(buffer, 0, 5);
+            Assert.Throws<ArgumentException>(() => stream.Read(buffer, 0, 5));
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentException))]
         public void TestReadBufferTooSmallDueToOffset()
         {
             BigMemoryStream stream = new BigMemoryStream(5);
 
             byte[] buffer = new byte[4];
-            stream.Read(buffer, 1, 4);
+            Assert.Throws<ArgumentException>(() => stream.Read(buffer, 1, 4));
         }
 
         [Test]
@@ -537,12 +530,11 @@ namespace UnitTests.StringSearch.IO
         }
 
         [Test]
-        [ExpectedException (typeof(ObjectDisposedException))]
         public void TestDisposed()
         {
             BigMemoryStream stream = new BigMemoryStream(5);
             stream.Close();
-            stream.Position = 5;
+            Assert.Throws<ObjectDisposedException>(() => stream.Position = 5);
         }
 
         //TODO: Test SetLength

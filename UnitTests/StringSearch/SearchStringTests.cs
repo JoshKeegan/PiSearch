@@ -2,7 +2,7 @@
  * PiSearch
  * SearchString Unit Tests
  * By Josh Keegan 20/11/2014
- * Last Edit 07/02/2015
+ * Last Edit 24/03/2016
  */
 
 using System;
@@ -97,27 +97,24 @@ namespace UnitTests.StringSearch
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentNullException))]
         public void SequentialSearchSearchNull()
         {
-            SearchString.Search(null, "1");
+            Assert.Throws<ArgumentNullException>(() => SearchString.Search(null, "1"));
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentNullException))]
         public void SequentialSearchLookForNull()
         {
-            SearchString.Search("123", null);
+            Assert.Throws<ArgumentNullException>(() => SearchString.Search("123", null));
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentException))]
         public void SequentialSearchLookForEmptyString()
         {
             const string STR = "123456789991234";
             const string FIND = "";
 
-            SearchString.Search(STR, FIND);
+            Assert.Throws<ArgumentException>(() => SearchString.Search(STR, FIND));
         }
 
         [Test]
@@ -239,7 +236,6 @@ namespace UnitTests.StringSearch
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentException))]
         public void SearchSuffixArrayForEmptyString()
         {
             const string STR = "123456789";
@@ -247,7 +243,7 @@ namespace UnitTests.StringSearch
             BigArray<ulong> suffixArray = buildSuffixArray(STR);
             FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
 
-            SearchString.Search(suffixArray, fourBitDigitArray, "");
+            Assert.Throws<ArgumentException>(() => SearchString.Search(suffixArray, fourBitDigitArray, ""));
         }
 
         [Test]
@@ -268,13 +264,12 @@ namespace UnitTests.StringSearch
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentException))]
         public void TestSuffixArrayWrongSize()
         {
             BigArray<ulong> suffixArray = Program.convertIntArrayToBigUlongArray(new int[] { 1, 2, 3 });
             FourBitDigitBigArray a = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray("12345");
 
-            SearchString.Search(suffixArray, a, "23");
+            Assert.Throws<ArgumentException>(() => SearchString.Search(suffixArray, a, "23"));
         }
 
         [Test]
@@ -364,19 +359,18 @@ namespace UnitTests.StringSearch
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentException))]
         public void TestFindNextOccurrenceLookForEmptyString()
         {
             const string STR = "123456789991234";
 
-            SearchString.FindNextOccurrence(STR, "", 0);
+            ;
+            Assert.Throws<ArgumentException>(() => SearchString.FindNextOccurrence(STR, "", 0));
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentException))]
         public void TestFindNextOccurrenceSearchEmptyString()
         {
-            SearchString.FindNextOccurrence("", "1", 0);
+            Assert.Throws<ArgumentException>(() => SearchString.FindNextOccurrence("", "1", 0));
         }
         #endregion
 
@@ -454,22 +448,21 @@ namespace UnitTests.StringSearch
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentException))]
         public void TestFindNextOccurrence4BitDigitLookForEmptyString()
         {
             const string STR = "123456789991234";
             Stream s = FourBitDigitBigArrayTests.convertStringTo4BitDigitStream(STR);
 
-            SearchString.FindNextOccurrence4BitDigit(s, "", 0);
+            Assert.Throws<ArgumentException>(() => SearchString.FindNextOccurrence4BitDigit(s, "", 0));
         }
 
         [Test]
-        [ExpectedException (typeof(ArgumentException))]
         public void TestFindNextOccurrence4BitDigitSearchEmptyString()
         {
             Stream s = FourBitDigitBigArrayTests.convertStringTo4BitDigitStream("");
 
-            SearchString.FindNextOccurrence4BitDigit(s, "1", 0);
+            ;
+            Assert.Throws<ArgumentException>(() => SearchString.FindNextOccurrence4BitDigit(s, "1", 0));
         }
         #endregion
 
