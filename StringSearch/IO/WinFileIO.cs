@@ -8,7 +8,7 @@
  * First included in PiSearch (& modified) 02/01/2015 by Josh Keegan
  * Last Edit 23/02/2015
  * 
- * This file is under a "free for any use" license, not the same lincense as is used elsewhere in the PiSearch project.
+ * This file is under a "free for any use" license, not the same license as is used elsewhere in the PiSearch project.
  */
 
 // 

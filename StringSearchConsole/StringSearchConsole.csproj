@@ -34,9 +34,6 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SAIS">
-      <HintPath>..\..\SAIS\bin\Debug\SAIS.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -56,6 +53,10 @@
     <ProjectReference Include="..\StringSearch\StringSearch.csproj">
       <Project>{27ee1fb7-b2d2-4008-b256-fadc8c0c8c7d}</Project>
       <Name>StringSearch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SuffixArray\SuffixArray.csproj">
+      <Project>{37a30d70-14fc-48a7-b9b0-18eee2660ffd}</Project>
+      <Name>SuffixArray</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
