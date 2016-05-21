@@ -26,13 +26,13 @@ namespace UnitTests.StringSearch.IO
         [Test]
         public void TestReadFirstByte()
         {
-            const string FILE_NAME = "WinFileIOTests.TestReadFirstByte";
+            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "WinFileIOTests.TestReadFirstByte");
 
-            createFile(FILE_NAME);
+            createFile(filePath);
 
             byte[] buffer = new byte[1];
             WinFileIO wfio = new WinFileIO(buffer);
-            wfio.OpenForReading(FILE_NAME);
+            wfio.OpenForReading(filePath);
             wfio.ReadBlocks(buffer.Length);
             wfio.Close();
 
@@ -42,13 +42,13 @@ namespace UnitTests.StringSearch.IO
         [Test]
         public void TestReadWholeFile()
         {
-            const string FILE_NAME = "WinFileIOTests.TestReadWholeFile";
+            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "WinFileIOTests.TestReadWholeFile");
 
-            createFile(FILE_NAME);
+            createFile(filePath);
 
             byte[] buffer = new byte[FILE_CONTENT.Length];
             WinFileIO wfio = new WinFileIO(buffer);
-            wfio.OpenForReading(FILE_NAME);
+            wfio.OpenForReading(filePath);
             wfio.ReadBlocks(buffer.Length);
             wfio.Close();
 
@@ -58,13 +58,13 @@ namespace UnitTests.StringSearch.IO
         [Test]
         public void TestReadFirst8Bytes()
         {
-            const string FILE_NAME = "WinFileIOTests.TestReadFirst8Bytes";
+            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "WinFileIOTests.TestReadFirst8Bytes");
 
-            createFile(FILE_NAME);
+            createFile(filePath);
 
             byte[] buffer = new byte[8];
             WinFileIO wfio = new WinFileIO(buffer);
-            wfio.OpenForReading(FILE_NAME);
+            wfio.OpenForReading(filePath);
             wfio.ReadBlocks(buffer.Length);
             wfio.Close();
 
@@ -75,18 +75,18 @@ namespace UnitTests.StringSearch.IO
         [Test]
         public void TestWriteFirstByte()
         {
-            const string FILE_NAME = "WinFileIOTests.TestWriteFirstByte";
+            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "WinFileIOTests.TestWriteFirstByte");
 
             byte[] buffer = new byte[1];
             WinFileIO wfio = new WinFileIO(buffer);
-            wfio.OpenForWriting(FILE_NAME);
+            wfio.OpenForWriting(filePath);
 
             buffer[0] = FILE_CONTENT[0];
             wfio.WriteBlocks(buffer.Length);
             wfio.Close();
 
             byte[] expected = FILE_CONTENT.Take(1).ToArray();
-            byte[] actual = readFile(FILE_NAME);
+            byte[] actual = readFile(filePath);
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -94,11 +94,11 @@ namespace UnitTests.StringSearch.IO
         [Test]
         public void TestWriteWholeFile()
         {
-            const string FILE_NAME = "WinFileIOTests.TestWriteWholeFile";
+            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "WinFileIOTests.TestWriteWholeFile");
 
             byte[] buffer = new byte[FILE_CONTENT.Length];
             WinFileIO wfio = new WinFileIO(buffer);
-            wfio.OpenForWriting(FILE_NAME);
+            wfio.OpenForWriting(filePath);
 
             for (int i = 0; i < buffer.Length; i++)
             {
@@ -108,7 +108,7 @@ namespace UnitTests.StringSearch.IO
             wfio.Close();
 
             byte[] expected = FILE_CONTENT;
-            byte[] actual = readFile(FILE_NAME);
+            byte[] actual = readFile(filePath);
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -116,11 +116,11 @@ namespace UnitTests.StringSearch.IO
         [Test]
         public void TestWriteFirst8Bytes()
         {
-            const string FILE_NAME = "WinFileIOTests.TestWriteFirst8Bytes";
+            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "WinFileIOTests.TestWriteFirst8Bytes");
 
             byte[] buffer = new byte[8];
             WinFileIO wfio = new WinFileIO(buffer);
-            wfio.OpenForWriting(FILE_NAME);
+            wfio.OpenForWriting(filePath);
 
             for (int i = 0; i < buffer.Length; i++)
             {
@@ -130,7 +130,7 @@ namespace UnitTests.StringSearch.IO
             wfio.Close();
 
             byte[] expected = FILE_CONTENT.Take(buffer.Length).ToArray();
-            byte[] actual = readFile(FILE_NAME);
+            byte[] actual = readFile(filePath);
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -138,13 +138,13 @@ namespace UnitTests.StringSearch.IO
         [Test]
         public void TestInitialPositionRead()
         {
-            const string FILE_NAME = "WinFileIOTests.TestInitialPositionRead";
+            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "WinFileIOTests.TestInitialPositionRead");
 
-            createFile(FILE_NAME);
+            createFile(filePath);
 
             byte[] buffer = new byte[1];
             WinFileIO wfio = new WinFileIO(buffer);
-            wfio.OpenForReading(FILE_NAME);
+            wfio.OpenForReading(filePath);
 
             Assert.AreEqual(0, wfio.Position);
 
@@ -172,13 +172,13 @@ namespace UnitTests.StringSearch.IO
         [Test]
         public void TestPositionIncrementsRead()
         {
-            const string FILE_NAME = "WinFileIOTests.TestPositionIncrementsRead";
+            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "WinFileIOTests.TestPositionIncrementsRead");
 
-            createFile(FILE_NAME);
+            createFile(filePath);
 
             byte[] buffer = new byte[5];
             WinFileIO wfio = new WinFileIO(buffer);
-            wfio.OpenForReading(FILE_NAME);
+            wfio.OpenForReading(filePath);
             wfio.ReadBlocks(buffer.Length);
 
             Assert.AreEqual(5, wfio.Position);
@@ -189,30 +189,30 @@ namespace UnitTests.StringSearch.IO
         [Test]
         public void TestPositionIncrementsWrite()
         {
-            const string FILE_NAME = "WinFileIOTests.TestPositionIncrementsWrite";
+            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "WinFileIOTests.TestPositionIncrementsWrite");
 
             byte[] buffer = new byte[] { 7, 3 };
             WinFileIO wfio = new WinFileIO(buffer);
-            wfio.OpenForWriting(FILE_NAME);
+            wfio.OpenForWriting(filePath);
             wfio.WriteBlocks(buffer.Length);
 
             Assert.AreEqual(2, wfio.Position);
 
             wfio.Close();
 
-            fileNames.Add(FILE_NAME);
+            fileNames.Add(filePath);
         }
 
         [Test]
         public void TestSetPositionRead()
         {
-            const string FILE_NAME = "WinFileIOTests.TestSetPositionRead";
+            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "WinFileIOTests.TestSetPositionRead");
 
-            createFile(FILE_NAME);
+            createFile(filePath);
 
             byte[] buffer = new byte[4];
             WinFileIO wfio = new WinFileIO(buffer);
-            wfio.OpenForReading(FILE_NAME);
+            wfio.OpenForReading(filePath);
 
             Assert.AreEqual(0, wfio.Position);
             wfio.Position = 5;
@@ -230,11 +230,11 @@ namespace UnitTests.StringSearch.IO
         public void TestSetPositionWrite()
         {
             //Test setting Position durung a write by writing the contents of the file to disk backwards one byte at a time
-            const string FILE_NAME = "WinFileIOTests.TestSetPositionWrite";
+            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "WinFileIOTests.TestSetPositionWrite");
 
             byte[] buffer = new byte[1];
             WinFileIO wfio = new WinFileIO(buffer);
-            wfio.OpenForWriting(FILE_NAME);
+            wfio.OpenForWriting(filePath);
 
             Assert.AreEqual(0, wfio.Position);
 
@@ -248,7 +248,7 @@ namespace UnitTests.StringSearch.IO
             }
             wfio.Close();
 
-            byte[] actual = readFile(FILE_NAME);
+            byte[] actual = readFile(filePath);
 
             CollectionAssert.AreEqual(FILE_CONTENT, actual);
         }
@@ -256,11 +256,11 @@ namespace UnitTests.StringSearch.IO
         [Test]
         public void TestSetPositionReadWrite()
         {
-            const string FILE_NAME = "WinFileIOTests.TestSetPositionReadWrite";
+            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "WinFileIOTests.TestSetPositionReadWrite");
 
             byte[] buffer = new byte[1];
             WinFileIO wfio = new WinFileIO(buffer);
-            wfio.OpenForReadingWriting(FILE_NAME);
+            wfio.OpenForReadingWriting(filePath);
 
             Assert.AreEqual(0, wfio.Position);
 
@@ -301,7 +301,7 @@ namespace UnitTests.StringSearch.IO
 
             //Now check that the final file is what we expected it to be
             byte[] expected = new byte[] { 10, 3, 24, 7 };
-            byte[] actual = readFile(FILE_NAME);
+            byte[] actual = readFile(filePath);
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -309,13 +309,13 @@ namespace UnitTests.StringSearch.IO
         [Test]
         public void TestLengthRead()
         {
-            const string FILE_NAME = "WinFileIOTests.TestLengthRead";
+            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "WinFileIOTests.TestLengthRead");
 
-            createFile(FILE_NAME);
+            createFile(filePath);
 
             byte[] buffer = new byte[1];
             WinFileIO wfio = new WinFileIO(buffer);
-            wfio.OpenForReading(FILE_NAME);
+            wfio.OpenForReading(filePath);
 
             Assert.AreEqual((long)FILE_CONTENT.Length, wfio.Length);
 
@@ -325,28 +325,28 @@ namespace UnitTests.StringSearch.IO
         [Test]
         public void TestLengthWrite()
         {
-            const string FILE_NAME = "WinFileIOTests.TestLengthWrite";
+            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "WinFileIOTests.TestLengthWrite");
 
             byte[] buffer = new byte[FILE_CONTENT.Length];
             WinFileIO wfio = new WinFileIO(buffer);
-            wfio.OpenForWriting(FILE_NAME);
+            wfio.OpenForWriting(filePath);
             Array.Copy(FILE_CONTENT, buffer, buffer.Length);
             wfio.WriteBlocks(buffer.Length);
 
             Assert.AreEqual((long)FILE_CONTENT.Length, wfio.Length);
             wfio.Close();
 
-            fileNames.Add(FILE_NAME);
+            fileNames.Add(filePath);
         }
 
         [Test]
         public void TestLengthWriteIncrements()
         {
-            const string FILE_NAME = "WinFileIOTests.TestLengthWriteIncrements";
+            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "WinFileIOTests.TestLengthWriteIncrements");
 
             byte[] buffer = new byte[FILE_CONTENT.Length];
             WinFileIO wfio = new WinFileIO(buffer);
-            wfio.OpenForWriting(FILE_NAME);
+            wfio.OpenForWriting(filePath);
             Array.Copy(FILE_CONTENT, buffer, buffer.Length);
             wfio.WriteBlocks(buffer.Length);
 
@@ -357,17 +357,17 @@ namespace UnitTests.StringSearch.IO
 
             wfio.Close();
 
-            fileNames.Add(FILE_NAME);
+            fileNames.Add(filePath);
         }
 
         [Test]
         public void TestLengthWriteOverwriteNotIncrement()
         {
-            const string FILE_NAME = "WinFileIOTests.TestLengthWriteOverwriteNotIncrement";
+            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "WinFileIOTests.TestLengthWriteOverwriteNotIncrement");
 
             byte[] buffer = new byte[FILE_CONTENT.Length];
             WinFileIO wfio = new WinFileIO(buffer);
-            wfio.OpenForWriting(FILE_NAME);
+            wfio.OpenForWriting(filePath);
             Array.Copy(FILE_CONTENT, buffer, buffer.Length);
             wfio.WriteBlocks(buffer.Length);
 
@@ -380,17 +380,17 @@ namespace UnitTests.StringSearch.IO
 
             wfio.Close();
 
-            fileNames.Add(FILE_NAME);
+            fileNames.Add(filePath);
         }
 
         [Test]
         public void TestLengthWritePartialOverwrite()
         {
-            const string FILE_NAME = "WinFileIOTests.TestLengthWritePartialOverwrite";
+            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "WinFileIOTests.TestLengthWritePartialOverwrite");
 
             byte[] buffer = new byte[FILE_CONTENT.Length];
             WinFileIO wfio = new WinFileIO(buffer);
-            wfio.OpenForWriting(FILE_NAME);
+            wfio.OpenForWriting(filePath);
             Array.Copy(FILE_CONTENT, buffer, buffer.Length);
             wfio.WriteBlocks(buffer.Length);
 
@@ -403,7 +403,7 @@ namespace UnitTests.StringSearch.IO
 
             wfio.Close();
 
-            fileNames.Add(FILE_NAME);
+            fileNames.Add(filePath);
         }
 
         [TestFixtureTearDown]

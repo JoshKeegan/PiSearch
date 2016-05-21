@@ -25,15 +25,15 @@ namespace UnitTests.StringSearch
         public void CompressFile4BitDigit()
         {
             const string STR = "1234567890";
-            const string FILE_NAME = "testCompressFile4BitDigit.";
+            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "testCompressFile4BitDigit.");
 
-            writeStringFile(FILE_NAME + "txt", STR);
-            Compression.CompressFile4BitDigit(FILE_NAME + "txt", FILE_NAME + "4bitDigit");
+            writeStringFile(filePath + "txt", STR);
+            Compression.CompressFile4BitDigit(filePath + "txt", filePath + "4bitDigit");
 
-            string readBack = read4BitDigitFileAsString(FILE_NAME + "4bitDigit");
+            string readBack = read4BitDigitFileAsString(filePath + "4bitDigit");
 
-            File.Delete(FILE_NAME + ".txt");
-            File.Delete(FILE_NAME + ".4bitDigit");
+            File.Delete(filePath + ".txt");
+            File.Delete(filePath + ".4bitDigit");
 
             Assert.AreEqual(STR, readBack);
             Console.WriteLine(readBack);
@@ -43,15 +43,15 @@ namespace UnitTests.StringSearch
         public void CompressFile4BitDigitOddLength()
         {
             const string STR = "12345678905";
-            const string FILE_NAME = "testCompressFile4BitDigitOddLength.";
+            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "testCompressFile4BitDigitOddLength.");
 
-            writeStringFile(FILE_NAME + "txt", STR);
-            Compression.CompressFile4BitDigit(FILE_NAME + "txt", FILE_NAME + "4bitDigit");
+            writeStringFile(filePath + "txt", STR);
+            Compression.CompressFile4BitDigit(filePath + "txt", filePath + "4bitDigit");
 
-            string readBack = read4BitDigitFileAsString(FILE_NAME + "4bitDigit");
+            string readBack = read4BitDigitFileAsString(filePath + "4bitDigit");
 
-            File.Delete(FILE_NAME + ".txt");
-            File.Delete(FILE_NAME + ".4bitDigit");
+            File.Delete(filePath + ".txt");
+            File.Delete(filePath + ".4bitDigit");
 
             Assert.AreEqual(STR, readBack);
             Console.WriteLine(readBack);
