@@ -27,13 +27,21 @@ namespace StringSearch
          */
         public static void CompressFile4BitDigit(string inPath, string outPath)
         {
-            StreamReader reader = new StreamReader(inPath);
-            FileStream outStream = new FileStream(outPath, FileMode.Create);
+            using (FileStream inStream = new FileStream(inPath, FileMode.Open, FileAccess.Read))
+            using (FileStream outStream = new FileStream(outPath, FileMode.Create))
+            {
+                CompressStream4BitDigit(inStream, outStream);
+            }
+        }
 
+        public static void CompressStream4BitDigit(Stream inStream, Stream outStream)
+        {
+            StreamReader reader = new StreamReader(inStream);
+            
             //Read in 2 characters that will be outputted as 8 bits = 1 byte (4 bits per char)
             char[] charBuffer = new char[2];
             int charsRead;
-            while(!reader.EndOfStream)
+            while (!reader.EndOfStream)
             {
                 charsRead = reader.Read(charBuffer, 0, 2);
 
@@ -41,7 +49,7 @@ namespace StringSearch
                 byte char1 = byte.Parse(charBuffer[0].ToString());
                 byte char2 = 15; //1111 => null
 
-                if(charsRead == 2)
+                if (charsRead == 2)
                 {
                     char2 = byte.Parse(charBuffer[1].ToString());
                 }
@@ -52,9 +60,8 @@ namespace StringSearch
                 outStream.WriteByte(combined);
             }
 
-            //Clean up
-            reader.Close();
-            outStream.Close();
+            // Flush data buffer to be written to the stream
+            outStream.Flush();
         }
 
         public static void WriteStreamNoCompression(Stream stream, string filePath)

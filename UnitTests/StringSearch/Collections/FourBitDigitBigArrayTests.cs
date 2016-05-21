@@ -282,18 +282,26 @@ namespace UnitTests.StringSearch.Collections
 
         public static Stream convertStringTo4BitDigitStream(string str)
         {
-            StreamWriter writer = new StreamWriter("temp.txt");
-            writer.Write(str);
-            writer.Close();
+            // Write string to stream
+            using (MemoryStream uncompressedStream = new MemoryStream())
+            {
+                StreamWriter writer = new StreamWriter(uncompressedStream);
+                writer.Write(str);
+                
+                // Just flush the writer here to ensure all the data is written to the stream.
+                //  It cannot be closed/disposed as that will also close the underlying stream
+                writer.Flush();
 
-            Compression.CompressFile4BitDigit("temp.txt", "temp.4bitDigit");
+                // Reset the stream position back to the beginning, as the compressor will run from
+                //  the current position
+                uncompressedStream.Position = 0;
 
-            Stream memStream = Compression.ReadStreamNoCompression("temp.4bitDigit");
+                // Stream to hold compressed 4 bit digit output
+                MemoryStream outStream = new MemoryStream();
 
-            File.Delete("temp.txt");
-            File.Delete("temp.4bitDigit");
-
-            return memStream;
+                Compression.CompressStream4BitDigit(uncompressedStream, outStream);
+                return outStream;
+            }
         }
         #endregion
     }
