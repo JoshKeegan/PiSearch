@@ -1324,7 +1324,7 @@ namespace StringSearchConsole
                 //  for both read & write
                 stream = new FileStream(workingDirectory + suffixArrayFileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite, suffixArrayFileStreamBufferSize);
             }
-            //Else if storing on the File SYstem and accessing it with the FastFileStream
+            //Else if storing on the File System and accessing it with the FastFileStream
             else if(suffixArrayStreamType == typeof(FastFileStream))
             {
                 stream = new FastFileStream(workingDirectory + suffixArrayFileName, FileAccess.ReadWrite, suffixArrayFastFileStreamIoBufferSize, WinFileFlagsAndAttributes.FILE_FLAG_RANDOM_ACCESS);
