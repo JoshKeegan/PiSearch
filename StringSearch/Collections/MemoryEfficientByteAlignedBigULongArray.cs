@@ -33,7 +33,7 @@ namespace StringSearch.Collections
             get
             {
                 //Validation
-                if(i >= this.Length || i < 0)
+                if(i >= Length || i < 0)
                 {
                     throw new IndexOutOfRangeException();
                 }
@@ -54,14 +54,14 @@ namespace StringSearch.Collections
             set
             {
                 //Validation
-                if (i >= this.Length || i < 0)
+                if (i >= Length || i < 0)
                 {
                     throw new IndexOutOfRangeException();
                 }
 
-                if (value > this.MaxValue)
+                if (value > MaxValue)
                 {
-                    throw new ArgumentOutOfRangeException(String.Format("Cannot hold values larger than MaxValue ({0})", this.MaxValue));
+                    throw new ArgumentOutOfRangeException(String.Format("Cannot hold values larger than MaxValue ({0})", MaxValue));
                 }
 
                 long startByteIdx = i * bytesPerValue;
@@ -83,29 +83,29 @@ namespace StringSearch.Collections
         //Constructor
         public MemoryEfficientByteAlignedBigULongArray(long length, ulong maxValue)
         {
-            this.Length = length;
-            this.MaxValue = maxValue;
+            Length = length;
+            MaxValue = maxValue;
 
             //Calculate the number of bytes to leave per value
-            this.bytesPerValue = calculateBytesPerValue(MaxValue);
+            bytesPerValue = calculateBytesPerValue(MaxValue);
 
             //Calculate the number of bytes that will be used to store all of the values
             long numBytes = length * bytesPerValue;
 
             //Store the array in memory by default (could be changed to another type of stream later)
-            this.stream = new BigMemoryStream(numBytes);
+            stream = new BigMemoryStream(numBytes);
         }
 
         public MemoryEfficientByteAlignedBigULongArray(long length, ulong maxValue, Stream underlyingStream)
         {
-            this.Length = length;
-            this.MaxValue = maxValue;
+            Length = length;
+            MaxValue = maxValue;
 
             //Calculate the number of bytes to leave per value
-            this.bytesPerValue = calculateBytesPerValue(MaxValue);
+            bytesPerValue = calculateBytesPerValue(MaxValue);
 
             //Use the specified stream to store the values in this array
-            this.stream = underlyingStream;
+            stream = underlyingStream;
         }
 
         public MemoryEfficientByteAlignedBigULongArray(long length)
@@ -117,7 +117,7 @@ namespace StringSearch.Collections
         //Public Methods
         public IEnumerator<ulong> GetEnumerator()
         {
-            for (long i = 0; i < this.Length; i++)
+            for (long i = 0; i < Length; i++)
             {
                 yield return this[i];
             }

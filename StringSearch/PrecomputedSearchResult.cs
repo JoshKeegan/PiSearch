@@ -2,6 +2,7 @@
  * PiSearch
  * Precompted Search Result - the precomputed result for a search of a specific string in a specific set of digits
  * By Josh Keegan 28/01/2015
+ * Last Edit 08/06/2016
  */
 
 using System;
@@ -35,8 +36,8 @@ namespace StringSearch
                 throw new ArgumentException("maxSuffixArrayIdx must be >= minSuffixArrayIdx");
             }
 
-            this.MinSuffixArrayIdx = minSuffixArrayIdx;
-            this.MaxSuffixArrayIdx = maxSuffixArrayIdx;
+            MinSuffixArrayIdx = minSuffixArrayIdx;
+            MaxSuffixArrayIdx = maxSuffixArrayIdx;
         }
     }
 }

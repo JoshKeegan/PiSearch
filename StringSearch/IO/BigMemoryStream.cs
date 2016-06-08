@@ -32,7 +32,7 @@ namespace StringSearch.IO
         {
             get 
             {
-                return !this.isClosed;
+                return !isClosed;
             }
         }
 
@@ -40,7 +40,7 @@ namespace StringSearch.IO
         {
             get
             {
-                return !this.isClosed;
+                return !isClosed;
             }
         }
 
@@ -48,7 +48,7 @@ namespace StringSearch.IO
         {
             get
             {
-                return !this.isClosed;
+                return !isClosed;
             }
         }
 
@@ -58,8 +58,8 @@ namespace StringSearch.IO
         {
             get 
             {
-                this.throwIfClosed();
-                return this.length;
+                throwIfClosed();
+                return length;
             }
         }
 
@@ -68,7 +68,7 @@ namespace StringSearch.IO
             get
             {
                 throwIfClosed();
-                return this.position;
+                return position;
             }
             set
             {
@@ -81,7 +81,7 @@ namespace StringSearch.IO
 
                 //TODO: If VERY small values start being used for MEMORY_STREAM_MAX_SIZE, could check if Position < (MEMORY_STREAM_MAX_SIZE * int.MaxValue <-- max no. of underlying memory streams)
 
-                this.position = value;
+                position = value;
             }
         }
 
@@ -110,15 +110,15 @@ namespace StringSearch.IO
 
             throwIfClosed();
 
-            if(this.position >= this.length || count == 0)
+            if(position >= length || count == 0)
             {
                 return 0;
             }
 
             //If the end of the stream is going to come before reading count bytes, correct count
-            if(this.position > this.length - count)
+            if(position > length - count)
             {
-                count = (int)(this.length - this.position);
+                count = (int)(length - position);
             }
 
             //Read in the requested bytes
@@ -126,7 +126,7 @@ namespace StringSearch.IO
             int prevStreamIdx = -1;
             for (int i = 0; i < count; i++)
             {
-                long idx = this.position + i;
+                long idx = position + i;
 
                 int streamIdx = (int)(idx / MEMORY_STREAM_MAX_SIZE);
 
@@ -136,7 +136,7 @@ namespace StringSearch.IO
                     memStreams[streamIdx].Position = idx % MEMORY_STREAM_MAX_SIZE;
                 }
 
-                buffer[offset + i] = (byte)this.memStreams[streamIdx].ReadByte();
+                buffer[offset + i] = (byte)memStreams[streamIdx].ReadByte();
 
                 prevStreamIdx = streamIdx;
             }
@@ -149,20 +149,20 @@ namespace StringSearch.IO
         //  will use Read() to get a single byte
         public override int ReadByte()
         {
-            this.throwIfClosed();
+            throwIfClosed();
 
-            if(this.position >= this.length)
+            if(position >= length)
             {
                 return -1;
             }
 
             //Determine which underlying Memory stream this byte is in
-            int streamIdx = (int)(this.position / MEMORY_STREAM_MAX_SIZE);
+            int streamIdx = (int)(position / MEMORY_STREAM_MAX_SIZE);
 
             //Set out position in the underlying memory stream to that of this byte
-            memStreams[streamIdx].Position = this.position % MEMORY_STREAM_MAX_SIZE;
+            memStreams[streamIdx].Position = position % MEMORY_STREAM_MAX_SIZE;
 
-            this.position++;
+            position++;
 
             return memStreams[streamIdx].ReadByte();
         }
@@ -182,13 +182,13 @@ namespace StringSearch.IO
                 throw new ArgumentOutOfRangeException("value must be >= 0");
             }
 
-            if(value > this.length)
+            if(value > length)
             {
-                this.expand(value);
+                expand(value);
             }
-            else if(value < this.length)
+            else if(value < length)
             {
-                this.shrink(value);
+                shrink(value);
             }
         }
 
@@ -218,9 +218,9 @@ namespace StringSearch.IO
             throwIfClosed();
 
             //Expand if necessary
-            if(this.position > this.length - count)
+            if(position > length - count)
             {
-                this.expand(this.position + count);
+                expand(position + count);
             }
 
             //Write these bytes
@@ -228,7 +228,7 @@ namespace StringSearch.IO
             int prevStreamIdx = -1;
             for(int i = 0; i < count; i++)
             {
-                long idx = this.position + i;
+                long idx = position + i;
 
                 int streamIdx = (int)(idx / MEMORY_STREAM_MAX_SIZE);
 
@@ -238,12 +238,12 @@ namespace StringSearch.IO
                     memStreams[streamIdx].Position = idx % MEMORY_STREAM_MAX_SIZE;
                 }
 
-                this.memStreams[streamIdx].WriteByte(buffer[offset + i]);
+                memStreams[streamIdx].WriteByte(buffer[offset + i]);
 
                 prevStreamIdx = streamIdx;
             }
 
-            this.position += count;
+            position += count;
         }
         #endregion
 
@@ -257,13 +257,13 @@ namespace StringSearch.IO
                 throw new ArgumentOutOfRangeException("capacity must be >= 0");
             }
 
-            this.isClosed = false;
-            this.length = 0; //Will be set to actual value by expand
-            this.position = 0;
+            isClosed = false;
+            length = 0; //Will be set to actual value by expand
+            position = 0;
 
             //Initialise memStreams to be empty, expand will set the actual values
-            this.memStreams = new List<MemoryStream>(0);
-            this.expand(capacity);
+            memStreams = new List<MemoryStream>(0);
+            expand(capacity);
         }
         #endregion
 
@@ -291,9 +291,9 @@ namespace StringSearch.IO
         #region Helper Methods
         private void throwIfClosed()
         {
-            if(this.isClosed)
+            if(isClosed)
             {
-                throw new ObjectDisposedException(this.GetType().Name + " has been disposed");
+                throw new ObjectDisposedException(GetType().Name + " has been disposed");
             }
         }
 
@@ -302,20 +302,20 @@ namespace StringSearch.IO
             int newNumMemStreams = numMemoryStreamsRequired(length);
 
             //Resize the current last stream (if there is one)
-            if(this.memStreams.Count != 0)
+            if(memStreams.Count != 0)
             {
-                int currentLastStreamNewLength = newNumMemStreams == this.memStreams.Count ?
+                int currentLastStreamNewLength = newNumMemStreams == memStreams.Count ?
                     (int)(length % MEMORY_STREAM_MAX_SIZE) :
                     MEMORY_STREAM_MAX_SIZE;
-                    this.memStreams[this.memStreams.Count - 1].SetLength(currentLastStreamNewLength);
+                    memStreams[memStreams.Count - 1].SetLength(currentLastStreamNewLength);
             }
 
             //Add more streams to the end (if necessary)
-            while(newNumMemStreams != this.memStreams.Count)
+            while(newNumMemStreams != memStreams.Count)
             {
                 int streamLength;
                 //If this will be the last memory stream, work out how big it should be
-                if(newNumMemStreams == this.memStreams.Count + 1)
+                if(newNumMemStreams == memStreams.Count + 1)
                 {
                     streamLength = (int)(length % MEMORY_STREAM_MAX_SIZE);
 
@@ -332,7 +332,7 @@ namespace StringSearch.IO
 
                 MemoryStream stream = new MemoryStream(streamLength);
                 stream.SetLength(streamLength);
-                this.memStreams.Add(stream);
+                memStreams.Add(stream);
             }
 
             this.length = length;
@@ -343,20 +343,20 @@ namespace StringSearch.IO
             int newNumMemStreams = numMemoryStreamsRequired(length);
 
             //Remove any memory streams that will no longer be required for the new size from the end
-            while(newNumMemStreams != this.memStreams.Count)
+            while(newNumMemStreams != memStreams.Count)
             {
-                this.memStreams[this.memStreams.Count - 1].Dispose();
-                this.memStreams.RemoveAt(this.memStreams.Count - 1);
+                memStreams[memStreams.Count - 1].Dispose();
+                memStreams.RemoveAt(memStreams.Count - 1);
             }
 
             //Resize the (now) last memory stream 
-            memStreams[this.memStreams.Count - 1].SetLength(length % MEMORY_STREAM_MAX_SIZE);
+            memStreams[memStreams.Count - 1].SetLength(length % MEMORY_STREAM_MAX_SIZE);
 
             this.length = length;
             
-            if(this.position >= length)
+            if(position >= length)
             {
-                this.position = length;
+                position = length;
             }
         }
 

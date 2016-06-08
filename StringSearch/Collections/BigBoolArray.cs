@@ -24,14 +24,14 @@ namespace StringSearch.Collections
             get
             {
                 //Validation
-                if(i >= this.Length || i < 0)
+                if(i >= Length || i < 0)
                 {
                     throw new IndexOutOfRangeException();
                 }
 
                 //Set the stream position to that of the byte holding the bit we're after
                 stream.Position = i / 8;
-                int b = this.stream.ReadByte();
+                int b = stream.ReadByte();
 
                 //Move the bit we're after to be the LSB
                 int bitNum = (int)(i % 8);
@@ -48,7 +48,7 @@ namespace StringSearch.Collections
             set
             {
                 //Validation
-                if (i >= this.Length || i < 0)
+                if (i >= Length || i < 0)
                 {
                     throw new IndexOutOfRangeException();
                 }
@@ -92,22 +92,22 @@ namespace StringSearch.Collections
         {
             //TODO: Validation (length must be positive)
 
-            this.Length = length;
-            this.stream = underlyingStream;
+            Length = length;
+            stream = underlyingStream;
 
             //Calculate the minimum required length of the underlying stream
-            long minStreamLength = calculateMinimumStreamLength(this.Length);
+            long minStreamLength = calculateMinimumStreamLength(Length);
 
             //If the provided underlying stream isn't long enough, make it bigger
-            if(this.stream.Length < minStreamLength)
+            if(stream.Length < minStreamLength)
             {
-                this.stream.SetLength(minStreamLength);
+                stream.SetLength(minStreamLength);
             }
         }
 
         public IEnumerator<bool> GetEnumerator()
         {
-            for (long i = 0; i < this.Length; i++)
+            for (long i = 0; i < Length; i++)
             {
                 yield return this[i];
             }

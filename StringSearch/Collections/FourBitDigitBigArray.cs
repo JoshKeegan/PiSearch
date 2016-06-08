@@ -28,7 +28,7 @@ namespace StringSearch.Collections
         {
             get
             {
-                if (i < 0 || i >= this.Length)
+                if (i < 0 || i >= Length)
                 {
                     throw new IndexOutOfRangeException();
                 }
@@ -50,7 +50,7 @@ namespace StringSearch.Collections
             }
             set
             {
-                if (i < 0 || i >= this.Length)
+                if (i < 0 || i >= Length)
                 {
                     throw new IndexOutOfRangeException();
                 }
@@ -107,13 +107,13 @@ namespace StringSearch.Collections
                 }
             }
 
-            this.Length = length;
+            Length = length;
         }
 
         //Public methods
         public IEnumerator<byte> GetEnumerator()
         {
-            for(long i = 0; i < this.Length; i++)
+            for(long i = 0; i < Length; i++)
             {
                 yield return this[i];
             }

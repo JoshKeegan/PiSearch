@@ -56,16 +56,16 @@ namespace StringSearch
 
         public SuffixArrayRange(long min, long max, IBigArray<ulong> suffixArray, FourBitDigitBigArray digits)
         {
-            this.HasResults = true;
-            this.Min = min;
-            this.Max = max;
-            this.SuffixArray = suffixArray;
-            this.Digits = digits;
+            HasResults = true;
+            Min = min;
+            Max = max;
+            SuffixArray = suffixArray;
+            Digits = digits;
         }
 
         public SuffixArrayRange(bool hasResults)
         {
-            this.HasResults = hasResults;
+            HasResults = hasResults;
         }
 
         public SuffixArrayRange(PrecomputedSearchResult precomputedResult, IBigArray<ulong> suffixArray, 
@@ -74,17 +74,17 @@ namespace StringSearch
             //If there are no results
             if(precomputedResult.MinSuffixArrayIdx == precomputedResult.MaxSuffixArrayIdx)
             {
-                this.HasResults = false;
+                HasResults = false;
             }
             else //Otherwise there are search results
             {
-                this.HasResults = true;
-                this.Min = precomputedResult.MinSuffixArrayIdx;
+                HasResults = true;
+                Min = precomputedResult.MinSuffixArrayIdx;
                 //Note that the precomputed results are stored with the max value exclusive so that it can also encode HasResults
                 //  whereas this class uses inclusive, so correct for that by taking 1
-                this.Max = precomputedResult.MaxSuffixArrayIdx - 1;
-                this.SuffixArray = suffixArray;
-                this.Digits = digits;
+                Max = precomputedResult.MaxSuffixArrayIdx - 1;
+                SuffixArray = suffixArray;
+                Digits = digits;
             }
         }
     }

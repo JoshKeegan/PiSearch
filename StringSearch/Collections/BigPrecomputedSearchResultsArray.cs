@@ -63,7 +63,7 @@ namespace StringSearch.Collections
         //Public Methods
         public IEnumerator<PrecomputedSearchResult> GetEnumerator()
         {
-            for(long i = 0; i < this.Length; i++)
+            for(long i = 0; i < Length; i++)
             {
                 yield return this[i];
             }

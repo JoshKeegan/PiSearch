@@ -1051,7 +1051,7 @@ namespace StringSearchConsole
             stopwatch.Reset();
             stopwatch.Start();
 
-            UnderlyingStream precomputed = (UnderlyingStream)Program.singleLengthPrecomputedSearchResults;
+            UnderlyingStream precomputed = (UnderlyingStream)singleLengthPrecomputedSearchResults;
 
             Compression.WriteStreamNoCompression(precomputed, workingDirectory + fileName);
         }

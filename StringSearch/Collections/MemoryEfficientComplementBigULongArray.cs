@@ -29,7 +29,7 @@ namespace StringSearch.Collections
             get
             {
                 //Validation
-                if (i >= this.Length || i < 0)
+                if (i >= Length || i < 0)
                 {
                     throw new IndexOutOfRangeException();
                 }
@@ -46,7 +46,7 @@ namespace StringSearch.Collections
             set
             {
                 //Validation
-                if (i >= this.Length || i < 0)
+                if (i >= Length || i < 0)
                 {
                     throw new IndexOutOfRangeException();
                 }
@@ -89,8 +89,8 @@ namespace StringSearch.Collections
 
             //TODO: Length validation?? (must be positive)
 
-            this.Length = length;
-            this.MaxValue = maxValue;
+            Length = length;
+            MaxValue = maxValue;
 
             this.values = values;
             this.complements = complements;
@@ -108,7 +108,7 @@ namespace StringSearch.Collections
 
         public IEnumerator<ulong> GetEnumerator()
         {
-            for (long i = 0; i < this.Length; i++)
+            for (long i = 0; i < Length; i++)
             {
                 yield return this[i];
             }

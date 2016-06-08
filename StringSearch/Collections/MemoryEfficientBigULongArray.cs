@@ -32,18 +32,18 @@ namespace StringSearch.Collections
             get
             {
                 //Validation
-                if(i >= this.Length || i < 0)
+                if(i >= Length || i < 0)
                 {
                     throw new IndexOutOfRangeException();
                 }
 
-                long startBitIdx = i * this.bitsPerValue;
-                long endBitIdx = startBitIdx + this.bitsPerValue;
+                long startBitIdx = i * bitsPerValue;
+                long endBitIdx = startBitIdx + bitsPerValue;
                 long startByteIdx = startBitIdx / 8;
 
                 //Move the stream to where it should be
-                this.stream.Position = startByteIdx;
-                byte b = (byte)this.stream.ReadByte();
+                stream.Position = startByteIdx;
+                byte b = (byte)stream.ReadByte();
 
                 long bitIdx = startBitIdx;
                 int thisByteIdx = (int)(bitIdx % 8);
@@ -65,7 +65,7 @@ namespace StringSearch.Collections
                     //If at the end of this byte (and there's still more to read), load the next one
                     if(thisByteIdx == 8 && bitIdx < endBitIdx)
                     {
-                        b = (byte)this.stream.ReadByte();
+                        b = (byte)stream.ReadByte();
                         thisByteIdx = 0;
                     }
                 }
@@ -74,19 +74,19 @@ namespace StringSearch.Collections
             set
             {
                 //Validation
-                if (i >= this.Length || i < 0)
+                if (i >= Length || i < 0)
                 {
                     throw new IndexOutOfRangeException();
                 }
 
-                if(value > this.MaxValue)
+                if(value > MaxValue)
                 {
-                    throw new ArgumentOutOfRangeException(String.Format("Cannot hold values larger than MaxValue ({0})", this.MaxValue));
+                    throw new ArgumentOutOfRangeException(String.Format("Cannot hold values larger than MaxValue ({0})", MaxValue));
                 }
 
-                long startBitIdx = i * this.bitsPerValue;
+                long startBitIdx = i * bitsPerValue;
                 int startBitByteOffset = (int)(startBitIdx % 8);
-                long endBitIdx = startBitIdx + this.bitsPerValue;
+                long endBitIdx = startBitIdx + bitsPerValue;
                 int endBitByteOffset = (int)(endBitIdx % 8);
                 long startByteIdx = startBitIdx / 8;
                 long endByteIdx = endBitIdx / 8;
@@ -98,12 +98,12 @@ namespace StringSearch.Collections
                 }
 
                 //Move the stream to where it should be
-                this.stream.Position = startByteIdx;
+                stream.Position = startByteIdx;
 
                 //For each byte that will be effected by this
                 long lastByteEffectedIdx = endByteIdx - 1;
                 long bitIdx = startBitIdx;
-                byte valueBitIdx = (byte)(64 - this.bitsPerValue); //The starting index on the value will be dependant on how many preceding zeroes it has (because we won't always be using the full 64 bits in a long)
+                byte valueBitIdx = (byte)(64 - bitsPerValue); //The starting index on the value will be dependant on how many preceding zeroes it has (because we won't always be using the full 64 bits in a long)
                 for(long j = startByteIdx; j < endByteIdx; j++)
                 {
                     byte toStore;
@@ -179,10 +179,10 @@ namespace StringSearch.Collections
                     else //Otherwise only part of this byte needs copying over what's there already
                     {
                         //Get the original byte
-                        byte origByte = (byte)this.stream.ReadByte();
+                        byte origByte = (byte)stream.ReadByte();
 
                         //Reset the stream position back to account for the byte that has just bean read
-                        this.stream.Position--;
+                        stream.Position--;
 
                         //Calculate the start and end indices (to be replaced) within this byte
                         int startOffset = 0;
@@ -233,7 +233,7 @@ namespace StringSearch.Collections
                     }
                     
                     //Write this byte to the stream
-                    this.stream.WriteByte(toStore);
+                    stream.WriteByte(toStore);
 
                     //Increment the value bit index
                     valueBitIdx += 8;
@@ -247,37 +247,37 @@ namespace StringSearch.Collections
         //Constructor
         public MemoryEfficientBigULongArray(long length, ulong maxValue)
         {
-            this.Length = length;
-            this.MaxValue = maxValue;
+            Length = length;
+            MaxValue = maxValue;
 
             //Calculate the number of bits to leave per value
-            this.bitsPerValue = calculateBitsPerValue(MaxValue);
+            bitsPerValue = calculateBitsPerValue(MaxValue);
 
             //Calculate the number of bytes that will be used to store all of the values
             long numBytes = calculateMinimumStreamLength();
 
             //Store the array in memory by default
-            this.stream = new BigMemoryStream(numBytes);
+            stream = new BigMemoryStream(numBytes);
         }
 
         public MemoryEfficientBigULongArray(long length, ulong maxValue, Stream underlyingStream)
         {
-            this.Length = length;
-            this.MaxValue = maxValue;
+            Length = length;
+            MaxValue = maxValue;
 
             //Calculate the number of bits to leave per value
-            this.bitsPerValue = calculateBitsPerValue(MaxValue);
+            bitsPerValue = calculateBitsPerValue(MaxValue);
 
             //Use the specified stream to store the values in this array
-            this.stream = underlyingStream;
+            stream = underlyingStream;
 
             //Calculate the required minimum length of the underlying stream
             long minStreamLength = calculateMinimumStreamLength();
 
             //If the provided underlying stream isn't long enough, make it bigger
-            if(this.stream.Length < minStreamLength)
+            if(stream.Length < minStreamLength)
             {
-                this.stream.SetLength(minStreamLength);
+                stream.SetLength(minStreamLength);
             }
         }
 
@@ -290,7 +290,7 @@ namespace StringSearch.Collections
         //Public Methods
         public IEnumerator<ulong> GetEnumerator()
         {
-            for (long i = 0; i < this.Length; i++)
+            for (long i = 0; i < Length; i++)
             {
                 yield return this[i];
             }
@@ -321,7 +321,7 @@ namespace StringSearch.Collections
 
         private long calculateMinimumStreamLength()
         {
-            long numBits = this.Length * this.bitsPerValue;
+            long numBits = Length * bitsPerValue;
             long numBytes = numBits / 8;
             //If extra bits are required, assign an extra byte
             if (numBits % 8 != 0)

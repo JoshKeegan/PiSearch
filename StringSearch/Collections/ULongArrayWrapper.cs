@@ -26,13 +26,13 @@ namespace StringSearch.Collections
             {
                 validateIndex(i);
 
-                return this.array[i];
+                return array[i];
             }
             set
             {
                 validateIndex(i);
 
-                this.array[i] = value;
+                array[i] = value;
             }
         }
 
@@ -40,7 +40,7 @@ namespace StringSearch.Collections
         {
             get 
             {
-                return this.array.Length;
+                return array.Length;
             }
         }
 
@@ -52,13 +52,13 @@ namespace StringSearch.Collections
                 throw new ArgumentOutOfRangeException("0 <= length <= int.MaxValue");
             }
 
-            this.array = new ulong[length];
+            array = new ulong[length];
         }
 
         //Public methods
         public IEnumerator<ulong> GetEnumerator()
         {
-            for (long i = 0; i < this.Length; i++)
+            for (long i = 0; i < Length; i++)
             {
                 yield return this[i];
             }

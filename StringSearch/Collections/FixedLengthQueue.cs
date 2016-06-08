@@ -3,7 +3,7 @@
  * FixedLengthQueue - a generic Queue that has a fixed number of elements
  *  Can use the additional contraint of a fixed length to improve performance over that of a regular Queue
  * By Josh Keegan 01/12/2014
- * Last Edit 17/12/2014
+ * Last Edit 08/06/2016
  */
 
 using System;
@@ -25,7 +25,7 @@ namespace StringSearch.Collections
         {
             get
             {
-                return this.array.Length;
+                return array.Length;
             }
         }
 
@@ -33,7 +33,7 @@ namespace StringSearch.Collections
         {
             get
             {
-                return this.Count;
+                return Count;
             }
         }
 
@@ -42,14 +42,14 @@ namespace StringSearch.Collections
             get
             {
                 //Validation
-                if(i < 0 || i >= this.array.Length)
+                if(i < 0 || i >= array.Length)
                 {
                     throw new IndexOutOfRangeException("index must be >=0 and < Length");
                 }
 
-                int arrayIdx = (i + this.head) % this.array.Length;
+                int arrayIdx = (i + head) % array.Length;
 
-                return this.array[arrayIdx];
+                return array[arrayIdx];
             }
         }
 
@@ -61,8 +61,8 @@ namespace StringSearch.Collections
                 throw new ArgumentOutOfRangeException("length must be >= 0");
             }
 
-            this.array = new T[length];
-            this.head = 0;
+            array = new T[length];
+            head = 0;
         }
         
         public FixedLengthQueue(T[] initialValues)
@@ -76,25 +76,25 @@ namespace StringSearch.Collections
                 throw new ArgumentOutOfRangeException("head must be >= 0 and < initialValues.Length");
             }
 
-            this.array = initialValues;
+            array = initialValues;
             this.head = head;
         }
 
         //Public methods
         public T DequeueEnqueue(T t)
         {
-            T toRet = this.array[this.head];
-            this.Enqueue(t);
+            T toRet = array[head];
+            Enqueue(t);
             return toRet;
         }
 
         public void Enqueue(T t)
         {
-            this.array[this.head] = t;
-            this.head++;
+            array[head] = t;
+            head++;
 
             //Roll the head around if necessary
-            this.head %= this.array.Length;
+            head %= array.Length;
         }
     }
 }
