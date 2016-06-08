@@ -3,7 +3,7 @@
  * SearchString - static class containing methods to search through a given string (or other data type)
  *  for some string (or other data type) to be found.
  * By Josh Keegan 07/11/2014
- * Last Edit 07/02/2015 
+ * Last Edit 08/06/2016 
  */
 
 using System;
@@ -89,18 +89,18 @@ namespace StringSearch
             }
         }
 
-        public static SuffixArrayRange Search(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, byte[] lookFor)
+        public static SuffixArrayRange Search(IBigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, byte[] lookFor)
         {
             return Search(suffixArray, digitArray, lookFor, null);
         }
 
-        public static SuffixArrayRange Search(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, string lookFor)
+        public static SuffixArrayRange Search(IBigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, string lookFor)
         {
             return Search(suffixArray, digitArray, lookFor, null);
         }
 
-        public static SuffixArrayRange Search(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, string lookFor,
-            BigArray<PrecomputedSearchResult>[] precomputedResults)
+        public static SuffixArrayRange Search(IBigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, string lookFor,
+            IBigArray<PrecomputedSearchResult>[] precomputedResults)
         {
             return Search(suffixArray, digitArray, StrToByteArr(lookFor), precomputedResults);
         }
@@ -160,8 +160,8 @@ namespace StringSearch
             return long.Parse(s);
         }
 
-        public static SuffixArrayRange Search(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, byte[] lookFor, 
-            BigArray<PrecomputedSearchResult>[] precomputedResults)
+        public static SuffixArrayRange Search(IBigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, byte[] lookFor, 
+            IBigArray<PrecomputedSearchResult>[] precomputedResults)
         {
             //Validation
             if(lookFor.Length == 0)
@@ -188,7 +188,7 @@ namespace StringSearch
             //If we have been given the precomputed results for strings of the length we're looking for
             if(precomputedResults.Length >= lookFor.Length)
             {
-                BigArray<PrecomputedSearchResult> precomputedResultsOfRequiredLength = precomputedResults[lookFor.Length - 1];
+                IBigArray<PrecomputedSearchResult> precomputedResultsOfRequiredLength = precomputedResults[lookFor.Length - 1];
 
                 //Convert the string of bytes we're looking for to a long to use as the array index
                 long precomputedResultIdx = ByteArrToLong(lookFor);
@@ -229,7 +229,7 @@ namespace StringSearch
             }
         }
 
-        internal static long binarySearchForPrefix(BigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, byte[] findPrefix, long min, long max)
+        internal static long binarySearchForPrefix(IBigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, byte[] findPrefix, long min, long max)
         {
             long numLeftToSearch = max - min + 1;
 

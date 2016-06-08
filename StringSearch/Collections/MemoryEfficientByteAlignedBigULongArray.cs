@@ -7,7 +7,7 @@
  *  Big - Capable of storing more than int.MaxValue values
  *  ULong Array - simples
  * By Josh Keegan 22/12/2014
- * Last Edit 31/12/2014
+ * Last Edit 08/06/2016
  */
 
 using System;
@@ -22,7 +22,7 @@ using StringSearch.IO;
 
 namespace StringSearch.Collections
 {
-    public class MemoryEfficientByteAlignedBigULongArray : UnderlyingStream, BigArray<ulong>
+    public class MemoryEfficientByteAlignedBigULongArray : UnderlyingStream, IBigArray<ulong>
     {
         // Private vars
         private byte bytesPerValue;

@@ -3,7 +3,7 @@
  * FourBitDigitArray - an implementation of BigArray designed to hold integers in the range 0 <= x < 15
  *  i.e. 4 bits per value, with 1111 (15) being reserved
  * By Josh Keegan 27/11/2014
- * Last Edit 08/12/2014
+ * Last Edit 08/06/2016
  */
 
 using System;
@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace StringSearch.Collections
 {
-    public class FourBitDigitBigArray : BigArray<byte>
+    public class FourBitDigitBigArray : IBigArray<byte>
     {
         //Private vars
         private Stream stream;

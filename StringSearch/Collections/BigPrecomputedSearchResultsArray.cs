@@ -2,6 +2,7 @@
  * PiSearch
  * BigPrecomputedSearchResultsArray
  * By Josh Keegan 28/01/2015
+ * Last Edit 08/06/2016
  */
 
 using System;
@@ -12,10 +13,10 @@ using System.Text;
 
 namespace StringSearch.Collections
 {
-    public class BigPrecomputedSearchResultsArray : BigArray<PrecomputedSearchResult>
+    public class BigPrecomputedSearchResultsArray : IBigArray<PrecomputedSearchResult>
     {
         //Private vars
-        private BigArray<ulong> underlyingArray;
+        private IBigArray<ulong> underlyingArray;
 
         //Public accessors & modifiers
         public PrecomputedSearchResult this[long i]
@@ -54,7 +55,7 @@ namespace StringSearch.Collections
         }
 
         //Constructor
-        public BigPrecomputedSearchResultsArray(BigArray<ulong> underlyingArray)
+        public BigPrecomputedSearchResultsArray(IBigArray<ulong> underlyingArray)
         {
             this.underlyingArray = underlyingArray;
         }

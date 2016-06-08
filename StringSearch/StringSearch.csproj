@@ -45,7 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseObjectExtensions\CollectionExtensionsInt.cs" />
-    <Compile Include="Collections\BigArray.cs" />
+    <Compile Include="Collections\IBigArray.cs" />
     <Compile Include="Collections\BigBoolArray.cs" />
     <Compile Include="Collections\BigPrecomputedSearchResultsArray.cs" />
     <Compile Include="Collections\FixedLengthQueue.cs" />

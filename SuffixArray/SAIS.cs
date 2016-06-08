@@ -85,10 +85,10 @@ namespace SuffixArray
     internal class LongArray : BaseArray
     {
         //Use a ulong array internally, as it will never contain -ve values
-        private BigArray<ulong> m_array;
+        private IBigArray<ulong> m_array;
         private long m_pos;
 
-        public LongArray(BigArray<ulong> array, long pos)
+        public LongArray(IBigArray<ulong> array, long pos)
         {
             m_array = array;
             m_pos = pos;
@@ -482,7 +482,7 @@ namespace SuffixArray
         /// <returns>0 if no error occurred, -1 or -2 otherwise</returns>
         public static
         long
-        sufsort(FourBitDigitBigArray T, BigArray<ulong> SA, long n)
+        sufsort(FourBitDigitBigArray T, IBigArray<ulong> SA, long n)
         {
             if ((T == null) || (SA == null) ||
               (SA.Length < n) || (T.Length < n))
@@ -503,7 +503,7 @@ namespace SuffixArray
         /// <returns>0 if no error occurred, -1 or -2 otherwise</returns>
         public static
         long
-        sufsort(string T, BigArray<ulong> SA, int n)
+        sufsort(string T, IBigArray<ulong> SA, int n)
         {
             if ((T == null) || (SA == null) ||
             (T.Length < n) || (SA.Length < n)) { return -1; }

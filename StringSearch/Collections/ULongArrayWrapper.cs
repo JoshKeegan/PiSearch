@@ -2,6 +2,7 @@
  * PiSearch
  * ULongArrayWrapper - implementation of BigArray for ULong that is just a wrapper of the standard .NET ulong[]
  * By Josh Keegan 08/12/2014
+ * Last Edit 08/06/2016
  */
 
 using System;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace StringSearch.Collections
 {
-    public class ULongArrayWrapper : BigArray<ulong>
+    public class ULongArrayWrapper : IBigArray<ulong>
     {
         //Private variables
         private ulong[] array;

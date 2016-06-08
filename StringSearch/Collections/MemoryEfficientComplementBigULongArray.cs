@@ -5,6 +5,7 @@
  *  of ulong values (up to a specifiec max) and their bitwise complements
  * Designed for use in suffix array generation with SAIS, which stores the bitwise complements of values
  * By Josh Keegan 12/01/2015
+ * Last Edit 08/06/2016
  */
 
 using System;
@@ -16,11 +17,11 @@ using System.Threading.Tasks;
 
 namespace StringSearch.Collections
 {
-    public class MemoryEfficientComplementBigULongArray : BigArray<ulong>
+    public class MemoryEfficientComplementBigULongArray : IBigArray<ulong>
     {
         //Private vars
-        BigArray<ulong> values;
-        BigArray<bool> complements;
+        IBigArray<ulong> values;
+        IBigArray<bool> complements;
 
         //Public accessors & modifiers
         public ulong this[long i]
@@ -63,7 +64,7 @@ namespace StringSearch.Collections
 
         //Constructor
         public MemoryEfficientComplementBigULongArray(long length, ulong maxValue, 
-            BigArray<ulong> values, BigArray<bool> complements)
+            IBigArray<ulong> values, IBigArray<bool> complements)
         {
             //Validation
             if(values == null)
@@ -96,7 +97,7 @@ namespace StringSearch.Collections
         }
 
         public MemoryEfficientComplementBigULongArray(long length, ulong maxValue,
-            BigArray<ulong> values)
+            IBigArray<ulong> values)
             : this(length, maxValue, values, new BigBoolArray(length)) {  }
 
         public MemoryEfficientComplementBigULongArray(long length, ulong maxValue)

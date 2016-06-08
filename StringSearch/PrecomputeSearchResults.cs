@@ -3,7 +3,7 @@
  * Precompute Search Results - for precomputing the suffix array indices that would be returned by
  *  performing the full search
  * By Josh Keegan 25/01/2015
- * Last Edit 18/03/2015
+ * Last Edit 08/06/2016
  */
 
 using System;
@@ -19,7 +19,7 @@ namespace StringSearch
     public static class PrecomputeSearchResults
     {
         public static MemoryEfficientBigULongArray GenerateSearchResults(FourBitDigitBigArray fourBitDigitArray,
-            BigArray<ulong> suffixArray, int stringLength)
+            IBigArray<ulong> suffixArray, int stringLength)
         {
             int lessThan = NumPrecomputedResults(stringLength);
             string toStringFormatter = "D" + stringLength;

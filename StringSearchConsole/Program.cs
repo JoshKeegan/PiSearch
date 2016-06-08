@@ -1,7 +1,7 @@
 ﻿/*
  * Program entry point for the String Search Console application, the development interface for the PiSearch project
  * By Josh Keegan 07/11/2014
- * Last Edit 24/03/2016
+ * Last Edit 08/06/2016
  */
 
 using System;
@@ -29,9 +29,9 @@ namespace StringSearchConsole
         private static string loadedString = null;
         private static Stream loaded4BitDigitStream = null;
         private static FourBitDigitBigArray fourBitDigitArray = null;
-        private static BigArray<ulong> suffixArray = null;
-        private static BigArray<ulong> singleLengthPrecomputedSearchResults = null;
-        private static BigArray<PrecomputedSearchResult>[] precomputedSearchResults = null;
+        private static IBigArray<ulong> suffixArray = null;
+        private static IBigArray<ulong> singleLengthPrecomputedSearchResults = null;
+        private static IBigArray<PrecomputedSearchResult>[] precomputedSearchResults = null;
         private static readonly Stopwatch stopwatch = new Stopwatch();
         private static Type suffixArrayType = typeof(MemoryEfficientBigULongArray); // Note: Byte Aligned better for generation (fater), non-byte aligned better for searching (due to better memory efficiency). However, depends on hardware available
         private static Type suffixArrayStreamType = null; //Null for store in memory (uses the default underlying store of the BigArray<ulong> implementation that is being used
@@ -413,7 +413,7 @@ namespace StringSearchConsole
             }
 
             //We have all the files {1-filePaths.Length}.precomputed in this directory. 
-            precomputedSearchResults = new BigArray<PrecomputedSearchResult>[filePaths.Length];
+            precomputedSearchResults = new IBigArray<PrecomputedSearchResult>[filePaths.Length];
 
             for(int i = 0; i < precomputedSearchResults.Length; i++)
             {
@@ -423,10 +423,10 @@ namespace StringSearchConsole
                     workingDirectory + dirName + "/" + searchStringLength + "." + PRECOMPUTED_SEARCH_RESULTS_FILE_EXTENSION, 
                     FileMode.Open, FileAccess.Read);
 
-                BigArray<ulong> underlyingArray = new MemoryEfficientBigULongArray(
+                IBigArray<ulong> underlyingArray = new MemoryEfficientBigULongArray(
                     PrecomputeSearchResults.NumPrecomputedResults(searchStringLength) * 2, (ulong)fourBitDigitArray.Length, s);
 
-                BigArray<PrecomputedSearchResult> singleLengthPrecomputedSearchResults = new BigPrecomputedSearchResultsArray(underlyingArray);
+                IBigArray<PrecomputedSearchResult> singleLengthPrecomputedSearchResults = new BigPrecomputedSearchResultsArray(underlyingArray);
                 precomputedSearchResults[i] = singleLengthPrecomputedSearchResults;
             }
         }
@@ -729,7 +729,7 @@ namespace StringSearchConsole
             for(int i = 0; i < precomputedSearchResults.Length && !found; i++)
             {
                 Console.WriteLine("Searching results of length {0}", i + 1);
-                BigArray<PrecomputedSearchResult> precomputedResults = precomputedSearchResults[i];
+                IBigArray<PrecomputedSearchResult> precomputedResults = precomputedSearchResults[i];
 
                 for(long j = 0; j < precomputedResults.Length; j++)
                 {
@@ -1160,15 +1160,15 @@ namespace StringSearchConsole
         private static void subGenerateSuffixArray()
         {
             //Initialise the array that will hold the suffix array
-            BigArray<ulong> underlyingSuffixArray = createBigArrayFromSettings(fourBitDigitArray.Length, (ulong)fourBitDigitArray.Length);
+            IBigArray<ulong> underlyingSuffixArray = createBigArrayFromSettings(fourBitDigitArray.Length, (ulong)fourBitDigitArray.Length);
             
             //Now we use the complement array rather than just making the suffix array have to have 64 bits per value,
             //  this is far more memory efficient
             // The complements can (and will) be thrown away after the suffix array is generated, leaving the generated suffix array
             //  in the format specified by the settings
             //TODO: Settings for the underlying complement array stream type. SO can store on disk
-            BigArray<bool> underlyingComplementArray = new BigBoolArray(fourBitDigitArray.Length);
-            BigArray<ulong> suffixArray = new MemoryEfficientComplementBigULongArray(fourBitDigitArray.Length,
+            IBigArray<bool> underlyingComplementArray = new BigBoolArray(fourBitDigitArray.Length);
+            IBigArray<ulong> suffixArray = new MemoryEfficientComplementBigULongArray(fourBitDigitArray.Length,
                 (ulong)fourBitDigitArray.Length, underlyingSuffixArray, underlyingComplementArray);
 
             //Calculate the suffix array
@@ -1188,7 +1188,7 @@ namespace StringSearchConsole
         private static void subGenerateSuffixArrayFromLoadedString()
         {
             //Initialise the aray that will hold the suffix array
-            BigArray<ulong> suffixArray = createBigArrayFromSettings(loadedString.Length);
+            IBigArray<ulong> suffixArray = createBigArrayFromSettings(loadedString.Length);
 
             //Calculate the suffix array
             long status = SAIS.sufsort(loadedString, suffixArray, loadedString.Length);
@@ -1288,9 +1288,9 @@ namespace StringSearchConsole
             writer.Close();
         }
 
-        internal static BigArray<ulong> convertIntArrayToBigUlongArray(int[] arr)
+        internal static IBigArray<ulong> convertIntArrayToBigUlongArray(int[] arr)
         {
-            BigArray<ulong> toRet = createBigArrayFromSettings(arr.Length, (uint)arr.Length);
+            IBigArray<ulong> toRet = createBigArrayFromSettings(arr.Length, (uint)arr.Length);
 
             for(int i = 0; i < arr.Length; i++)
             {
@@ -1300,12 +1300,12 @@ namespace StringSearchConsole
             return toRet;
         }
 
-        private static BigArray<ulong> createBigArrayFromSettings(long length)
+        private static IBigArray<ulong> createBigArrayFromSettings(long length)
         {
             return createBigArrayFromSettings(length, null);
         }
 
-        private static BigArray<ulong> createBigArrayFromSettings(long length, ulong? maxValue)
+        private static IBigArray<ulong> createBigArrayFromSettings(long length, ulong? maxValue)
         {
             //First make the stream that will be used as the data structure underlying the BigArray
             Stream stream;
@@ -1338,7 +1338,7 @@ namespace StringSearchConsole
             return createBigArrayFromSettings(length, maxValue, stream);
         }
 
-        private static BigArray<ulong> createBigArrayFromSettings(long length, ulong? maxValue, Stream stream)
+        private static IBigArray<ulong> createBigArrayFromSettings(long length, ulong? maxValue, Stream stream)
         {
             List<object> bigArrayArgs = new List<object>();
             bigArrayArgs.Add(length);
@@ -1356,7 +1356,7 @@ namespace StringSearchConsole
 
             object[] arrBigArrayArgs = bigArrayArgs.ToArray();
 
-            BigArray<ulong> bigArray = (BigArray<ulong>)Activator.CreateInstance(suffixArrayType, arrBigArrayArgs);
+            IBigArray<ulong> bigArray = (IBigArray<ulong>)Activator.CreateInstance(suffixArrayType, arrBigArrayArgs);
 
             return bigArray;
         }
