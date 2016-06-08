@@ -240,11 +240,11 @@ namespace StringSearch.Collections
             }
         }
 
-        public long Length { get; private set; }
-        public ulong MaxValue { get; private set; }
+        public long Length { get; }
+        public ulong MaxValue { get; }
 
         //Constructor
-        public MemoryEfficientBigULongArray(long length, ulong maxValue)
+        public MemoryEfficientBigULongArray(long length, ulong maxValue = ulong.MaxValue)
         {
             Length = length;
             MaxValue = maxValue;
@@ -280,9 +280,6 @@ namespace StringSearch.Collections
             }
         }
 
-        public MemoryEfficientBigULongArray(long length)
-            : this(length, ulong.MaxValue) {  }
-        
         public MemoryEfficientBigULongArray(long length, Stream underlyingStream)
             : this(length, ulong.MaxValue, underlyingStream) {  }
 
