@@ -17,7 +17,7 @@ namespace StringSearch.Collections
     public class FixedLengthQueue<T>
     {
         //Private Vars
-        private T[] array;
+        private readonly T[] array;
         private int head;
 
         //Public vars
@@ -58,22 +58,19 @@ namespace StringSearch.Collections
         { 
             if(length < 0)
             {
-                throw new ArgumentOutOfRangeException("length must be >= 0");
+                throw new ArgumentOutOfRangeException(nameof(length), "must be >= 0");
             }
 
             array = new T[length];
             head = 0;
         }
-        
-        public FixedLengthQueue(T[] initialValues)
-            : this(initialValues, 0) { }
 
-        public FixedLengthQueue(T[] initialValues, int head)
+        public FixedLengthQueue(T[] initialValues, int head = 0)
         {
             //Validation
             if (head < 0 || head >= initialValues.Length)
             {
-                throw new ArgumentOutOfRangeException("head must be >= 0 and < initialValues.Length");
+                throw new ArgumentOutOfRangeException(nameof(head), "must be >= 0 and < initialValues.Length");
             }
 
             array = initialValues;
