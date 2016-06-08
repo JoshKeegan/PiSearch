@@ -105,7 +105,6 @@ namespace StringSearch.Collections
 
                 //For each byte that will be effected by this
                 long lastByteEffectedIdx = endByteIdx - 1;
-                long bitIdx = startBitIdx;
                 byte valueBitIdx = (byte)(64 - bitsPerValue); //The starting index on the value will be dependant on how many preceding zeroes it has (because we won't always be using the full 64 bits in a long)
                 for(long j = startByteIdx; j < endByteIdx; j++)
                 {
@@ -175,9 +174,6 @@ namespace StringSearch.Collections
                     {
                         //Copy the whole byte over
                         toStore = valueThisByte;
-
-                        //Increment the bit index
-                        bitIdx += 8;
                     }
                     else //Otherwise only part of this byte needs copying over what's there already
                     {
@@ -213,7 +209,7 @@ namespace StringSearch.Collections
 
                         //Get each bit
                         toStore = 0;
-                        for(int k = 0; k < 8; k++, bitIdx++)
+                        for(int k = 0; k < 8; k++)
                         {
                             byte bit;
                             //If getting this bit from the passed value
