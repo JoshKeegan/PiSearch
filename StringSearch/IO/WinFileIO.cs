@@ -67,60 +67,60 @@ namespace StringSearch.IO
         private const uint OPEN_ALWAYS = 4;
         private const uint TRUNCATE_EXISTING = 5;
         
-        internal const int BlockSize = 65536;
+        internal const int BLOCK_SIZE = 65536;
 
         private const uint FILE_BEGIN = 0;
         private const uint FILE_CURRENT = 1;
         private const uint FILE_END = 2;
         
         private GCHandle gchBuf; // Handle to GCHandle object used to pin the I/O buffer in memory.
-        private System.IntPtr pHandleRead;
-        private System.IntPtr pHandleWrite;
+        private IntPtr pHandleRead;
+        private IntPtr pHandleWrite;
         private void* pBuffer; // Pointer to the buffer used to perform I/O.
         private long position;
         private long length = -1;
 
         // Define the Windows system functions that are called by this class via COM Interop:
-        [System.Runtime.InteropServices.DllImport("kernel32", SetLastError = true)]
-        private static extern unsafe System.IntPtr CreateFile
+        [DllImport("kernel32", SetLastError = true)]
+        private static extern IntPtr CreateFile
         (
-             string FileName,           // file name
-             uint DesiredAccess,        // access mode
-             uint ShareMode,            // share mode
-             UIntPtr SecurityAttributes,   // Security Attributes
-             uint CreationDisposition,  // how to create
-             uint FlagsAndAttributes,   // file attributes
+             string fileName,           // file name
+             uint desiredAccess,        // access mode
+             uint shareMode,            // share mode
+             UIntPtr securityAttributes,   // Security Attributes
+             uint creationDisposition,  // how to create
+             uint flagsAndAttributes,   // file attributes
              IntPtr hTemplateFile          // handle to template file
         );
 
-        [System.Runtime.InteropServices.DllImport("kernel32", SetLastError = true)]
-        private static extern unsafe bool ReadFile
+        [DllImport("kernel32", SetLastError = true)]
+        private static extern bool ReadFile
         (
              IntPtr hFile,              // handle to file
              void* pBuffer,             // data buffer
-             int NumberOfBytesToRead,   // number of bytes to read
+             int numberOfBytesToRead,   // number of bytes to read
              int* pNumberOfBytesRead,   // number of bytes read
-             IntPtr Overlapped             // overlapped buffer which is used for async I/O.  Not used here.
+             IntPtr overlapped             // overlapped buffer which is used for async I/O.  Not used here.
         );
 
-        [System.Runtime.InteropServices.DllImport("kernel32", SetLastError = true)]
-        private static extern unsafe bool WriteFile
+        [DllImport("kernel32", SetLastError = true)]
+        private static extern bool WriteFile
         (
             IntPtr handle,              // handle to file
             void* pBuffer,              // data buffer
-            int NumberOfBytesToWrite,   // Number of bytes to write.
+            int numberOfBytesToWrite,   // Number of bytes to write.
             int* pNumberOfBytesWritten, // Number of bytes that were written..
-            IntPtr Overlapped              // Overlapped buffer which is used for async I/O.  Not used here.
+            IntPtr overlapped              // Overlapped buffer which is used for async I/O.  Not used here.
         );
 
-        [System.Runtime.InteropServices.DllImport("kernel32", SetLastError = true)]
-        private static extern unsafe bool CloseHandle
+        [DllImport("kernel32", SetLastError = true)]
+        private static extern bool CloseHandle
         (
              IntPtr hObject             // handle to object
         );
 
-        [System.Runtime.InteropServices.DllImport("kernel32", SetLastError = true)]
-        private static extern unsafe bool SetFilePointerEx
+        [DllImport("kernel32", SetLastError = true)]
+        private static extern bool SetFilePointerEx
         (
             IntPtr hFile,               // handle to file
             long liDistanceToMove,      // no. of bytes to move the file pointer
@@ -128,8 +128,8 @@ namespace StringSearch.IO
             uint dwMoveMethod           // The starting point for the file pointer to move (FILE_BEGIN, FILE_CURRENT, FILE_END)
         );
 
-        [System.Runtime.InteropServices.DllImport("kernel32", SetLastError = true)]
-        private static extern unsafe bool GetFileSizeEx
+        [DllImport("kernel32", SetLastError = true)]
+        private static extern bool GetFileSizeEx
         (
             IntPtr hFile,               // handle to file
             long* lpFileSize            // a pointer to a large integer that will be set to the file size
@@ -162,9 +162,9 @@ namespace StringSearch.IO
                 long fileSize;
                 if(!GetFileSizeEx(hFile, &fileSize))
                 {
-                    Win32Exception WE = new Win32Exception();
+                    Win32Exception we = new Win32Exception();
                     throw new ArgumentException("WinFileIO:Length - Error occurred whilst reading file size. - " 
-                        + WE.Message);
+                        + we.Message);
                 }
                 length = fileSize;
                 return length;
@@ -190,10 +190,10 @@ namespace StringSearch.IO
                 {
                     if(!SetFilePointerEx(pHandleRead, value, null, FILE_BEGIN))
                     {
-                        Win32Exception WE = new Win32Exception();
-                        ApplicationException AE = new ApplicationException("WinFileIO:Position - Error occurred seeking. - "
-                            + WE.Message);
-                        throw AE;
+                        Win32Exception we = new Win32Exception();
+                        ApplicationException ae = new ApplicationException("WinFileIO:Position - Error occurred seeking. - "
+                            + we.Message);
+                        throw ae;
                     }
                 }
 
@@ -202,10 +202,10 @@ namespace StringSearch.IO
                 {
                     if (!SetFilePointerEx(pHandleWrite, value, null, FILE_BEGIN))
                     {
-                        Win32Exception WE = new Win32Exception();
-                        ApplicationException AE = new ApplicationException("WinFileIO:Position - Error occurred seeking. - "
-                            + WE.Message);
-                        throw AE;
+                        Win32Exception we = new Win32Exception();
+                        ApplicationException ae = new ApplicationException("WinFileIO:Position - Error occurred seeking. - "
+                            + we.Message);
+                        throw ae;
                     }
                 }
 
@@ -213,16 +213,16 @@ namespace StringSearch.IO
             }
         }
 
-        public WinFileIO(Array Buffer)
+        public WinFileIO(Array buffer)
         {
             // This constructor is provided so that the buffer can be pinned in memory.
             // Cleanup must be called in order to unpin the buffer.
-            PinBuffer(Buffer);
+            pinBuffer(buffer);
             pHandleRead = IntPtr.Zero;
             pHandleWrite = IntPtr.Zero;
         }
 
-        protected void Dispose(bool disposing)
+        protected void dispose(bool disposing)
         {
             // This function frees up the unmanaged resources of this class.
             Close();
@@ -232,7 +232,7 @@ namespace StringSearch.IO
         public void Dispose()
         {
             // This method should be called to clean everything up.
-            Dispose(true);
+            dispose(true);
             // Tell the GC not to finalize since clean up has already been done.
             GC.SuppressFinalize(this);
         }
@@ -240,10 +240,10 @@ namespace StringSearch.IO
         ~WinFileIO()
         {
             // Finalizer gets called by the garbage collector if the user did not call Dispose.
-            Dispose(false);
+            dispose(false);
         }
 
-        private void PinBuffer(Array Buffer)
+        private void pinBuffer(Array buffer)
         {
             // This function must be called to pin the buffer in memory before any file I/O is done.
             // This shows how to pin a buffer in memory for an extended period of time without using
@@ -252,8 +252,8 @@ namespace StringSearch.IO
             //
             // Make sure we don't leak memory if this function was called before and the UnPinBuffer was not called.
             UnpinBuffer();
-            gchBuf = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
-            IntPtr pAddr = Marshal.UnsafeAddrOfPinnedArrayElement(Buffer, 0);
+            gchBuf = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            IntPtr pAddr = Marshal.UnsafeAddrOfPinnedArrayElement(buffer, 0);
             // pBuffer is the pointer used for all of the I/O functions in this class.
             pBuffer = (void*)pAddr.ToPointer();
         }
@@ -267,75 +267,75 @@ namespace StringSearch.IO
                 gchBuf.Free();
         }
 
-        public void OpenForReading(string FileName)
+        public void OpenForReading(string fileName)
         {
-            OpenForReading(FileName, 0);
+            OpenForReading(fileName, 0);
         }
 
-        public void OpenForReading(string FileName, WinFileFlagsAndAttributes flagsAndAttributes)
+        public void OpenForReading(string fileName, WinFileFlagsAndAttributes flagsAndAttributes)
         {
             // This function uses the Windows API CreateFile function to open an existing file for reading.
             // A return value of true indicates success.
             // It allows other processes to read the file
             Close(true, false);
-            pHandleRead = CreateFile(FileName, GENERIC_READ, FILE_SHARE_READ, UIntPtr.Zero, OPEN_EXISTING, (uint)flagsAndAttributes, IntPtr.Zero);
+            pHandleRead = CreateFile(fileName, GENERIC_READ, FILE_SHARE_READ, UIntPtr.Zero, OPEN_EXISTING, (uint)flagsAndAttributes, IntPtr.Zero);
             position = 0;
 
             if (pHandleRead == IntPtr.Zero)
             {
-                Win32Exception WE = new Win32Exception();
-                ApplicationException AE = new ApplicationException("WinFileIO:OpenForReading - Could not open file " +
-                  FileName + " - " + WE.Message);
-                throw AE;
+                Win32Exception we = new Win32Exception();
+                ApplicationException ae = new ApplicationException("WinFileIO:OpenForReading - Could not open file " +
+                  fileName + " - " + we.Message);
+                throw ae;
             }
         }
 
-        public void OpenForWriting(string FileName)
+        public void OpenForWriting(string fileName)
         {
-            OpenForWriting(FileName, 0);
+            OpenForWriting(fileName, 0);
         }
 
-        public void OpenForWriting(string FileName, WinFileFlagsAndAttributes flagsAndAttributes)
+        public void OpenForWriting(string fileName, WinFileFlagsAndAttributes flagsAndAttributes)
         {
             // This function uses the Windows API CreateFile function to open a file for writing.
             // If it doesn't exist, it will be created.
             // If it does exist, it will be loaded.
             // It does not allow other processes to access the file
             Close(false, true);
-            pHandleWrite = CreateFile(FileName, GENERIC_WRITE, 0, UIntPtr.Zero, OPEN_ALWAYS, (uint)flagsAndAttributes, IntPtr.Zero);
+            pHandleWrite = CreateFile(fileName, GENERIC_WRITE, 0, UIntPtr.Zero, OPEN_ALWAYS, (uint)flagsAndAttributes, IntPtr.Zero);
             position = 0;
 
             if (pHandleWrite == IntPtr.Zero)
             {
-                Win32Exception WE = new Win32Exception();
-                ApplicationException AE = new ApplicationException("WinFileIO:OpenForWriting - Could not open file " +
-                    FileName + " - " + WE.Message);
-                throw AE;
+                Win32Exception we = new Win32Exception();
+                ApplicationException ae = new ApplicationException("WinFileIO:OpenForWriting - Could not open file " +
+                    fileName + " - " + we.Message);
+                throw ae;
             }
         }
 
-        public void OpenForReadingWriting(string FileName)
+        public void OpenForReadingWriting(string fileName)
         {
-            OpenForReadingWriting(FileName, 0);
+            OpenForReadingWriting(fileName, 0);
         }
 
-        public void OpenForReadingWriting(string FileName, WinFileFlagsAndAttributes flagsAndAttributes)
+        public void OpenForReadingWriting(string fileName, WinFileFlagsAndAttributes flagsAndAttributes)
         {
             // This function uses the Windows API CreateFile function to open a file for reading and writing.
             // If it doesn't exist, it will be created.
             // If it does exist, it will be loaded.
             // It does not allow other processes to access the file
             Close(true, true);
-            pHandleRead = pHandleWrite = CreateFile(FileName, GENERIC_READ | GENERIC_WRITE, 0, UIntPtr.Zero,
+            pHandleRead = pHandleWrite = CreateFile(fileName, GENERIC_READ | GENERIC_WRITE, 0, UIntPtr.Zero,
                 OPEN_ALWAYS, (uint)flagsAndAttributes, IntPtr.Zero);
             position = 0;
 
             if(pHandleRead == IntPtr.Zero)
             {
-                Win32Exception WE = new Win32Exception();
-                ApplicationException AE = new ApplicationException("WinFileIO:OpenForReadingWriting - Could not open file " +
-                  FileName + " - " + WE.Message);
-                throw AE;
+                Win32Exception we = new Win32Exception();
+                ApplicationException ae = new ApplicationException("WinFileIO:OpenForReadingWriting - Could not open file " +
+                  fileName + " - " + we.Message);
+                throw ae;
             }
         }
 
@@ -383,31 +383,31 @@ namespace StringSearch.IO
             return BytesRead;
         }
         */
-        public int ReadBlocks(int BytesToRead)
+        public int ReadBlocks(int bytesToRead)
         {
             // This function reads a total of BytesToRead at a time.  There is a limit of 2gb per call.
-            int BytesReadInBlock = 0, BytesRead = 0;
+            int bytesReadInBlock = 0, bytesRead = 0;
             byte* pBuf = (byte*)pBuffer;
             // Do until there are no more bytes to read or the buffer is full.
             do
             {
-                int BlockByteSize = Math.Min(BlockSize, BytesToRead - BytesRead);
-                if (!ReadFile(pHandleRead, pBuf, BlockByteSize, &BytesReadInBlock, IntPtr.Zero))
+                int blockByteSize = Math.Min(BLOCK_SIZE, bytesToRead - bytesRead);
+                if (!ReadFile(pHandleRead, pBuf, blockByteSize, &bytesReadInBlock, IntPtr.Zero))
                 {
-                    Win32Exception WE = new Win32Exception();
-                    ApplicationException AE = new ApplicationException("WinFileIO:ReadBytes - Error occurred reading a file. - "
-                        + WE.Message);
-                    throw AE;
+                    Win32Exception we = new Win32Exception();
+                    ApplicationException ae = new ApplicationException("WinFileIO:ReadBytes - Error occurred reading a file. - "
+                        + we.Message);
+                    throw ae;
                 }
-                if (BytesReadInBlock == 0)
+                if (bytesReadInBlock == 0)
                     break;
-                BytesRead += BytesReadInBlock;
-                pBuf += BytesReadInBlock;
-            } while (BytesRead < BytesToRead);
+                bytesRead += bytesReadInBlock;
+                pBuf += bytesReadInBlock;
+            } while (bytesRead < bytesToRead);
 
-            position += BytesRead;
+            position += bytesRead;
 
-            return BytesRead;
+            return bytesRead;
         }
         /*
         public int Write(int BytesToWrite)
@@ -424,33 +424,33 @@ namespace StringSearch.IO
             return NumberOfBytesWritten;
         }
         */
-        public int WriteBlocks(int NumBytesToWrite)
+        public int WriteBlocks(int numBytesToWrite)
         {
             // This function writes out chunks at a time instead of the entire file.  This is the fastest write function,
             // perhaps because the block size is an even multiple of the sector size.
-            int BytesWritten = 0;
-            int BytesOutput = 0;
+            int bytesWritten = 0;
+            int bytesOutput = 0;
             byte* pBuf = (byte*)pBuffer;
-            int RemainingBytes = NumBytesToWrite;
+            int remainingBytes = numBytesToWrite;
             // Do until there are no more bytes to write.
             do
             {
-                int BytesToWrite = Math.Min(RemainingBytes, BlockSize);
-                if (!WriteFile(pHandleWrite, pBuf, BytesToWrite, &BytesWritten, IntPtr.Zero))
+                int bytesToWrite = Math.Min(remainingBytes, BLOCK_SIZE);
+                if (!WriteFile(pHandleWrite, pBuf, bytesToWrite, &bytesWritten, IntPtr.Zero))
                 {
                     // This is an error condition.  The error msg can be obtained by creating a Win32Exception and
                     // using the Message property to obtain a description of the error that was encountered.
-                    Win32Exception WE = new Win32Exception();
-                    ApplicationException AE = new ApplicationException("WinFileIO:WriteBlocks - Error occurred writing a file. - "
-                        + WE.Message);
-                    throw AE;
+                    Win32Exception we = new Win32Exception();
+                    ApplicationException ae = new ApplicationException("WinFileIO:WriteBlocks - Error occurred writing a file. - "
+                        + we.Message);
+                    throw ae;
                 }
-                pBuf += BytesToWrite;
-                BytesOutput += BytesToWrite;
-                RemainingBytes -= BytesToWrite;
-            } while (RemainingBytes > 0);
+                pBuf += bytesToWrite;
+                bytesOutput += bytesToWrite;
+                remainingBytes -= bytesToWrite;
+            } while (remainingBytes > 0);
 
-            position += BytesOutput;
+            position += bytesOutput;
 
             //If we know the length of this file, increment it if we'll have changed it
             if (length != -1 && position > length)
@@ -458,7 +458,7 @@ namespace StringSearch.IO
                 length = position;
             }
 
-            return BytesOutput;
+            return bytesOutput;
         }
 
         public bool Close()
@@ -470,14 +470,14 @@ namespace StringSearch.IO
         public bool Close(bool read, bool write)
         {
             // This function closes the file handle.
-            bool Success = true;
+            bool success = true;
 
             //If read and write are using the same handle, require both to be closed at once
             if(pHandleRead == pHandleWrite && pHandleWrite != IntPtr.Zero)
             {
                 if(read && write)
                 {
-                    Success = CloseHandle(pHandleWrite);
+                    success = CloseHandle(pHandleWrite);
                     pHandleWrite = pHandleRead = IntPtr.Zero;
                     length = -1;
                 }
@@ -490,20 +490,20 @@ namespace StringSearch.IO
             {
                 if (write && pHandleWrite != IntPtr.Zero)
                 {
-                    Success = CloseHandle(pHandleWrite) && Success;
+                    success = CloseHandle(pHandleWrite) && success;
                     pHandleWrite = IntPtr.Zero;
                     length = -1;
                 }
 
                 if (read && pHandleRead != IntPtr.Zero)
                 {
-                    Success = CloseHandle(pHandleRead) && Success;
+                    success = CloseHandle(pHandleRead) && success;
                     pHandleRead = IntPtr.Zero;
                     length = -1;
                 }
             }
             
-            return Success;
+            return success;
         }
     }
 }

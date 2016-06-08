@@ -7,12 +7,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace StringSearch.IO
 {
+    // Naming doesn't match convention for C# enum, but is consistent with lower level Windows implementation
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public enum WinFileFlagsAndAttributes : uint
     {
         FILE_FLAG_BACKUP_SEMANTICS = 0x02000000,

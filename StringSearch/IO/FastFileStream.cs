@@ -289,7 +289,7 @@ namespace StringSearch.IO
             : this(path, fileAccess, maxReadWriteCallSize, null) {  }
 
         public FastFileStream(string path, FileAccess fileAccess)
-            : this(path, fileAccess, WinFileIO.BlockSize) {  }
+            : this(path, fileAccess, WinFileIO.BLOCK_SIZE) {  }
 
         //Helpers
         private void throwIfClosed()
