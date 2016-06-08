@@ -4,7 +4,7 @@
  *  Is not limited to int.MaxValue bytes like MemoryStream.
  *  For simplicity it does not differentiate between length & capacity; treating them as the same thing
  * By Josh Keegan 02/12/2014
- * Last Edit 02/01/2014
+ * Last Edit 08/06/2016
  */
 
 using System;
@@ -28,29 +28,11 @@ namespace StringSearch.IO
         private List<MemoryStream> memStreams; //TODO: using List<byte[]> as the underlying memory stores would be more efficient, but would require more code here. Could optimise later by switching data structure
 
         #region Public Variables
-        public override bool CanRead
-        {
-            get 
-            {
-                return !isClosed;
-            }
-        }
+        public override bool CanRead => !isClosed;
 
-        public override bool CanSeek
-        {
-            get
-            {
-                return !isClosed;
-            }
-        }
+        public override bool CanSeek => !isClosed;
 
-        public override bool CanWrite
-        {
-            get
-            {
-                return !isClosed;
-            }
-        }
+        public override bool CanWrite => !isClosed;
 
         public override void Flush() {  }
 

@@ -46,13 +46,7 @@ namespace StringSearch.Collections
             }
         }
 
-        public long Length
-        {
-            get
-            {
-                return underlyingArray.Length / 2;
-            }
-        }
+        public long Length => underlyingArray.Length / 2;
 
         //Constructor
         public BigPrecomputedSearchResultsArray(IBigArray<ulong> underlyingArray)

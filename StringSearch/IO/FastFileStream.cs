@@ -21,29 +21,11 @@ namespace StringSearch.IO
         private WinFileIO wfio = null;
         private FileAccess fileAccess;
 
-        public override bool CanRead
-        {
-            get 
-            {
-                return wfio != null && fileAccess != FileAccess.Write;
-            }
-        }
+        public override bool CanRead => wfio != null && fileAccess != FileAccess.Write;
 
-        public override bool CanSeek
-        {
-            get 
-            {
-                return wfio != null;
-            }
-        }
+        public override bool CanSeek => wfio != null;
 
-        public override bool CanWrite
-        {
-            get 
-            {
-                return wfio != null && fileAccess != FileAccess.Read;
-            }
-        }
+        public override bool CanWrite => wfio != null && fileAccess != FileAccess.Read;
 
         public override void Flush() 
         {

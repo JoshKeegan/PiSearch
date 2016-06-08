@@ -21,21 +21,9 @@ namespace StringSearch.Collections
         private int head;
 
         //Public vars
-        public int Count
-        {
-            get
-            {
-                return array.Length;
-            }
-        }
+        public int Count => array.Length;
 
-        public int Length
-        {
-            get
-            {
-                return Count;
-            }
-        }
+        public int Length => Count;
 
         public T this[int i]
         {

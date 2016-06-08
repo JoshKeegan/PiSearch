@@ -36,13 +36,7 @@ namespace StringSearch.Collections
             }
         }
 
-        public long Length
-        {
-            get 
-            {
-                return array.Length;
-            }
-        }
+        public long Length => array.Length;
 
         //Constructor
         public ULongArrayWrapper(long length)
