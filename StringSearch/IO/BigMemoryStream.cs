@@ -58,7 +58,7 @@ namespace StringSearch.IO
 
                 if(value < 0)
                 {
-                    throw new ArgumentOutOfRangeException("Position must be >= 0");
+                    throw new ArgumentOutOfRangeException(nameof(value), "Position must be >= 0");
                 }
 
                 //TODO: If VERY small values start being used for MEMORY_STREAM_MAX_SIZE, could check if Position < (MEMORY_STREAM_MAX_SIZE * int.MaxValue <-- max no. of underlying memory streams)
@@ -72,22 +72,23 @@ namespace StringSearch.IO
             //Validation
             if(buffer == null)
             {
-                throw new ArgumentNullException("buffer cannot be null");
+                throw new ArgumentNullException(nameof(buffer));
             }
 
             if(offset < 0)
             {
-                throw new ArgumentException("offset must be >= 0");
+                throw new ArgumentOutOfRangeException(nameof(offset), "must be >= 0");
             }
 
             if(count < 0)
             {
-                throw new ArgumentException("count must be >= 0");
+                throw new ArgumentOutOfRangeException(nameof(count), "must be >= 0");
             }
 
             if (buffer.Length - offset < count)
             {
-                throw new ArgumentException("The buffer is too small to write count bytes starting at index offset");
+                throw new ArgumentException(nameof(buffer) + " is too small to write " + nameof(count) +
+                                            " bytes starting at index " + nameof(offset));
             }
 
             throwIfClosed();
@@ -151,7 +152,6 @@ namespace StringSearch.IO
 
         public override long Seek(long offset, SeekOrigin origin)
         {
-            //TODO: Implement
             throw new NotImplementedException();
         }
 
@@ -161,7 +161,7 @@ namespace StringSearch.IO
 
             if(value < 0)
             {
-                throw new ArgumentOutOfRangeException("value must be >= 0");
+                throw new ArgumentOutOfRangeException(nameof(value), "value must be >= 0");
             }
 
             if(value > length)
@@ -179,22 +179,23 @@ namespace StringSearch.IO
             //Validation
             if (buffer == null)
             {
-                throw new ArgumentNullException("buffer cannot be null");
+                throw new ArgumentNullException(nameof(buffer));
             }
 
             if (offset < 0)
             {
-                throw new ArgumentException("offset must be >= 0");
+                throw new ArgumentOutOfRangeException(nameof(offset), "must be >= 0");
             }
 
             if (count < 0)
             {
-                throw new ArgumentException("count must be >= 0");
+                throw new ArgumentOutOfRangeException(nameof(count), "must be >= 0");
             }
 
             if (buffer.Length - offset < count)
             {
-                throw new ArgumentException("The buffer is too small to read count bytes starting at index offset");
+                throw new ArgumentException(nameof(buffer) + " is too small to read " + nameof(count) +
+                                            " bytes starting at index " + nameof(offset));
             }
 
             throwIfClosed();
@@ -236,7 +237,7 @@ namespace StringSearch.IO
         {
             if (capacity < 0)
             {
-                throw new ArgumentOutOfRangeException("capacity must be >= 0");
+                throw new ArgumentOutOfRangeException(nameof(capacity), "must be >= 0");
             }
 
             isClosed = false;
@@ -281,7 +282,7 @@ namespace StringSearch.IO
 
         private void expand(long length)
         {
-            int newNumMemStreams = numMemoryStreamsRequired(length);
+            int newNumMemStreams = calculateNumMemoryStreamsRequired(length);
 
             //Resize the current last stream (if there is one)
             if(memStreams.Count != 0)
@@ -322,7 +323,7 @@ namespace StringSearch.IO
 
         private void shrink(long length)
         {
-            int newNumMemStreams = numMemoryStreamsRequired(length);
+            int newNumMemStreams = calculateNumMemoryStreamsRequired(length);
 
             //Remove any memory streams that will no longer be required for the new size from the end
             while(newNumMemStreams != memStreams.Count)
@@ -342,7 +343,7 @@ namespace StringSearch.IO
             }
         }
 
-        private int numMemoryStreamsRequired(long capacity)
+        private static int calculateNumMemoryStreamsRequired(long capacity)
         {
             int numMemStreams = (int)(capacity / MEMORY_STREAM_MAX_SIZE);
             if (capacity != 0 && capacity % MEMORY_STREAM_MAX_SIZE != 0)

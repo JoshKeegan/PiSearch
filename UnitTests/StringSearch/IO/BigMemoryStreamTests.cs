@@ -2,7 +2,7 @@
  * PiSearch
  * BigMemoryStream Unit Tests
  * By Josh Keegan 15/12/2014
- * Last Edit 24/03/2016
+ * Last Edit 08/06/2016
  */
 
 using System;
@@ -308,7 +308,7 @@ namespace UnitTests.StringSearch.IO
             BigMemoryStream stream = new BigMemoryStream(5);
 
             byte[] buffer = new byte[5];
-            Assert.Throws<ArgumentException>(() => stream.Read(buffer, -1, 1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => stream.Read(buffer, -1, 1));
         }
 
         [Test]
@@ -317,7 +317,7 @@ namespace UnitTests.StringSearch.IO
             BigMemoryStream stream = new BigMemoryStream(5);
 
             byte[] buffer = new byte[5];
-            Assert.Throws<ArgumentException>(() => stream.Read(buffer, 1, -1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => stream.Read(buffer, 1, -1));
         }
 
         [Test]
