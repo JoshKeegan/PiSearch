@@ -59,8 +59,8 @@ namespace StringSearch.Collections
             }
         }
 
-        public long Length { get; private set; }
-        public ulong MaxValue { get; private set; }
+        public long Length { get; }
+        public ulong MaxValue { get; }
 
         //Constructor
         public MemoryEfficientComplementBigULongArray(long length, ulong maxValue, 
@@ -69,22 +69,22 @@ namespace StringSearch.Collections
             //Validation
             if(values == null)
             {
-                throw new ArgumentNullException("values");
+                throw new ArgumentNullException(nameof(values));
             }
 
             if(complements == null)
             {
-                throw new ArgumentNullException("complements");
+                throw new ArgumentNullException(nameof(complements));
             }
 
             if(values.Length < length)
             {
-                throw new ArgumentException("values length must be >= length");
+                throw new ArgumentException("values length must be >= length", nameof(values));
             }
 
             if(complements.Length < length)
             {
-                throw new ArgumentException("complements length must be >= length");
+                throw new ArgumentException("complements length must be >= length", nameof(complements));
             }
 
             //TODO: Length validation?? (must be positive)
@@ -100,11 +100,8 @@ namespace StringSearch.Collections
             IBigArray<ulong> values)
             : this(length, maxValue, values, new BigBoolArray(length)) {  }
 
-        public MemoryEfficientComplementBigULongArray(long length, ulong maxValue)
+        public MemoryEfficientComplementBigULongArray(long length, ulong maxValue = ulong.MaxValue)
             : this(length, maxValue, new MemoryEfficientBigULongArray(length, maxValue)) {  }
-
-        public MemoryEfficientComplementBigULongArray(long length)
-            : this(length, ulong.MaxValue) {  }
 
         public IEnumerator<ulong> GetEnumerator()
         {

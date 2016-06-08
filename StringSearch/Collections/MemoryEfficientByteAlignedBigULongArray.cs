@@ -77,11 +77,11 @@ namespace StringSearch.Collections
             }
         }
 
-        public long Length { get; private set; }
-        public ulong MaxValue { get; private set; }
+        public long Length { get; }
+        public ulong MaxValue { get; }
 
         //Constructor
-        public MemoryEfficientByteAlignedBigULongArray(long length, ulong maxValue)
+        public MemoryEfficientByteAlignedBigULongArray(long length, ulong maxValue = ulong.MaxValue)
         {
             Length = length;
             MaxValue = maxValue;
@@ -107,9 +107,6 @@ namespace StringSearch.Collections
             //Use the specified stream to store the values in this array
             stream = underlyingStream;
         }
-
-        public MemoryEfficientByteAlignedBigULongArray(long length)
-            : this(length, ulong.MaxValue) {  }
 
         public MemoryEfficientByteAlignedBigULongArray(long length, Stream underlyingStream)
             : this(length, ulong.MaxValue, underlyingStream) {  }
