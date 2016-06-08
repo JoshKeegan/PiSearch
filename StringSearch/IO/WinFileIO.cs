@@ -6,7 +6,7 @@
  * By Robert G. Bryan in Feb, 2011.
  * Modified by "Steve" for use in TVRename
  * First included in PiSearch (& modified) 02/01/2015 by Josh Keegan
- * Last Edit 23/02/2015
+ * Last Edit 08/06/2016
  * 
  * This file is under a "free for any use" license, not the same license as is used elsewhere in the PiSearch project.
  */
@@ -182,7 +182,7 @@ namespace StringSearch.IO
                 //Validation
                 if(value < 0)
                 {
-                    throw new ArgumentOutOfRangeException("Position must be >= 0");
+                    throw new ArgumentOutOfRangeException(nameof(value), "Position must be >= 0");
                 }
 
                 //If there is a read handle, update it's position
@@ -255,7 +255,7 @@ namespace StringSearch.IO
             gchBuf = GCHandle.Alloc(buffer, GCHandleType.Pinned);
             IntPtr pAddr = Marshal.UnsafeAddrOfPinnedArrayElement(buffer, 0);
             // pBuffer is the pointer used for all of the I/O functions in this class.
-            pBuffer = (void*)pAddr.ToPointer();
+            pBuffer = pAddr.ToPointer();
         }
 
         public void UnpinBuffer()
