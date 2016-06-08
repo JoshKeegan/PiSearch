@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,7 +44,7 @@ namespace StringSearch.Collections
         {
             if(length < 0 || length > int.MaxValue)
             {
-                throw new ArgumentOutOfRangeException("0 <= length <= int.MaxValue");
+                throw new ArgumentOutOfRangeException(nameof(length), "0 <= length <= int.MaxValue");
             }
 
             array = new ulong[length];
@@ -64,6 +65,7 @@ namespace StringSearch.Collections
         }
 
         //Private helpers
+        [SuppressMessage("ReSharper", "UnusedParameter.Local")]
         private static void validateIndex(long i)
         {
             if(i < 0 || i >= int.MaxValue)
