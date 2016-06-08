@@ -17,9 +17,9 @@ namespace StringSearch.IO
     public class FastFileStream : Stream
     {
         //Private variables
-        private byte[] buffer;
-        private WinFileIO wfio = null;
-        private FileAccess fileAccess;
+        private readonly byte[] buffer;
+        private readonly WinFileIO wfio = null;
+        private readonly FileAccess fileAccess;
 
         public override bool CanRead => wfio != null && fileAccess != FileAccess.Write;
 

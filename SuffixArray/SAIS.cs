@@ -59,7 +59,7 @@ namespace SuffixArray
     internal class FourBitDigitStreamArray : BaseArray
     {
         private FourBitDigitBigArray m_array;
-        private long m_pos;
+        private readonly long m_pos;
 
         public FourBitDigitStreamArray(FourBitDigitBigArray array, long pos)
         {
@@ -86,7 +86,7 @@ namespace SuffixArray
     {
         //Use a ulong array internally, as it will never contain -ve values
         private IBigArray<ulong> m_array;
-        private long m_pos;
+        private readonly long m_pos;
 
         public LongArray(IBigArray<ulong> array, long pos)
         {
@@ -118,7 +118,7 @@ namespace SuffixArray
     internal class StringArray : BaseArray
     {
         private string m_array;
-        private int m_pos;
+        private readonly int m_pos;
 
         public StringArray(string array, long pos)
         {

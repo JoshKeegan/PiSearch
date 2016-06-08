@@ -25,7 +25,7 @@ namespace StringSearch.IO
         private bool isClosed;
         private long length;
         private long position;
-        private List<MemoryStream> memStreams; //TODO: using List<byte[]> as the underlying memory stores would be more efficient, but would require more code here. Could optimise later by switching data structure
+        private readonly List<MemoryStream> memStreams; //TODO: using List<byte[]> as the underlying memory stores would be more efficient, but would require more code here. Could optimise later by switching data structure
 
         #region Public Variables
         public override bool CanRead => !isClosed;

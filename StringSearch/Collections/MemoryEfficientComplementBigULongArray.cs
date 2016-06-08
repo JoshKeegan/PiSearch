@@ -20,8 +20,8 @@ namespace StringSearch.Collections
     public class MemoryEfficientComplementBigULongArray : IBigArray<ulong>
     {
         //Private vars
-        IBigArray<ulong> values;
-        IBigArray<bool> complements;
+        readonly IBigArray<ulong> values;
+        readonly IBigArray<bool> complements;
 
         //Public accessors & modifiers
         public ulong this[long i]

@@ -19,7 +19,7 @@ namespace StringSearch.Collections
     public class FourBitDigitBigArray : IBigArray<byte>
     {
         //Private vars
-        private Stream stream;
+        private readonly Stream stream;
 
         //Public vars
         public long Length { get; private set; }

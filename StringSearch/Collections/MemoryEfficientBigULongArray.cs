@@ -24,7 +24,7 @@ namespace StringSearch.Collections
     public class MemoryEfficientBigULongArray : UnderlyingStream, IBigArray<ulong>
     {
         //Private vars
-        private byte bitsPerValue;
+        private readonly byte bitsPerValue;
 
         //Public accessors & modifiers
         public ulong this[long i]

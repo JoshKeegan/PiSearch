@@ -16,7 +16,7 @@ namespace StringSearch.Collections
     public class BigPrecomputedSearchResultsArray : IBigArray<PrecomputedSearchResult>
     {
         //Private vars
-        private IBigArray<ulong> underlyingArray;
+        private readonly IBigArray<ulong> underlyingArray;
 
         //Public accessors & modifiers
         public PrecomputedSearchResult this[long i]

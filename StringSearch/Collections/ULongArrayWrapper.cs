@@ -17,7 +17,7 @@ namespace StringSearch.Collections
     public class ULongArrayWrapper : IBigArray<ulong>
     {
         //Private variables
-        private ulong[] array;
+        private readonly ulong[] array;
 
         //Public variables
         public ulong this[long i]
