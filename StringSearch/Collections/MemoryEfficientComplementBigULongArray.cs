@@ -116,7 +116,7 @@ namespace StringSearch.Collections
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return (IEnumerator)GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

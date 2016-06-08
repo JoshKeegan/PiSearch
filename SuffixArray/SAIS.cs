@@ -73,7 +73,7 @@ namespace SuffixArray
         {
             get
             {
-                return (long)m_array[i + m_pos];
+                return m_array[i + m_pos];
             }
             set
             {
@@ -137,7 +137,7 @@ namespace SuffixArray
         {
             get
             {
-                return (long)m_array[(int)i + m_pos];
+                return m_array[(int)i + m_pos];
             }
             set { }
         }

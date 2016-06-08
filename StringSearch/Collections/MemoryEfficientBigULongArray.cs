@@ -56,6 +56,9 @@ namespace StringSearch.Collections
 
                     //Append this bit onto the end of the value (as the LSB)
                     val = val << 1;
+                    // TODO: Check if this cast is now redundant. C#6 might have changed the behaviour, but fairly 
+                    //  confident you used to have to sign extend by going via long first
+                    // ReSharper disable once RedundantCast
                     val = val | (ulong)(long)bit; //Must sign extend the value of bit first from int to signed long & the cast the sign away to make it ulong
 
                     //Increment the counters
@@ -298,7 +301,7 @@ namespace StringSearch.Collections
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return (IEnumerator)GetEnumerator();
+            return GetEnumerator();
         }
 
         //Helpers

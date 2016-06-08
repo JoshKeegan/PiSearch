@@ -115,7 +115,7 @@ namespace StringSearch.Collections
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return (IEnumerator)GetEnumerator();
+            return GetEnumerator();
         }
 
         private static Stream createMemoryStream(long numBools)
