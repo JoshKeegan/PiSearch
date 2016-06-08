@@ -55,7 +55,7 @@ namespace StringSearch.Collections
                     throw new IndexOutOfRangeException();
                 }
 
-                if (value < 0 || value >= 15)
+                if (value >= 15)
                 {
                     throw new OverflowException();
                 }
