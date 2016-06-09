@@ -1,7 +1,7 @@
 ﻿/*
  * Program entry point for the String Search Console application, the development interface for the PiSearch project
  * By Josh Keegan 07/11/2014
- * Last Edit 08/06/2016
+ * Last Edit 09/06/2016
  */
 
 using System;
@@ -291,11 +291,10 @@ namespace StringSearchConsole
             suffixArray = createBigArrayFromSettings(len, (uint)len);
 
             byte[] bytes = new byte[8];
-            int state = 4;
             int i = 0;
             while(true)
             {
-                state = fs.Read(bytes, 0, 8);
+                int state = fs.Read(bytes, 0, 8);
 
                 if(state == 8)
                 {
@@ -392,13 +391,9 @@ namespace StringSearchConsole
                 string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
 
                 int searchStringLength;
-                try
+                if (!int.TryParse(fileNameWithoutExtension, out searchStringLength))
                 {
-                    searchStringLength = int.Parse(fileNameWithoutExtension);
-                }
-                catch
-                {
-                    Console.WriteLine("Files must be names n." + PRECOMPUTED_SEARCH_RESULTS_FILE_EXTENSION);
+                    Console.WriteLine("Files must have names n." + PRECOMPUTED_SEARCH_RESULTS_FILE_EXTENSION);
                     return;
                 }
 
@@ -581,19 +576,13 @@ namespace StringSearchConsole
             while(true)
             {
                 Console.Write("Suffix Array File Stream Buffer Size (bytes): ");
-
                 string strBufferSize = Console.ReadLine();
 
-                try
+                if (int.TryParse(strBufferSize, out suffixArrayFileStreamBufferSize) &&
+                    suffixArrayFileStreamBufferSize > 0)
                 {
-                    suffixArrayFileStreamBufferSize = int.Parse(strBufferSize);
-
-                    if(suffixArrayFileStreamBufferSize > 0)
-                    {
-                        break;
-                    }
+                    break;
                 }
-                catch {  }
             }
         }
 
@@ -620,8 +609,8 @@ namespace StringSearchConsole
                 long b = (long)suffixArray[i + 1];
 
                 //Check that a points to a lexicographically smaller string than b
-                bool aSmaller = false;
-                for(long j = a, k = b; true; j++, k++)
+                bool aSmaller;
+                for(long j = a, k = b;; j++, k++)
                 {
                     //Bounds check
                     if(j >= fourBitDigitArray.Length)
@@ -669,17 +658,18 @@ namespace StringSearchConsole
                 while(stringLength <= 0 || stringLength >= 10)
                 {
                     Console.Write("Precompute results for strings of length: ");
-                    string strStringLength = Console.ReadLine().Trim();
+                    string strStringLength = Console.ReadLine()?.Trim();
 
-                    try
+                    if (int.TryParse(strStringLength, out stringLength))
                     {
-                        stringLength = int.Parse(strStringLength);
+                        if (stringLength <= 0 || stringLength >= 10)
+                        {
+                            Console.WriteLine("Length must be > 0 and < 10");
+                        }
                     }
-                    catch {  }
-
-                    if(stringLength <= 0 || stringLength >= 10)
+                    else
                     {
-                        Console.WriteLine("Length must be > 0 and < 10");
+                        stringLength = -1;
                     }
                 }
 
@@ -721,6 +711,7 @@ namespace StringSearchConsole
             if(precomputedSearchResults == null)
             {
                 Console.WriteLine("Must have some precomputed search results loaded");
+                return;
             }
 
             bool found = false;
