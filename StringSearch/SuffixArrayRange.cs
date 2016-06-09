@@ -2,7 +2,7 @@
  * PiSearch
  * SuffixArrayRange - Represents a range of values in a suffix array
  * By Josh Keegan 23/01/2015
- * Last Edit 08/06/2016
+ * Last Edit 09/06/2016
  */
 
 using StringSearch.Collections;
@@ -21,11 +21,11 @@ namespace StringSearch
         private long[] sortedValues;
 
         //Public accessors & modifiers
-        public bool HasResults { get; private set; }
-        public long Min { get; private set; }
-        public long Max { get; private set; }
-        public IBigArray<ulong> SuffixArray { get; private set; }
-        public FourBitDigitBigArray Digits { get; private set; }
+        public readonly bool HasResults;
+        public readonly long Min;
+        public readonly long Max;
+        public readonly IBigArray<ulong> SuffixArray;
+        public readonly FourBitDigitBigArray Digits;
         public long[] SortedValues
         {
             get
@@ -54,6 +54,7 @@ namespace StringSearch
             }
         }
 
+        // Constructors
         public SuffixArrayRange(long min, long max, IBigArray<ulong> suffixArray, FourBitDigitBigArray digits)
         {
             HasResults = true;
