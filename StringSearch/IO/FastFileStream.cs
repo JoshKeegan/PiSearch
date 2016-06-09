@@ -2,7 +2,7 @@
  * PiSearch
  * FastFileStream - a fast implementation of Stream, with the underlying data being stored on a file (like FileStream)
  * By Josh Keegan 02/01/2015
- * Last Edit 08/06/2016
+ * Last Edit 09/06/2016
  */
 
 using System;
@@ -64,22 +64,23 @@ namespace StringSearch.IO
             //Validation
             if (buffer == null)
             {
-                throw new ArgumentNullException("buffer cannot be null");
+                throw new ArgumentNullException(nameof(buffer));
             }
 
             if (offset < 0)
             {
-                throw new ArgumentException("offset must be >= 0");
+                throw new ArgumentOutOfRangeException(nameof(offset), "must be >= 0");
             }
 
             if (count < 0)
             {
-                throw new ArgumentException("count must be >= 0");
+                throw new ArgumentOutOfRangeException(nameof(count), "must be >= 0");
             }
 
             if (buffer.Length - offset < count)
             {
-                throw new ArgumentException("The buffer is too small to write count bytes starting at index offset");
+                throw new ArgumentException(nameof(buffer) + " is too small to read " + nameof(count) +
+                                            " bytes starting at index " + nameof(offset));
             }
 
             throwIfClosed();
@@ -121,13 +122,11 @@ namespace StringSearch.IO
         public override long Seek(long offset, SeekOrigin origin)
         {
             throw new NotImplementedException();
-            //TODO
         }
 
         public override void SetLength(long value)
         {
             throw new NotImplementedException();
-            //TODO
         }
 
         public override void Write(byte[] buffer, int offset, int count)
@@ -135,22 +134,23 @@ namespace StringSearch.IO
             //Validation
             if (buffer == null)
             {
-                throw new ArgumentNullException("buffer cannot be null");
+                throw new ArgumentNullException(nameof(buffer));
             }
 
             if (offset < 0)
             {
-                throw new ArgumentException("offset must be >= 0");
+                throw new ArgumentOutOfRangeException(nameof(offset), "must be >= 0");
             }
 
             if (count < 0)
             {
-                throw new ArgumentException("count must be >= 0");
+                throw new ArgumentOutOfRangeException(nameof(count), "must be >= 0");
             }
 
             if (buffer.Length - offset < count)
             {
-                throw new ArgumentException("The buffer is too small to read count bytes starting at index offset");
+                throw new ArgumentException(nameof(buffer) + " is too small to write " + nameof(count) +
+                                            " bytes starting at index " + nameof(offset));
             }
 
             throwIfClosed();
@@ -188,31 +188,33 @@ namespace StringSearch.IO
             base.Dispose(disposing);
         }
 
-        public FastFileStream(string path, FileAccess fileAccess, int maxReadWriteCallSize, WinFileFlagsAndAttributes? flagsAndAttributes)
+        public FastFileStream(string path, FileAccess fileAccess, int maxReadWriteCallSize = WinFileIO.BLOCK_SIZE,
+            WinFileFlagsAndAttributes? flagsAndAttributes = null)
         {
             if(path == null)
             {
-                throw new ArgumentException("path");
+                throw new ArgumentNullException(nameof(path));
             }
 
-            if(!path.Any())
+            if(path.Trim() == "")
             {
-                throw new ArgumentException("path is empty");
+                throw new ArgumentException("path is empty", nameof(path));
             }
 
             if(fileAccess < FileAccess.Read || fileAccess > FileAccess.ReadWrite)
             {
-                throw new ArgumentOutOfRangeException("fileAccess must contain a valid value for the FileAccess enum");
+                throw new ArgumentOutOfRangeException(nameof(fileAccess),
+                    "must contain a valid value for the FileAccess enum");
             }
 
             if(maxReadWriteCallSize < 1)
             {
-                throw new ArgumentOutOfRangeException("maxReadWriteCallSize must be > 0");
+                throw new ArgumentOutOfRangeException(nameof(maxReadWriteCallSize), "must be > 0");
             }
 
             if(path.IndexOfAny(Path.GetInvalidPathChars()) != -1)
             {
-                throw new ArgumentException("path contains invalid characters");
+                throw new ArgumentException("contains invalid characters", nameof(path));
             }
 
             if(Directory.Exists(path))
@@ -266,12 +268,6 @@ namespace StringSearch.IO
 
             this.fileAccess = fileAccess;
         }
-
-        public FastFileStream(string path, FileAccess fileAccess, int maxReadWriteCallSize)
-            : this(path, fileAccess, maxReadWriteCallSize, null) {  }
-
-        public FastFileStream(string path, FileAccess fileAccess)
-            : this(path, fileAccess, WinFileIO.BLOCK_SIZE) {  }
 
         //Helpers
         private void throwIfClosed()
