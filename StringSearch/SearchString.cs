@@ -3,7 +3,7 @@
  * SearchString - static class containing methods to search through a given string (or other data type)
  *  for some string (or other data type) to be found.
  * By Josh Keegan 07/11/2014
- * Last Edit 08/06/2016 
+ * Last Edit 09/06/2016 
  */
 
 using System;
@@ -24,17 +24,17 @@ namespace StringSearch
             //Validation
             if(toSearch == null)
             {
-                throw new ArgumentNullException("toSearch");
+                throw new ArgumentNullException(nameof(toSearch));
             }
 
             if(lookFor == null)
             {
-                throw new ArgumentNullException("lookFor");
+                throw new ArgumentNullException(nameof(lookFor));
             }
 
             if(lookFor == "")
             {
-                throw new ArgumentException("lookFor cannot be String.Empty");
+                throw new ArgumentException("cannot be String.Empty", nameof(lookFor));
             }
 
             //The string to be searched must be longer than or of equal length to the string being searched for
@@ -51,7 +51,7 @@ namespace StringSearch
                 }
 
                 //for each of the remaining characters in the string to be searched (and one more to check the last char)
-                for (int i = lookFor.Length; true; i++)
+                for (int i = lookFor.Length;; i++)
                 {
                     //If we currently have the string being searched for
                     bool match = true;
@@ -89,79 +89,14 @@ namespace StringSearch
             }
         }
 
-        public static SuffixArrayRange Search(IBigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, byte[] lookFor)
-        {
-            return Search(suffixArray, digitArray, lookFor, null);
-        }
-
-        public static SuffixArrayRange Search(IBigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, string lookFor)
-        {
-            return Search(suffixArray, digitArray, lookFor, null);
-        }
-
         public static SuffixArrayRange Search(IBigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, string lookFor,
-            IBigArray<PrecomputedSearchResult>[] precomputedResults)
+            IBigArray<PrecomputedSearchResult>[] precomputedResults = null)
         {
             return Search(suffixArray, digitArray, StrToByteArr(lookFor), precomputedResults);
         }
 
-        internal static byte[] StrToByteArr(string str)
-        {
-            //Validation
-            if(str == null)
-            {
-                throw new ArgumentNullException("str");
-            }
-
-            byte[] arr = new byte[str.Length];
-
-            for (int i = 0; i < arr.Length; i++)
-            {
-                arr[i] = byte.Parse(str[i].ToString());
-            }
-
-            return arr;
-        }
-
-        internal static string ByteArrToStr(byte[] arr)
-        {
-            //Validation
-            if(arr == null)
-            {
-                throw new ArgumentNullException("arr");
-            }
-
-            StringBuilder builder = new StringBuilder();
-
-            foreach(byte b in arr)
-            {
-                //Byte-level validation
-                if(b > 9)
-                {
-                    throw new ArgumentOutOfRangeException("bytes in arr must be < 10");
-                }
-
-                builder.Append(b);
-            }
-
-            return builder.ToString();
-        }
-
-        internal static long ByteArrToLong(byte[] arr)
-        {
-            //Validation
-            if(arr == null)
-            {
-                throw new ArgumentNullException("arr");
-            }
-
-            string s = ByteArrToStr(arr);
-
-            return long.Parse(s);
-        }
-
         public static SuffixArrayRange Search(IBigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, byte[] lookFor, 
-            IBigArray<PrecomputedSearchResult>[] precomputedResults)
+            IBigArray<PrecomputedSearchResult>[] precomputedResults = null)
         {
             //Validation
             if(lookFor.Length == 0)
@@ -176,19 +111,21 @@ namespace StringSearch
 
             if(suffixArray.Length != digitArray.Length)
             {
-                throw new ArgumentException("Suffix Array must be the same length as the Digit Array. This is not the correct suffix array for this digit array");
+                throw new ArgumentException(
+                    "Suffix Array must be the same length as the Digit Array. This is not the correct suffix array for this digit array");
             }
 
             //If we've been passed null for the precomputedResults, make an empty array for them
             if(precomputedResults == null)
             {
-                precomputedResults = new BigPrecomputedSearchResultsArray[0];
+                precomputedResults = new IBigArray<PrecomputedSearchResult>[0];
             }
 
             //If we have been given the precomputed results for strings of the length we're looking for
             if(precomputedResults.Length >= lookFor.Length)
             {
-                IBigArray<PrecomputedSearchResult> precomputedResultsOfRequiredLength = precomputedResults[lookFor.Length - 1];
+                IBigArray<PrecomputedSearchResult> precomputedResultsOfRequiredLength =
+                    precomputedResults[lookFor.Length - 1];
 
                 //Convert the string of bytes we're looking for to a long to use as the array index
                 long precomputedResultIdx = ByteArrToLong(lookFor);
@@ -201,7 +138,8 @@ namespace StringSearch
             }
             else //Otherwise we don't have the precomputed results for this search, run the suffix array search
             {
-                long matchingPosition = binarySearchForPrefix(suffixArray, digitArray, lookFor, 0, suffixArray.Length - 1);
+                long matchingPosition = binarySearchForPrefix(suffixArray, digitArray, lookFor, 0,
+                    suffixArray.Length - 1);
 
                 //If there were no matches
                 if (matchingPosition == -1)
@@ -218,7 +156,8 @@ namespace StringSearch
                         min--;
                     }
 
-                    while (max < digitArray.Length - 1 && doesStartWithSuffix(digitArray, lookFor, (long)suffixArray[max + 1]) == 0)
+                    while (max < digitArray.Length - 1 &&
+                           doesStartWithSuffix(digitArray, lookFor, (long) suffixArray[max + 1]) == 0)
                     {
                         max++;
                     }
@@ -229,7 +168,8 @@ namespace StringSearch
             }
         }
 
-        internal static long binarySearchForPrefix(IBigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, byte[] findPrefix, long min, long max)
+        internal static long binarySearchForPrefix(IBigArray<ulong> suffixArray, FourBitDigitBigArray digitArray,
+            byte[] findPrefix, long min, long max)
         {
             long numLeftToSearch = max - min + 1;
 
@@ -302,12 +242,12 @@ namespace StringSearch
             //Validation
             if(toSearch.Length == 0)
             {
-                throw new ArgumentException("toSearch cannot be empty");
+                throw new ArgumentException("cannot be empty", nameof(toSearch));
             }
 
             if(lookFor.Length == 0)
             {
-                throw new ArgumentException("lookFor cannot be empty");
+                throw new ArgumentException("cannot be empty", nameof(lookFor));
             }
 
             if(fromIdx <= toSearch.Length - lookFor.Length)
@@ -322,7 +262,7 @@ namespace StringSearch
                 }
 
                 //For each of the remaining characters in the string to be searched
-                for(; true; i++)
+                for(;; i++)
                 {
                     //If we currently have the string being searched for
                     bool match = true;
@@ -376,12 +316,12 @@ namespace StringSearch
             //Validation
             if (searchStream.Length == 0)
             {
-                throw new ArgumentException("toSearch cannot be empty");
+                throw new ArgumentException("cannot be empty", nameof(searchStream));
             }
 
             if (lookFor.Length == 0)
             {
-                throw new ArgumentException("lookFor cannot be empty");
+                throw new ArgumentException("cannot be empty", nameof(lookFor));
             }
 
             //Set the stream position (in bytes)
@@ -409,12 +349,12 @@ namespace StringSearch
             bool filledPrevThisIter = false;
             bool eos = false;
             FixedLengthQueue<byte> prev = new FixedLengthQueue<byte>(lookFor.Length);
-            byte digit;
 
             //Have one big loop for both fill & search modes
             while(true)
             {
                 //If we're at an even index, read in the next byte
+                byte digit;
                 if(idx % 2 == 0)
                 {
                     rawByteRead = searchStream.ReadByte();
@@ -497,6 +437,62 @@ namespace StringSearch
                     filledPrevThisIter = false;
                 }
             }
+        }
+
+        // TODO: Should these conversion helpers be move to a separate class?
+        internal static byte[] StrToByteArr(string str)
+        {
+            //Validation
+            if (str == null)
+            {
+                throw new ArgumentNullException(nameof(str));
+            }
+
+            byte[] arr = new byte[str.Length];
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = byte.Parse(str[i].ToString());
+            }
+
+            return arr;
+        }
+
+        internal static string ByteArrToStr(byte[] arr)
+        {
+            //Validation
+            if (arr == null)
+            {
+                throw new ArgumentNullException(nameof(arr));
+            }
+
+            StringBuilder builder = new StringBuilder();
+
+            foreach (byte b in arr)
+            {
+                //Byte-level validation
+                if (b > 9)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(arr), "bytes in " + nameof(arr) + " must be < 10");
+                }
+
+                builder.Append(b);
+            }
+
+            return builder.ToString();
+        }
+
+        internal static long ByteArrToLong(byte[] arr)
+        {
+            //Validation
+            if (arr == null)
+            {
+                throw new ArgumentNullException(nameof(arr));
+            }
+
+            string s = ByteArrToStr(arr);
+
+            return long.Parse(s);
         }
     }
 }
