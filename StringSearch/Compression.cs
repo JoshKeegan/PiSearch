@@ -2,7 +2,7 @@
  * PiSearch
  * Compression class
  * By Josh Keegan 06/11/2014
- * Last Edit 25/01/2015
+ * Last Edit 09/06/2016
  */
 
 using System;
@@ -17,7 +17,7 @@ using StringSearch.Collections;
 
 namespace StringSearch
 {
-    public class Compression
+    public static class Compression
     {
         //Constants
         private const int STREAM_COPY_BUFFER_SIZE = 16 * 1024 * 1024; //Read/Write 16MiB at a time for quicker copying of large streams (default is 16KiB)
@@ -40,10 +40,9 @@ namespace StringSearch
             
             //Read in 2 characters that will be outputted as 8 bits = 1 byte (4 bits per char)
             char[] charBuffer = new char[2];
-            int charsRead;
             while (!reader.EndOfStream)
             {
-                charsRead = reader.Read(charBuffer, 0, 2);
+                int charsRead = reader.Read(charBuffer, 0, 2);
 
                 //Convert each char to a byte
                 byte char1 = byte.Parse(charBuffer[0].ToString());
@@ -93,10 +92,9 @@ namespace StringSearch
             StringBuilder builder = new StringBuilder();
 
             char[] buffer = new char[1024];
-            int charsRead;
             while(!reader.EndOfStream)
             {
-                charsRead = reader.Read(buffer, 0, 1024);
+                int charsRead = reader.Read(buffer, 0, 1024);
 
                 builder.Append(buffer, 0, charsRead);
             }
