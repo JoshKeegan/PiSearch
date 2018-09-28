@@ -60,25 +60,13 @@ var remoteSearch =
 					dataType: "json",
 					success: function(json)
                     {
-                        // TODO: This is moving to error. Remove once live server has updated
-						//If something went wrong
-						if("Error" in json)
-						{
-							console.log(json);
+						//Store this search result so that it can be used to help reduce API load for future searches
+						remoteSearch.storeSearchResult(find, json);
 
-							var userFriendlyError = remoteSearch.getUserFriendlyError(json.Error);
-							failureCallback(userFriendlyError);
-						}
-						else //Otherwise the search was a success
-						{
-							//Store this search result so that it can be used to help reduce API load for future searches
-							remoteSearch.storeSearchResult(find, json);
+						//Use getPrevResult as the json may be changed around a bit to what we give to the callback & this ensures consistency
+						var result = remoteSearch.getPrevResult(find, resultId);
 
-							//Use getPrevResult as the json may be changed around a bit to what we give to the callback & this ensures consistency
-							var result = remoteSearch.getPrevResult(find, resultId);
-
-							successCallback(result);
-						}
+						successCallback(result);
 					},
 					error: function(jqXhr, strStatus, e)
 					{
@@ -90,7 +78,8 @@ var remoteSearch =
                             "Error" in jqXhr.responseJSON &&
                             jqXhr.responseJSON.Error !== null)
                         {
-                            failureCallback(jqXhr.responseJSON.Error);
+                            var userFriendlyError = remoteSearch.getUserFriendlyError(jqXhr.responseJSON.Error);
+                            failureCallback(userFriendlyError);
                         }
                         // Otherwise we didn't get a nice error message back, display a generic message.
                         else
