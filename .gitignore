@@ -158,3 +158,5 @@ $RECYCLE.BIN/
 # MonoDevelop
 *.userprefs
 test-results/
+
+.vs/
