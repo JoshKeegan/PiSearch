@@ -1,12 +1,12 @@
 /*
 	remoteSearch - search the digits of pi by sending the request to a remote API
 	By Josh Keegan 30/01/2015
-	Last Edit 07/02/2015
+	Last Edit 28/09/2018
  */
 var remoteSearch = 
 {
 	//Constants
-	API_URL: "http://api.pisearch.joshkeegan.co.uk/index.aspx",
+    API_URL: "http://api.pisearch.joshkeegan.co.uk/index.aspx",
 	
 	//Variables
 	prevSearchResults: {  },
@@ -59,7 +59,8 @@ var remoteSearch =
 					cache: true,
 					dataType: "json",
 					success: function(json)
-					{
+                    {
+                        // TODO: This is moving to error. Remove once live server has updated
 						//If something went wrong
 						if("Error" in json)
 						{
@@ -81,13 +82,25 @@ var remoteSearch =
 					},
 					error: function(jqXhr, strStatus, e)
 					{
-						console.log("Error when requesting a search from the PiSearch API");
-						console.log(jqXhr);
-						console.log(strStatus);
-						console.log(e);
+                        console.log("Error when requesting a search from the PiSearch API");
 
-						//TODO: Check why this request failed in order to provide a more informative error message
-						failureCallback("Whoops! An error occurred whilst querying the PiSearch API");
+                        // If we got back a JSON error, display that message
+                        if ("responseJSON" in jqXhr &&
+                            jqXhr.responseJSON !== null &&
+                            "Error" in jqXhr.responseJSON &&
+                            jqXhr.responseJSON.Error !== null)
+                        {
+                            failureCallback(jqXhr.responseJSON.Error);
+                        }
+                        // Otherwise we didn't get a nice error message back, display a generic message.
+                        else
+                        {
+                            console.log(jqXhr);
+                            console.log(strStatus);
+                            console.log(e);
+
+                            failureCallback("Whoops! An error occurred whilst querying the PiSearch API");
+                        }
 					}
 				});
 			}
