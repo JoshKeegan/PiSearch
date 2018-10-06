@@ -406,7 +406,7 @@ namespace UnitTests.StringSearch.IO
             fileNames.Add(filePath);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void Dispose()
         {
             foreach(string fileName in fileNames)

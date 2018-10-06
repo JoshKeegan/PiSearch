@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net40</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyTitle>StringSearchConsole</AssemblyTitle>
     <Product>StringSearch</Product>
     <Copyright>Copyright © 2014</Copyright>
@@ -11,10 +11,6 @@
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StringSearch\StringSearch.csproj" />
     <ProjectReference Include="..\SuffixArray\SuffixArray.csproj" />
