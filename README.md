@@ -18,7 +18,7 @@ Future Project Goals:
 - Documentation for: generating suffix array, performing search with suffix array, pre-computing suffix array indices for searches up to length n, checking if all strings of digits up to length n exist in some digits.
   
 ## License ##
-Copyright (c) 2014-2016 Josh Keegan
+Copyright (c) 2014-2018 Josh Keegan
 
 This file is part of PiSearch.
 
