@@ -1,90 +1,24 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AE0F6632-D53F-4BB5-99A0-60871EEB6DD1}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UnitTests</RootNamespace>
-    <AssemblyName>UnitTests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <TargetFramework>net40</TargetFramework>
+    <AssemblyTitle>UnitTests</AssemblyTitle>
+    <Product>UnitTests</Product>
+    <Copyright>Copyright © 2014</Copyright>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=3.2.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.2.1\lib\net40\nunit.framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
+    <PackageReference Include="NUnit" Version="3.2.1" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringSearch\Collections\BigBoolArrayTests.cs" />
-    <Compile Include="StringSearch\Collections\MemoryEfficientBigULongArrayTests.cs" />
-    <Compile Include="StringSearch\Collections\MemoryEfficientByteAlignedBigULongArrayTests.cs" />
-    <Compile Include="StringSearch\Collections\MemoryEfficientComplementBigULongArrayTests.cs" />
-    <Compile Include="StringSearch\CompressionTests.cs" />
-    <Compile Include="StringSearch\Collections\FixedLengthQueueTests.cs" />
-    <Compile Include="StringSearch\Collections\FourBitDigitBigArrayTests.cs" />
-    <Compile Include="StringSearch\IO\BigMemoryStreamTests.cs" />
-    <Compile Include="StringSearch\IO\WinFileIOTests.cs" />
-    <Compile Include="StringSearch\SearchStringTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\StringSearchConsole\StringSearchConsole.csproj">
-      <Project>{380e25fa-963c-4c96-869a-cd25acae76ac}</Project>
-      <Name>StringSearchConsole</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StringSearch\StringSearch.csproj">
-      <Project>{27ee1fb7-b2d2-4008-b256-fadc8c0c8c7d}</Project>
-      <Name>StringSearch</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SuffixArray\SuffixArray.csproj">
-      <Project>{37a30d70-14fc-48a7-b9b0-18eee2660ffd}</Project>
-      <Name>SuffixArray</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\StringSearchConsole\StringSearchConsole.csproj" />
+    <ProjectReference Include="..\StringSearch\StringSearch.csproj" />
+    <ProjectReference Include="..\SuffixArray\SuffixArray.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
