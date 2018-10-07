@@ -3,7 +3,7 @@
  * SearchString - static class containing methods to search through a given string (or other data type)
  *  for some string (or other data type) to be found.
  * By Josh Keegan 07/11/2014
- * Last Edit 09/06/2016 
+ * Last Edit 07/10/2018
  */
 
 using System;
@@ -89,13 +89,13 @@ namespace StringSearch
             }
         }
 
-        public static SuffixArrayRange Search(IBigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, string lookFor,
+        public static SuffixArrayRange Search(IBigArray<ulong> suffixArray, IBigArray<byte> digitArray, string lookFor,
             IBigArray<PrecomputedSearchResult>[] precomputedResults = null)
         {
             return Search(suffixArray, digitArray, StrToByteArr(lookFor), precomputedResults);
         }
 
-        public static SuffixArrayRange Search(IBigArray<ulong> suffixArray, FourBitDigitBigArray digitArray, byte[] lookFor, 
+        public static SuffixArrayRange Search(IBigArray<ulong> suffixArray, IBigArray<byte> digitArray, byte[] lookFor, 
             IBigArray<PrecomputedSearchResult>[] precomputedResults = null)
         {
             //Validation
@@ -168,7 +168,7 @@ namespace StringSearch
             }
         }
 
-        internal static long binarySearchForPrefix(IBigArray<ulong> suffixArray, FourBitDigitBigArray digitArray,
+        internal static long binarySearchForPrefix(IBigArray<ulong> suffixArray, IBigArray<byte> digitArray,
             byte[] findPrefix, long min, long max)
         {
             long numLeftToSearch = max - min + 1;
@@ -203,7 +203,7 @@ namespace StringSearch
             }
         }
 
-        internal static int doesStartWithSuffix(FourBitDigitBigArray digitArray, byte[] findPrefix, long startIdx)
+        internal static int doesStartWithSuffix(IBigArray<byte> digitArray, byte[] findPrefix, long startIdx)
         {
             //Number of digits in the digit array from startIdx (inclusive)
             long numDigitsAfter = digitArray.Length - startIdx;

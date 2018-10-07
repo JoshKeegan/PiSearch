@@ -1,15 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringSearchConsole", "StringSearchConsole\StringSearchConsole.csproj", "{380E25FA-963C-4C96-869A-CD25ACAE76AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringSearchConsole", "StringSearchConsole\StringSearchConsole.csproj", "{380E25FA-963C-4C96-869A-CD25ACAE76AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringSearch", "StringSearch\StringSearch.csproj", "{27EE1FB7-B2D2-4008-B256-FADC8C0C8C7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringSearch", "StringSearch\StringSearch.csproj", "{27EE1FB7-B2D2-4008-B256-FADC8C0C8C7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{AE0F6632-D53F-4BB5-99A0-60871EEB6DD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{AE0F6632-D53F-4BB5-99A0-60871EEB6DD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuffixArray", "SuffixArray\SuffixArray.csproj", "{37A30D70-14FC-48A7-B9B0-18EEE2660FFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuffixArray", "SuffixArray\SuffixArray.csproj", "{37A30D70-14FC-48A7-B9B0-18EEE2660FFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringSearch.Api", "StringSearch.Api\StringSearch.Api.csproj", "{09AB3268-4D2A-4F73-8837-FB543F2406A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,8 +35,15 @@ Global
 		{37A30D70-14FC-48A7-B9B0-18EEE2660FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37A30D70-14FC-48A7-B9B0-18EEE2660FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37A30D70-14FC-48A7-B9B0-18EEE2660FFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09AB3268-4D2A-4F73-8837-FB543F2406A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09AB3268-4D2A-4F73-8837-FB543F2406A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09AB3268-4D2A-4F73-8837-FB543F2406A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09AB3268-4D2A-4F73-8837-FB543F2406A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F105FED6-FACC-41D3-BF01-404E894EDDCE}
 	EndGlobalSection
 EndGlobal
