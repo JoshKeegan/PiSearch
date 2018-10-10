@@ -13,6 +13,7 @@ namespace StringSearch.Api.Search
     public class SearchSummary
     {
         private const string UNDETERMINED_IP = "UNDETERMINED";
+        private const int NO_RESULT_ID = -1;
         private const int NO_SUFFIX_ARRAY_INDICES = -1;
 
         public readonly string Find;
@@ -28,11 +29,11 @@ namespace StringSearch.Api.Search
         public bool HasSuffixArrayIndices => MinSuffixArrayIdx != NO_SUFFIX_ARRAY_INDICES &&
                                              MaxSuffixArrayIdx != NO_SUFFIX_ARRAY_INDICES;
 
-        public SearchSummary(string find, int resultId, long? minSuffixArrayIdx, long? maxSuffixArrayIdx,
+        public SearchSummary(string find, int? resultId, long? minSuffixArrayIdx, long? maxSuffixArrayIdx,
             bool justCount, int? numSurroundingDigits, IPAddress clientIp)
         {
             Find = find ?? throw new ArgumentNullException(nameof(find));
-            ResultId = resultId;
+            ResultId = resultId ?? NO_RESULT_ID;
             MinSuffixArrayIdx = minSuffixArrayIdx ?? NO_SUFFIX_ARRAY_INDICES;
             MaxSuffixArrayIdx = maxSuffixArrayIdx ?? NO_SUFFIX_ARRAY_INDICES;
             JustCount = justCount;

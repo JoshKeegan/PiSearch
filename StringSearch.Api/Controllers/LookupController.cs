@@ -42,8 +42,6 @@ namespace StringSearch.Api.Controllers
                 request.MaxSuffixArrayIdx, false, request.NumSurroundingDigits,
                 Request.HttpContext.Connection.RemoteIpAddress);
 
-            // TODO: The following logic should be moved elsewhere and largely shared with the Count endpoint
-
             // Time the request being processed
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
