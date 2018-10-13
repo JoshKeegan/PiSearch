@@ -5,7 +5,7 @@ build_script:
 - ps: dotnet build
 
 test_script:
-- ps: >-
+- ps: |
     cd UnitTests
     dotnet test --logger:trx`;logfilename=UnitTests.trx
 
