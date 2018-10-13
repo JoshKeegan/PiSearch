@@ -11,4 +11,4 @@ test:
   script:
     - dotnet build
     - cd UnitTests
-    - dotnet test
+    - dotnet test --filter TestCategory!=windows
