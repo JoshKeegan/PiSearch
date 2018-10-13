@@ -2,7 +2,7 @@
  * PiSearch
  * WinFileIO Unit Tests
  * By Josh Keegan 02/01/2015
- * Last Edit 03/01/2015
+ * Last Edit 13/10/2018
  */
 
 using System;
@@ -18,6 +18,7 @@ using StringSearch.IO;
 namespace UnitTests.StringSearch.IO
 {
     [TestFixture]
+    [Category("windows")]
     public class WinFileIOTests
     {
         private static readonly byte[] FILE_CONTENT = { 1, 2, 3, 4, 5, 7, 2, 5, 3, 6, 98, 2, 3, 6, 8, 3, 6, 56, 78, 22, 23, 123, 45, 201, 255, 0, 0, 1, 7, 255, 0, 12, 13 };

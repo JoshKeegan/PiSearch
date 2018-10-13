@@ -1,0 +1,17 @@
+image: microsoft/dotnet:latest
+
+before_script:
+  - dotnet restore
+
+stages:
+  - test
+
+test:
+  stage: test
+  script:
+    - dotnet build
+    - cd UnitTests
+    - dotnet test --filter TestCategory!=windows --logger:trx\;logfilename=UnitTests.trx
+  artifacts:
+    paths:
+    - UnitTests/TestResults/UnitTests.trx
