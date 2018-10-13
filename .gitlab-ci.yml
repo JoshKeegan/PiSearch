@@ -4,16 +4,11 @@ before_script:
   - dotnet restore
 
 stages:
-  - build
   - test
 
-debug:
-  stage: build
-  script:
-    - dotnet build
-
-debug:
+test:
   stage: test
   script:
+    - dotnet build
     - cd UnitTests
     - dotnet test
