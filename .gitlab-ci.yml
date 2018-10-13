@@ -1,0 +1,19 @@
+image: microsoft/dotnet:latest
+
+before_script:
+  - dotnet restore
+
+stages:
+  - build
+  - test
+
+debug:
+  stage: build
+  script:
+    - dotnet build
+
+debug:
+  stage: test
+  script:
+    - cd UnitTests
+    - dotnet test
