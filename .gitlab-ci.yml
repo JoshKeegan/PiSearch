@@ -11,4 +11,7 @@ test:
   script:
     - dotnet build
     - cd UnitTests
-    - dotnet test --filter TestCategory!=windows
+    - dotnet test --filter TestCategory!=windows --logger:trx;logfilename=UnitTests.trx
+  artifacts:
+    paths:
+    - UnitTests/TestResults/UnitTests.trx
