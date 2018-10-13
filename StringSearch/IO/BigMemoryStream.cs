@@ -4,7 +4,7 @@
  *  Is not limited to int.MaxValue bytes like MemoryStream.
  *  For simplicity it does not differentiate between length & capacity; treating them as the same thing
  * By Josh Keegan 02/12/2014
- * Last Edit 08/06/2016
+ * Last Edit 13/10/2018
  */
 
 using System;
@@ -25,7 +25,7 @@ namespace StringSearch.IO
         private bool isClosed;
         private long length;
         private long position;
-        private readonly List<MemoryStream> memStreams; //TODO: using List<byte[]> as the underlying memory stores would be more efficient, but would require more code here. Could optimise later by switching data structure
+        private readonly List<MemoryStream> memStreams = new List<MemoryStream>(0); //TODO: using List<byte[]> as the underlying memory stores would be more efficient, but would require more code here. Could optimise later by switching data structure
 
         #region Public Variables
         public override bool CanRead => !isClosed;
@@ -128,7 +128,7 @@ namespace StringSearch.IO
             return count;
         }
 
-        //Manually overriding ReadByte() is unneccessary, but more efficient than the default implementation that 
+        //Manually overriding ReadByte() is unnecessary, but more efficient than the default implementation that 
         //  will use Read() to get a single byte
         public override int ReadByte()
         {
@@ -244,8 +244,7 @@ namespace StringSearch.IO
             length = 0; //Will be set to actual value by expand
             position = 0;
 
-            //Initialise memStreams to be empty, expand will set the actual values
-            memStreams = new List<MemoryStream>(0);
+            // memStreams defaults to empty, expand it to the correct size
             expand(capacity);
         }
         #endregion
