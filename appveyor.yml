@@ -1,0 +1,16 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+
+build_script:
+- ps: dotnet build
+
+test_script:
+- ps: >-
+    cd UnitTests
+    dotnet test --logger:trx`;logfilename=UnitTests.trx
+
+    $wc = New-Object 'System.Net.WebClient'
+    $wc.UploadFile("https://ci.appveyor.com/api/testresults/mstest/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\TestResults\UnitTests.trx))
+
+artifacts:
+- path: UnitTests/TestResults/UnitTests.trx
