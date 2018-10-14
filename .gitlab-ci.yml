@@ -9,9 +9,8 @@ stages:
 test:
   stage: test
   script:
-    - dotnet build
-    - cd UnitTests
-    - dotnet test --filter TestCategory!=windows --logger:trx\;logfilename=UnitTests.trx
+    - make build
+    - make unit-tests-linux
   artifacts:
     paths:
     - UnitTests/TestResults/UnitTests.trx
