@@ -1,6 +1,7 @@
 image: microsoft/dotnet:latest
 
 before_script:
+  - apt-get update
   - apt-get install -y make
   - dotnet restore
 
