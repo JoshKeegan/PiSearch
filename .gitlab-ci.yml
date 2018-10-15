@@ -1,6 +1,8 @@
 image: microsoft/dotnet:latest
 
 before_script:
+  - apt-get update
+  - apt-get install -y make
   - dotnet restore
 
 stages:
@@ -9,9 +11,8 @@ stages:
 test:
   stage: test
   script:
-    - dotnet build
-    - cd UnitTests
-    - dotnet test --filter TestCategory!=windows --logger:trx\;logfilename=UnitTests.trx
+    - make build
+    - make unit-tests-linux
   artifacts:
     paths:
     - UnitTests/TestResults/UnitTests.trx

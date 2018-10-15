@@ -160,3 +160,5 @@ $RECYCLE.BIN/
 test-results/
 
 .vs/
+
+.vscode/
