@@ -59,7 +59,11 @@ namespace StringSearch.Api.Middleware
                 error.Id = errorId;
 
                 VmErrorResponse response = new VmErrorResponse() { Error = error };
-                string strResponse = JsonConvert.SerializeObject(response);
+                string strResponse = JsonConvert.SerializeObject(response, new JsonSerializerSettings()
+                {
+                    // An exception may have circular references... Ignore and just serialise what we can.
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
 
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = 500;
