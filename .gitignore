@@ -163,3 +163,7 @@ test-results/
 
 .vscode/
 .idea/
+
+# Environment specific appsettings, except for the sample one
+appsettings.*.json
+!appsettings.Development.Sample.json

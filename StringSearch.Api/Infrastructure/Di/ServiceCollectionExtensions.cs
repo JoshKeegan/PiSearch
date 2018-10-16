@@ -29,12 +29,6 @@ namespace StringSearch.Api.Infrastructure.Di
 
         private static IServiceCollection registerConfig(this IServiceCollection services)
         {
-            services.AddSingleton<IConfiguration>(provider => new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                //.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location))
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .Build());
-
             services.AddSingleton(provider =>
             {
                 IConfiguration config = provider.GetService<IConfiguration>();
