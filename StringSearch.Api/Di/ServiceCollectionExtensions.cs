@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using StringSearch.Api.Health;
 using StringSearch.Api.Infrastructure.Config;
 using StringSearch.Api.Infrastructure.Di;
@@ -47,7 +48,15 @@ namespace StringSearch.Api.Di
                     config.AbsolutePrecomputedResultsDirPath);
             });
             
-            // TODO: Health Resource: MySQL connection?
+            // Database connection (critical)
+            services.AddSingleton<IHealthResource>(provider =>
+            {
+                ILogger log = provider.GetService<ILogger>();
+                MySqlConfig config = provider.GetService<MySqlConfig>();
+                return new MySqlHealthResource("Database", true, log, config.ConnectionString);
+            });
+
+            // TODO: Logging database (non-critical)
             
             return services;
         }
