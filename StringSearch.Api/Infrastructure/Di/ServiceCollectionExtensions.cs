@@ -110,8 +110,10 @@ namespace StringSearch.Api.Infrastructure.Di
             services.AddSingleton<PrecomputedSearchResultsFilePaths>(provider =>
             {
                 StringSearchConfig config = provider.GetService<StringSearchConfig>();
-                string[] filePaths = Directory.GetFiles(config.AbsolutePrecomputedResultsDirPath,
-                    "*." + config.PrecomputedResultsFileExtension);
+                string[] filePaths = config.AbsolutePrecomputedResultsDirPath != null
+                    ? Directory.GetFiles(config.AbsolutePrecomputedResultsDirPath,
+                        "*." + config.PrecomputedResultsFileExtension)
+                    : new string[0];
                 return new PrecomputedSearchResultsFilePaths(filePaths);
             });
 

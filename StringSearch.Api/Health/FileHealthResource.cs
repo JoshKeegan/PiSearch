@@ -9,14 +9,16 @@ namespace StringSearch.Api.Health
         private readonly string path;
         private readonly FileMode fileMode;
         private readonly FileAccess fileAccess;
-        
+
+        public string Name { get; }
         public bool Critical { get; }
 
-        public FileHealthResource(string path, bool critical, FileMode fileMode = FileMode.Open,
+        public FileHealthResource(string name, bool critical, string path, FileMode fileMode = FileMode.Open,
             FileAccess fileAccess = FileAccess.Read)
         {
-            this.path = path ?? throw new ArgumentNullException(nameof(path));
+            Name = name;
             Critical = critical;
+            this.path = path ?? throw new ArgumentNullException(nameof(path));
             this.fileMode = fileMode;
             this.fileAccess = fileAccess;
         }

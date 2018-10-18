@@ -16,6 +16,8 @@ namespace StringSearch.Api.Infrastructure.Config
 
         public string AbsoluteDigitsPath => Path.Combine(RootPath, RelativeDigitsPath);
         public string AbsoluteSuffixArrayPath => Path.Combine(RootPath, RelativeSuffixArrayPath);
-        public string AbsolutePrecomputedResultsDirPath => Path.Combine(RootPath, RelativePrecomputedResultsDirPath);
+        public string AbsolutePrecomputedResultsDirPath => RelativePrecomputedResultsDirPath != null
+            ? Path.Combine(RootPath, RelativePrecomputedResultsDirPath)
+            : null;
     }
 }
