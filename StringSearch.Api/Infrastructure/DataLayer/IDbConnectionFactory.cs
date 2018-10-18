@@ -3,7 +3,7 @@ using System.Data.Common;
 
 namespace StringSearch.Api.Infrastructure.DataLayer
 {
-    internal interface IDbConnectionFactory
+    public interface IDbConnectionFactory
     {
         DbConnection GetConnection();
     }

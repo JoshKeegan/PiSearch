@@ -5,7 +5,7 @@ using StringSearch.Api.Search;
 
 namespace StringSearch.Api.Infrastructure.DataLayer
 {
-    internal class DbSearches : IDbSearches
+    public class DbSearches : IDbSearches
     {
         private const DbType ID_TYPE = DbType.Int64;
         private const DbType FIND_TYPE = DbType.String;
@@ -30,7 +30,7 @@ namespace StringSearch.Api.Infrastructure.DataLayer
             using (DbConnection conn = dbConnFact.GetConnection())
             using (DbCommand command = conn.CreateCommand())
             {
-                conn.Open();
+                await conn.OpenAsync();
 
                 // Build the command
                 command.CommandText = 

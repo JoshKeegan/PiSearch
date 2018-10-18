@@ -4,7 +4,7 @@ using MySql.Data.MySqlClient;
 
 namespace StringSearch.Api.Infrastructure.DataLayer
 {
-    internal class MySqlDbConnectionFactory : IDbConnectionFactory
+    public class MySqlDbConnectionFactory : IDbConnectionFactory
     {
         private readonly string connStr;
 
