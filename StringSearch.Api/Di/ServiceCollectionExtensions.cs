@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using StringSearch.Api.Health;
@@ -56,7 +57,26 @@ namespace StringSearch.Api.Di
                 return new MySqlHealthResource("Database", true, log, config.ConnectionString);
             });
 
-            // TODO: Logging database (non-critical)
+            // Logging database (non-critical)
+            services.AddSingleton<IHealthResource>(provider =>
+            {
+                // Get the connection string of the Serilog MySQL sink
+                // Note: this assumes that there won't be more than one MySQL sink
+                IConfiguration config = provider.GetService<IConfiguration>();
+                string connStr = config.GetSection("Serilog")?.GetSection("WriteTo")?.GetChildren()
+                    ?.Where(s => s.GetValue<string>("Name") == "MySQL")?.FirstOrDefault()?.GetSection("Args")
+                    ?.GetValue<string>("connectionString");
+
+                if (connStr == null)
+                {
+                    // Note: null will still get registered as an IHealthResource.
+                    //  It must be filtered out whenever they are injected.
+                    return null;
+                }
+
+                ILogger log = provider.GetService<ILogger>();
+                return new MySqlHealthResource("Logs Database", false, log, connStr);
+            });
             
             return services;
         }

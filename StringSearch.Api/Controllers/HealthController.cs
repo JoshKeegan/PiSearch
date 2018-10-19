@@ -14,8 +14,8 @@ namespace StringSearch.Api.Controllers
         
         public HealthController(IEnumerable<IHealthResource> healthResources)
         {
-            this.healthResources =
-                healthResources?.ToArray() ?? throw new ArgumentNullException(nameof(healthResources));
+            this.healthResources = healthResources?.Where(r => r != null)?.ToArray() ??
+                                   throw new ArgumentNullException(nameof(healthResources));
         }
         
         [HttpGet]
