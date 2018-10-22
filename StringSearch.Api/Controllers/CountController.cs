@@ -65,9 +65,11 @@ namespace StringSearch.Api.Controllers
             summary.ProcessingTimeMs = stopwatch.ElapsedMilliseconds;
             vmRes.ProcessingTimeMs = stopwatch.ElapsedMilliseconds;
 
-            // Log this search to the database
-            // TODO: This could happen after the response is sent to the client
-            await dbSearches.Insert(summary);
+            // Log this search to the database. Defer until after the response is sent to the client
+            Response.OnCompleted(async () =>
+            {
+                await dbSearches.Insert(summary);
+            });
 
             return Ok(vmRes);
         }
