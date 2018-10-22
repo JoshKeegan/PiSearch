@@ -16,6 +16,7 @@ namespace StringSearch.Api.Infrastructure.DataLayer
         private const DbType CLIENT_IP_TYPE = DbType.String;
         private const DbType SEARCH_DATE_TYPE = DbType.DateTime;
         private const DbType PROCESSING_TIME_MS_TYPE = DbType.Int64;
+        private const DbType NUM_SURROUNDING_DIGITS_TYPE = DbType.Int32;
 
         private readonly IDbConnectionFactory dbConnFact;
 
@@ -26,7 +27,6 @@ namespace StringSearch.Api.Infrastructure.DataLayer
 
         public async Task Insert(SearchSummary search)
         {
-            // TODO: Store the new NumSurroundingDigits property
             using (DbConnection conn = dbConnFact.GetConnection())
             using (DbCommand command = conn.CreateCommand())
             {
@@ -34,8 +34,10 @@ namespace StringSearch.Api.Infrastructure.DataLayer
 
                 // Build the command
                 command.CommandText = 
-@"INSERT INTO searches (find, minSuffixArrayIdx, maxSuffixArrayIdx, resultId, justCount, clientIp, searchDate, processingTimeMs)
-VALUES (@find, @minSuffixArrayIdx, @maxSuffixArrayIdx, @resultId, @justCount, @clientIp, @searchDate, @processingTimeMs)";
+@"INSERT INTO searches (find, minSuffixArrayIdx, maxSuffixArrayIdx, resultId, justCount, clientIp, searchDate, 
+    processingTimeMs, numSurroundingDigits)
+VALUES (@find, @minSuffixArrayIdx, @maxSuffixArrayIdx, @resultId, @justCount, @clientIp, @searchDate, 
+    @processingTimeMs, @numSurroundingDigits)";
 
                 // Add the parameters
                 command.AddParameter("@find", search.Find, FIND_TYPE);
@@ -46,6 +48,7 @@ VALUES (@find, @minSuffixArrayIdx, @maxSuffixArrayIdx, @resultId, @justCount, @c
                 command.AddParameter("@clientIp", search.ClientIp, CLIENT_IP_TYPE);
                 command.AddParameter("@searchDate", search.SearchDate, SEARCH_DATE_TYPE);
                 command.AddParameter("@processingTimeMs", search.ProcessingTimeMs, PROCESSING_TIME_MS_TYPE);
+                command.AddParameter("@numSurroundingDigits", search.NumSurroundingDigits, NUM_SURROUNDING_DIGITS_TYPE);
 
                 // Run the command
                 await command.ExecuteNonQueryAsync();
