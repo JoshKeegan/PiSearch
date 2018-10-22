@@ -8,6 +8,6 @@ CREATE TABLE `searches` (
   `clientIp` varchar(39) NOT NULL COMMENT '39 for IPv6',
   `searchDate` datetime NOT NULL,
   `processingTimeMs` bigint(20) NOT NULL,
-  `numSurroundingDigits` int(11) NOT NULL DEFAULT '20',
+  `numSurroundingDigits` int(11) NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
