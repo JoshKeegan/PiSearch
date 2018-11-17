@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using StringSearch.Api.Attributes.Validation;
+﻿using StringSearch.Api.Attributes.Validation;
 
-namespace StringSearch.Api.ViewModels
+namespace StringSearch.Api.Contracts.Searches.Lookups
 {
-    public class VmLookupRequest : VmSearchRequest
+    public class LookupRequest : SearchRequest
     {
         [PositiveInt]
         public int ResultId { get; set; } = 0;

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using StringSearch.Api.Contracts;
+using StringSearch.Api.Contracts.Health;
 using StringSearch.Api.Health;
 
 namespace StringSearch.Api.Controllers
@@ -28,13 +30,13 @@ namespace StringSearch.Api.Controllers
                 tasks[i] = healthResources[i].CheckState();
             }
             
-            VmHealthResourceSummary[] summaries = new VmHealthResourceSummary[tasks.Length];
+            HealthResourceSummary[] summaries = new HealthResourceSummary[tasks.Length];
             bool allCriticalHealthy = true;
             for (int i = 0; i < tasks.Length; i++)
             {
                 IHealthResource resource = healthResources[i];
                 HealthState state = await tasks[i];
-                summaries[i] = new VmHealthResourceSummary(resource, state);
+                summaries[i] = new HealthResourceSummary(resource, state);
 
                 if (resource.Critical && !state.Healthy)
                 {

@@ -5,11 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using StringSearch.Api.Contracts;
+using StringSearch.Api.Contracts.Searches;
+using StringSearch.Api.Contracts.Searches.Lookups;
 using StringSearch.Api.Infrastructure.DataLayer;
 using StringSearch.Api.Infrastructure.StringSearch;
 using StringSearch.Api.Infrastructure.StringSearch.Wrappers;
 using StringSearch.Api.Search;
-using StringSearch.Api.ViewModels;
 
 namespace StringSearch.Api.Controllers
 {
@@ -30,14 +32,8 @@ namespace StringSearch.Api.Controllers
             this.dbSearches = dbSearches;
         }
 
-        public async Task<IActionResult> Index(VmLookupRequest request)
+        public async Task<IActionResult> Index(LookupRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                // TODO: Return more user-friendly validation errors
-                return StatusCode(500, ModelState);
-            }
-
             SearchSummary summary = new SearchSummary(request.Find, request.ResultId, request.MinSuffixArrayIdx,
                 request.MaxSuffixArrayIdx, false, request.NumSurroundingDigits,
                 Request.HttpContext.Connection.RemoteIpAddress);
@@ -56,7 +52,7 @@ namespace StringSearch.Api.Controllers
                     precomputedSearchResults.Results);
 
             // If there is a result
-            VmLookupResult vmRes = new VmLookupResult();
+            LookupResponse vmRes = new LookupResponse();
             if (suffixArrayRange.HasResults)
             {
                 vmRes.SuffixArrayMinIdx = suffixArrayRange.Min;
@@ -87,7 +83,7 @@ namespace StringSearch.Api.Controllers
                         afterBuilder.Append(digitsWrapper.Digits[i]);
                     }
                 }
-                vmRes.SurroundingDigits = new VmSurroundingDigits(beforeBuilder.ToString(), afterBuilder.ToString());
+                vmRes.SurroundingDigits = new SurroundingDigits(beforeBuilder.ToString(), afterBuilder.ToString());
             }
             else
             {

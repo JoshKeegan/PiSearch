@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace StringSearch.Api.ViewModels
+﻿namespace StringSearch.Api.Contracts.Searches
 {
-    public abstract class VmSearchResult
+    public abstract class SearchResponse
     {
         public long? SuffixArrayMinIdx;
         public long? SuffixArrayMaxIdx;

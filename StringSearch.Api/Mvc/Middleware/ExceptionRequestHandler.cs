@@ -7,9 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Serilog;
-using StringSearch.Api.ViewModels;
+using StringSearch.Api.Contracts;
+using StringSearch.Api.Contracts.Errors;
 
-namespace StringSearch.Api.Middleware
+namespace StringSearch.Api.Mvc.Middleware
 {
     public class ExceptionRequestHandler
     {
@@ -43,22 +44,22 @@ namespace StringSearch.Api.Middleware
                     context.Request.QueryString.ToString(), requestBody);
 
                 // Construct an error. If in development, add additional info
-                VmError error;
+                Error error;
                 if (hostingEnvironment.IsDevelopment())
                 {
-                    error = new VmDevelopmentError()
+                    error = new DevelopmentError()
                     {
                         Exception = e
                     };
                 }
                 else
                 {
-                    error = new VmError();
+                    error = new Error();
                 }
                 error.Message = "An unexpected error has occurred";
                 error.Id = errorId;
 
-                VmErrorResponse response = new VmErrorResponse() { Error = error };
+                ErrorResponse response = new ErrorResponse() { Error = error };
                 string strResponse = JsonConvert.SerializeObject(response, new JsonSerializerSettings()
                 {
                     // An exception may have circular references... Ignore and just serialise what we can.

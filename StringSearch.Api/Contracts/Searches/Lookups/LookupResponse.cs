@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace StringSearch.Api.ViewModels
+﻿namespace StringSearch.Api.Contracts.Searches.Lookups
 {
-    public class VmLookupResult : VmSearchResult
+    public class LookupResponse : SearchResponse
     {
         public int? ResultId;
         public long? ResultStringIndex;
-        public VmSurroundingDigits SurroundingDigits;
+        public SurroundingDigits SurroundingDigits;
 
         /*public VmLookupResult(long? suffixArrayMinIdx, long? suffixArrayMaxIdx, int numResults, long processingTimeMs,
             int? resultId, long? resultsStringIndex, VmSurroundingDigits surroundingDigits)

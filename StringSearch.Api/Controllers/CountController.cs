@@ -4,11 +4,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using StringSearch.Api.Contracts;
+using StringSearch.Api.Contracts.Searches.Counts;
 using StringSearch.Api.Infrastructure.DataLayer;
 using StringSearch.Api.Infrastructure.StringSearch;
 using StringSearch.Api.Infrastructure.StringSearch.Wrappers;
 using StringSearch.Api.Search;
-using StringSearch.Api.ViewModels;
 
 namespace StringSearch.Api.Controllers
 {
@@ -29,14 +30,8 @@ namespace StringSearch.Api.Controllers
             this.dbSearches = dbSearches;
         }
 
-        public async Task<IActionResult> Index(VmCountRequest request)
+        public async Task<IActionResult> Index(CountRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                // TODO: Return more user-friendly validation errors
-                return StatusCode(500, ModelState);
-            }
-
             SearchSummary summary = new SearchSummary(request.Find, null, null,
                 null, true, null, Request.HttpContext.Connection.RemoteIpAddress);
 
@@ -49,7 +44,7 @@ namespace StringSearch.Api.Controllers
                 digitsWrapper.Digits, summary.Find, precomputedSearchResults.Results);
 
             // If there is a result
-            VmCountResult vmRes = new VmCountResult();
+            CountResponse vmRes = new CountResponse();
             if (suffixArrayRange.HasResults)
             {
                 vmRes.SuffixArrayMinIdx = suffixArrayRange.Min;

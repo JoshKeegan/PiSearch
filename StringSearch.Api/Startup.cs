@@ -8,11 +8,9 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Serilog.Context;
+using StringSearch.Api.Mvc.ActionFilters;
+using StringSearch.Api.Mvc.Middleware;
 using StringSearch.Api.Di;
-using StringSearch.Api.Middleware;
 
 namespace StringSearch.Api
 {
@@ -30,7 +28,12 @@ namespace StringSearch.Api
         {
             services.RegisterApiDependencies();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services
+                .AddMvc(options =>
+                {
+                    options.Filters.Add(typeof(ValidateModelsAttribute));
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

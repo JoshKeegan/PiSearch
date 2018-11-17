@@ -1,14 +1,14 @@
 using System;
-using System.ComponentModel;
+using StringSearch.Api.Health;
 
-namespace StringSearch.Api.Health
+namespace StringSearch.Api.Contracts.Health
 {
-    public class VmHealthResourceSummary
+    public class HealthResourceSummary
     {
         public readonly IHealthResource Resource;
         public readonly HealthState State;
 
-        public VmHealthResourceSummary(IHealthResource resource, HealthState state)
+        public HealthResourceSummary(IHealthResource resource, HealthState state)
         {
             Resource = resource ?? throw new ArgumentNullException(nameof(resource));
             State = state ?? throw new ArgumentNullException(nameof(state));

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace StringSearch.Api.ViewModels
+﻿namespace StringSearch.Api.Contracts.Searches.Counts
 {
-    public class VmCountResult : VmSearchResult
+    public class CountResponse : SearchResponse
     {
         /*public VmCountResult(long? suffixArrayMinIdx, long? suffixArrayMaxIdx, int numResults, long processingTimeMs) :
             base(suffixArrayMinIdx, suffixArrayMaxIdx, numResults, processingTimeMs) {  }*/
