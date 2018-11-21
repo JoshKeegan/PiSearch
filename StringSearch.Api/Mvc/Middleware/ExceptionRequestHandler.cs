@@ -40,8 +40,9 @@ namespace StringSearch.Api.Mvc.Middleware
             {
                 Guid errorId = Guid.NewGuid();
                 string requestBody = await getRequestBody(context.Request);
-                logger.Error(e, "Error ID {@errorId}. Query String {@queryString}. Request Body {@requestBody}. Message: " + e.Message, errorId,
-                    context.Request.QueryString.ToString(), requestBody);
+                logger.Error(e,
+                    "Error ID {@errorId}. Query String {@queryString}. Request Body {@requestBody}.",
+                    errorId, context.Request.QueryString, requestBody);
 
                 // Construct an error. If in development, add additional info
                 Error error;
