@@ -44,21 +44,21 @@ namespace StringSearch.Api.Controllers
                 digitsWrapper.Digits, summary.Find, precomputedSearchResults.Results);
 
             // If there is a result
-            CountResponse vmRes = new CountResponse();
+            CountResponse response = new CountResponse();
             if (suffixArrayRange.HasResults)
             {
-                vmRes.SuffixArrayMinIdx = suffixArrayRange.Min;
-                vmRes.SuffixArrayMaxIdx = suffixArrayRange.Max;
-                vmRes.NumResults = (int)(suffixArrayRange.Max - suffixArrayRange.Min + 1);
+                response.SuffixArrayMinIdx = suffixArrayRange.Min;
+                response.SuffixArrayMaxIdx = suffixArrayRange.Max;
+                response.NumResults = (int)(suffixArrayRange.Max - suffixArrayRange.Min + 1);
             }
             else
             {
-                vmRes.NumResults = 0;
+                response.NumResults = 0;
             }
 
             stopwatch.Stop();
             summary.ProcessingTimeMs = stopwatch.ElapsedMilliseconds;
-            vmRes.ProcessingTimeMs = stopwatch.ElapsedMilliseconds;
+            response.ProcessingTimeMs = stopwatch.ElapsedMilliseconds;
 
             // Log this search to the database. Defer until after the response is sent to the client
             Response.OnCompleted(async () =>
@@ -66,7 +66,7 @@ namespace StringSearch.Api.Controllers
                 await dbSearches.Insert(summary);
             });
 
-            return Ok(vmRes);
+            return Ok(response);
         }
     }
 }

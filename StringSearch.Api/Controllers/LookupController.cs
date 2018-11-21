@@ -52,17 +52,17 @@ namespace StringSearch.Api.Controllers
                     precomputedSearchResults.Results);
 
             // If there is a result
-            LookupResponse vmRes = new LookupResponse();
+            LookupResponse response = new LookupResponse();
             if (suffixArrayRange.HasResults)
             {
-                vmRes.SuffixArrayMinIdx = suffixArrayRange.Min;
-                vmRes.SuffixArrayMaxIdx = suffixArrayRange.Max;
-                vmRes.NumResults = (int)(suffixArrayRange.Max - suffixArrayRange.Min + 1);
-                vmRes.ResultId = summary.ResultId;
+                response.SuffixArrayMinIdx = suffixArrayRange.Min;
+                response.SuffixArrayMaxIdx = suffixArrayRange.Max;
+                response.NumResults = (int)(suffixArrayRange.Max - suffixArrayRange.Min + 1);
+                response.ResultId = summary.ResultId;
 
                 // Note: This is the only stage where Count & Lookup differ. Count doesn't do this bit.
                 long resultStringIndex = suffixArrayRange.SortedValues[summary.ResultId];
-                vmRes.ResultStringIndex = resultStringIndex;
+                response.ResultStringIndex = resultStringIndex;
 
                 // Get the digits surrounding this search result
                 StringBuilder beforeBuilder = new StringBuilder();
@@ -83,16 +83,16 @@ namespace StringSearch.Api.Controllers
                         afterBuilder.Append(digitsWrapper.Digits[i]);
                     }
                 }
-                vmRes.SurroundingDigits = new SurroundingDigits(beforeBuilder.ToString(), afterBuilder.ToString());
+                response.SurroundingDigits = new SurroundingDigits(beforeBuilder.ToString(), afterBuilder.ToString());
             }
             else
             {
-                vmRes.NumResults = 0;
+                response.NumResults = 0;
             }
 
             stopwatch.Stop();
             summary.ProcessingTimeMs = stopwatch.ElapsedMilliseconds;
-            vmRes.ProcessingTimeMs = stopwatch.ElapsedMilliseconds;
+            response.ProcessingTimeMs = stopwatch.ElapsedMilliseconds;
 
             // Log this search to the database. Defer until after the response is sent to the client
             Response.OnCompleted(async () =>
@@ -100,7 +100,7 @@ namespace StringSearch.Api.Controllers
                 await dbSearches.Insert(summary);
             });
 
-            return Ok(vmRes);
+            return Ok(response);
         }
     }
 }
