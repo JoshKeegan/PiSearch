@@ -32,7 +32,7 @@ namespace StringSearch.Api.Controllers
             this.dbSearches = dbSearches;
         }
 
-        public async Task<IActionResult> Index(LookupRequest request)
+        public IActionResult Index(LookupRequest request)
         {
             SearchSummary summary = new SearchSummary(request.Find, request.ResultId, request.MinSuffixArrayIdx,
                 request.MaxSuffixArrayIdx, false, request.NumSurroundingDigits,
@@ -57,7 +57,7 @@ namespace StringSearch.Api.Controllers
             {
                 vmRes.SuffixArrayMinIdx = suffixArrayRange.Min;
                 vmRes.SuffixArrayMaxIdx = suffixArrayRange.Max;
-                vmRes.NumResults = (int) (suffixArrayRange.Max - suffixArrayRange.Min + 1);
+                vmRes.NumResults = (int)(suffixArrayRange.Max - suffixArrayRange.Min + 1);
                 vmRes.ResultId = summary.ResultId;
 
                 // Note: This is the only stage where Count & Lookup differ. Count doesn't do this bit.

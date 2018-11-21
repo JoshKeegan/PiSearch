@@ -30,7 +30,7 @@ namespace StringSearch.Api.Controllers
             this.dbSearches = dbSearches;
         }
 
-        public async Task<IActionResult> Index(CountRequest request)
+        public IActionResult Index(CountRequest request)
         {
             SearchSummary summary = new SearchSummary(request.Find, null, null,
                 null, true, null, Request.HttpContext.Connection.RemoteIpAddress);
