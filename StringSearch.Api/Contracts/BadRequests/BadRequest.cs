@@ -10,9 +10,9 @@ namespace StringSearch.Api.Contracts.BadRequests
     public class BadRequest
     {
         [JsonConverter(typeof(DictionaryKeysCamelCaseConverter))]
-        public ValidationErrors ValidationErrors;
+        public IDictionary<string, IEnumerable<string>> ValidationErrors;
 
-        public BadRequest(ValidationErrors validationErrors)
+        public BadRequest(IDictionary<string, IEnumerable<string>> validationErrors)
         {
             ValidationErrors = validationErrors ?? throw new ArgumentNullException(nameof(validationErrors));
         }

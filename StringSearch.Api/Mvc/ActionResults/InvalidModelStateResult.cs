@@ -21,7 +21,7 @@ namespace StringSearch.Api.Mvc.ActionResults
             return new BadRequest(generateValidationErrors(modelState));
         }
 
-        private static ValidationErrors generateValidationErrors(ModelStateDictionary modelState)
+        private static IDictionary<string, IEnumerable<string>> generateValidationErrors(ModelStateDictionary modelState)
         {
             if (modelState == null)
             {
@@ -32,7 +32,7 @@ namespace StringSearch.Api.Mvc.ActionResults
                 throw new ArgumentException("Model State must be invalid", nameof(modelState));
             }
 
-            ValidationErrors validationErrors = new ValidationErrors();
+            Dictionary<string, IEnumerable<string>> validationErrors = new Dictionary<string, IEnumerable<string>>();
             foreach (KeyValuePair<string, ModelStateEntry> kvp in modelState)
             {
                 string fieldName = kvp.Key;
