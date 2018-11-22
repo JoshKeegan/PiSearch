@@ -29,7 +29,7 @@ namespace StringSearch.Api.Mvc.ModelBinding
                 }
             }
 
-            // If the Simple Type binder is found, add more before it
+            // If the Simple Type binder is found, add the string trim provider before it
             if (idxSimpleTypeBinder != -1)
             {
                 options.ModelBinderProviders.Insert(idxSimpleTypeBinder,
