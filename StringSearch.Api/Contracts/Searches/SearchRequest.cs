@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using StringSearch.Api.Attributes.Binding;
 
 namespace StringSearch.Api.Contracts.Searches
 {
@@ -7,11 +8,7 @@ namespace StringSearch.Api.Contracts.Searches
         [Required]
         [RegularExpression("[0-9]+", ErrorMessage = "Must only contain the characters 0-9")]
         [StringLength(1000)]
+        [Trim]
         public string Find { get; set; }
-
-        /*
-         * TODO:
-         * - Trim string "Find"
-         */
     }
 }
