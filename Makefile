@@ -18,7 +18,7 @@ build: clean
 unit-tests:
 # If not on windows, set a filter to exclude the windows-specific tests
 ifeq ($(UNAME), Linux)
-	testFilter = --filter TestCategory!=windows#
+	$(eval testFilter = --filter TestCategory!=windows)
 endif
 	
 	dotnet test \
