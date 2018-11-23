@@ -12,7 +12,7 @@ test:
   stage: test
   script:
     - make build
-    - make unit-tests-linux
+    - make unit-tests
   artifacts:
     paths:
     - artefacts/testResults/UnitTests.trx
