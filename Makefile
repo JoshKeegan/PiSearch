@@ -90,6 +90,6 @@ endif
 			--rm \
 			-v "$(rootPath)":/var/www/pi_digits:rw \
 			-e ASPNETCORE_ENVIRONMENT="Production" \
-			-e ASPNETCORE_URLS="http://*:5001" \
-			-p 5001:5001 \
+			-e ASPNETCORE_URLS="http://*:5002" \
+			-p 5002:5002 \
 			$(IMAGE_API):latest
