@@ -15,4 +15,4 @@ test:
     - make unit-tests-linux
   artifacts:
     paths:
-    - UnitTests/TestResults/UnitTests.trx
+    - artefacts/testResults/UnitTests.trx

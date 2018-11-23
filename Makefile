@@ -4,22 +4,29 @@ clean:
 	rm -r */out || true
 	rm -r */bin || true
 	rm -r */obj || true
-	rm -r UnitTests/TestResults || true
+	rm -r artefacts || true
+	
+	mkdir -p artefacts/testResults
+
+#
+# Build
+#
 
 build: clean
 	dotnet build -c Release
 
-unit-tests-windows:
-	dotnet test -c Release --no-build --logger:trx\;logfilename=UnitTests.trx UnitTests
-
-unit-tests-linux:
-	dotnet test -c Release --no-build --filter TestCategory!=windows --logger:trx\;logfilename=UnitTests.trx UnitTests
-
+unit-tests:
+# If not on windows, set a filter to exclude the windows-specific tests
 ifeq ($(UNAME), Linux)
-unit-tests: unit-tests-linux
-else
-unit-tests: unit-tests-windows
+	testFilter = --filter TestCategory!=windows#
 endif
+	
+	dotnet test \
+		-c Release \
+		--no-build \
+		$(testFilter) \
+		--logger:trx\;logfilename=../../artefacts/testResults/UnitTests.trx \
+		UnitTests
 
 publish-api: build
 	dotnet publish -c Release --no-build -o out StringSearch.Api
