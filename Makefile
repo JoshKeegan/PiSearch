@@ -17,7 +17,9 @@ clean:
 	rm -r */obj || true
 	rm -r artefacts || true
 	
-	mkdir -p artefacts/testResults
+	mkdir -p \
+		artefacts/testResults \
+		artefacts/local
 
 #
 # Build
@@ -84,12 +86,23 @@ ifeq ($(rootPath),)
 	$(error rootPath must be specified)
 endif
 
+# If on Linux, host.docker.internal must be replaced with an actual IP
+ifeq ($(UNAME), Linux)
+	$(eval hostIp = $(shell ip -4 addr show docker0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'))
+
+	cp StringSearch.Api/appsettings.DockerLocal.json artefacts/local/appsettings.DockerLocal.json
+	sed s/host.docker.internal/$(hostIp)/g -i artefacts/local/appsettings.DockerLocal.json
+	
+	$(eval dockerParams = $(dockerParams) -v "${PWD}/artefacts/local/appsettings.DockerLocal.json:/app/appsettings.DockerLocal.json")
+endif
+
 	export MSYS_NO_PATHCONV=1; \
 		docker run \
 			-it \
 			--rm \
 			-v "$(rootPath)":/var/www/pi_digits:rw \
-			-e ASPNETCORE_ENVIRONMENT="Production" \
+			-e ASPNETCORE_ENVIRONMENT="DockerLocal" \
 			-e ASPNETCORE_URLS="http://*:5002" \
 			-p 5002:5002 \
+			$(dockerParams) \
 			$(IMAGE_API):latest
