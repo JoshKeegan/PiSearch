@@ -80,6 +80,10 @@ publish-api-image: tag-api-image
 # Args
 #	- rootPath
 run-local-api-docker: publish-api build-api-image
+ifeq ($(rootPath),)
+	$(error rootPath must be specified)
+endif
+
 	export MSYS_NO_PATHCONV=1; \
 		docker run \
 			-it \
