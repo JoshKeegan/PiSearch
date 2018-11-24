@@ -6,7 +6,6 @@
 # Constants
 #
 
-UNAME := $(shell uname)#
 UNIQUEIFIER_PATH = artefacts/uniqueifier#
 IMAGE_API = pi-search-api#
 IMAGE_API_URL = joshkeegan/$(IMAGE_API)#
@@ -31,7 +30,7 @@ build: clean
 
 unit-tests:
 # If not on windows, set a filter to exclude the windows-specific tests
-ifeq ($(UNAME), Linux)
+ifeq ($(shell uname), Linux)
 	$(eval testFilter = --filter TestCategory!=windows)
 endif
 
