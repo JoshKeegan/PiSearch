@@ -10,6 +10,7 @@ UNAME := $(shell uname)#
 UNIQUEIFIER_PATH = artefacts/uniqueifier#
 IMAGE_API = pi-search-api#
 IMAGE_API_URL = joshkeegan/$(IMAGE_API)#
+LOCAL_API_DOCKER_PORT = 5002#
 
 clean:
 	rm -r */out || true
@@ -85,16 +86,9 @@ run-local-api-docker: publish-api build-api-image
 ifeq ($(rootPath),)
 	$(error rootPath must be specified)
 endif
-
-# If on Linux, host.docker.internal must be replaced with an actual IP
-ifeq ($(UNAME), Linux)
-	$(eval hostIp = $(shell ip -4 addr show docker0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'))
-
-	cp StringSearch.Api/appsettings.DockerLocal.json artefacts/local/appsettings.DockerLocal.json
-	sed s/host.docker.internal/$(hostIp)/g -i artefacts/local/appsettings.DockerLocal.json
 	
-	$(eval dockerParams = $(dockerParams) -v "${PWD}/artefacts/local/appsettings.DockerLocal.json:/app/appsettings.DockerLocal.json")
-endif
+	cd build; \
+		/bin/bash generateDockerLocalAppSettings.sh
 
 	export MSYS_NO_PATHCONV=1; \
 		docker run \
@@ -102,7 +96,7 @@ endif
 			--rm \
 			-v "$(rootPath)":/var/www/pi_digits:rw \
 			-e ASPNETCORE_ENVIRONMENT="DockerLocal" \
-			-e ASPNETCORE_URLS="http://*:5002" \
-			-p 5002:5002 \
-			$(dockerParams) \
+			-e ASPNETCORE_URLS="http://*:$(LOCAL_API_DOCKER_PORT)" \
+			-p $(LOCAL_API_DOCKER_PORT):$(LOCAL_API_DOCKER_PORT) \
+			-v "${PWD}/artefacts/local/appsettings.DockerLocal.json":/app/appsettings.DockerLocal.json \
 			$(IMAGE_API):latest
