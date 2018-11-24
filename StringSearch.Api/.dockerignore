@@ -1,0 +1,2 @@
+# Ignore environment specific appsettings, which could contain credentials
+**/appsettings.*.json
