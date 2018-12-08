@@ -44,6 +44,11 @@ endif
 publish-api: build
 	dotnet publish -c Release --no-build -o out StringSearch.Api
 
+publish-unit-tests: build
+	dotnet publish -c Release --no-build -o out UnitTests
+
+publish-all: publish-api publish-unit-tests
+
 #
 # Uniqueifier
 #

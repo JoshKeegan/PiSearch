@@ -11,9 +11,13 @@ stages:
 build:
   stage: build
   script:
-    - make build
+    - make publish-all
   artifacts:
-    untracked: true
+    paths:
+      - artefacts
+      - StringSearch.Api/out
+      - UnitTests/UnitTests.csproj
+      - UnitTests/out
     expire_in: 30 minutes
 
 unit-tests:
@@ -26,4 +30,4 @@ unit-tests:
     - make unit-tests
   artifacts:
     paths:
-    - artefacts/testResults/UnitTests.trx
+      - artefacts/testResults/UnitTests.trx
