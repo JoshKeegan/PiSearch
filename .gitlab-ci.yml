@@ -6,7 +6,7 @@ before_script:
 
 stages:
   - build
-  - unit-tests:
+  - unit-tests
 
 build:
   stage: build
