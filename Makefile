@@ -47,12 +47,17 @@ publish-all: publish-api publish-unit-tests
 
 # Args:
 #	- buildId (remote only) (gitlab env var CI_JOB_ID)
+#	- commitHash (remote only - optional)
 generate-uniqueifier:
 # If running locally
 ifeq ($(buildId),)
 	date +%Y-%m-%d-%H-%M-%S > $(UNIQUEIFIER_PATH)
 else
-	echo -n $(buildId)-$(shell git rev-parse --short HEAD) > $(UNIQUEIFIER_PATH)
+# If we haven't been supplied with a commit hash, get it from git
+ifeq ($(commitHash),)
+	$(eval commitHash = $(shell git rev-parse --short HEAD))
+endif
+	echo -n $(buildId)-$(commitHash) > $(UNIQUEIFIER_PATH)
 endif
 	
 #
@@ -61,6 +66,7 @@ endif
 
 # Args:
 #	- buildId (remote only)
+#	- commitHash (remote only - optional)
 build-api-image: generate-uniqueifier
 	docker build --pull -t $(IMAGE_API):$(shell cat $(UNIQUEIFIER_PATH)) StringSearch.Api
 
@@ -68,6 +74,7 @@ build-api-image: generate-uniqueifier
 #	- crUsername
 #	- crPassword
 #	- buildId (remote only)
+#	- commitHash (remote only - optional)
 publish-api-image: build-api-image docker-login
 	docker push $(IMAGE_API):$(shell cat $(UNIQUEIFIER_PATH))
 
