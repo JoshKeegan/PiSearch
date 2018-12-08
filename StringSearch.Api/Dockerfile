@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.1-aspnetcore-runtime
+FROM microsoft/dotnet:2.2-aspnetcore-runtime
 WORKDIR /app
 COPY out ./
 ENTRYPOINT ["dotnet", "StringSearch.Api.dll"]

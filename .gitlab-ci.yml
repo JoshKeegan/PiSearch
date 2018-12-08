@@ -40,5 +40,9 @@ generate-docker-images:
       - gitlabDocker
   image: docker:latest
   stage: generate-docker-images
+  dependencies:
+    - build
+  variables:
+    GIT_STRATEGY: none
   script:
     - make crUsername="$crUsername" crPassword="$crPassword" buildId="$CI_JOB_ID" publish-api-image
