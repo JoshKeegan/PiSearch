@@ -20,6 +20,8 @@ build:
     expire_in: 30 minutes
 
 unit-tests:
+  tags:
+    - big-mem
   image: joshkeegan/dotnet-build:2.2.100.0
   stage: unit-tests
   dependencies:
@@ -34,6 +36,8 @@ unit-tests:
       - artefacts/testResults/UnitTests.trx
 
 generate-docker-images:
+  tags:
+    - gitlab-org
   # Docker in Docker - see https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
   image: docker:stable
   variables:
