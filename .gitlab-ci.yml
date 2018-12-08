@@ -3,15 +3,19 @@ image: microsoft/dotnet:latest
 before_script:
   - apt-get update
   - apt-get install -y make
-  - dotnet restore
 
 stages:
+  - build
   - test
+
+build:
+  stage: build
+  script:
+    - make build
 
 test:
   stage: test
   script:
-    - make build
     - make unit-tests
   artifacts:
     paths:
