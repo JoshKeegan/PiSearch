@@ -8,7 +8,7 @@
 
 UNIQUEIFIER_PATH = artefacts/uniqueifier#
 CONTAINER_REGISTRY_HOSTNAME = registry.gitlab.com#
-CONTAINER_REGISTRY = $(CONTAINER_REGISTRY)/joshkeegan/pisearch
+CONTAINER_REGISTRY = $(CONTAINER_REGISTRY_HOSTNAME)/joshkeegan/pisearch
 IMAGE_API = $(CONTAINER_REGISTRY)/pi-search-api#
 LOCAL_API_DOCKER_PORT = 5002#
 
@@ -100,4 +100,4 @@ endif
 			-e ASPNETCORE_URLS="http://*:$(LOCAL_API_DOCKER_PORT)" \
 			-p $(LOCAL_API_DOCKER_PORT):$(LOCAL_API_DOCKER_PORT) \
 			-v "${PWD}/artefacts/local/appsettings.DockerLocal.json":/app/appsettings.DockerLocal.json \
-			$(IMAGE_API):latest
+			$(IMAGE_API):$(shell cat $(UNIQUEIFIER_PATH))
