@@ -4,6 +4,8 @@ stages:
   - generate-docker-images
 
 build:
+  tags:
+    - big-cpu
   image: joshkeegan/dotnet-build:2.2.100.0
   stage: build
   script:
@@ -37,7 +39,8 @@ unit-tests:
 
 generate-docker-images:
   tags:
-    - gitlab-org
+    - docker
+
   # Docker in Docker - see https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
   image: docker:stable
   variables:
