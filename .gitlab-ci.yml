@@ -11,6 +11,7 @@ build:
   artifacts:
     paths:
       - artefacts
+      - StringSearch.Api/Dockerfile
       - StringSearch.Api/out
       - UnitTests/Makefile
       - UnitTests/UnitTests.csproj
