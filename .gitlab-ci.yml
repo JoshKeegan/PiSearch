@@ -17,7 +17,7 @@ build:
     expire_in: 30 minutes
 
 unit-tests:
-  stage: test
+  stage: unit-tests
   dependencies:
     - build
   variables:
