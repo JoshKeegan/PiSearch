@@ -19,7 +19,7 @@ build:
 unit-tests:
   stage: test
   dependencies:
-    build
+    - build
   variables:
     GIT_STRATEGY: none
   script:
