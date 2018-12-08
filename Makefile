@@ -7,8 +7,9 @@
 #
 
 UNIQUEIFIER_PATH = artefacts/uniqueifier#
-IMAGE_API = pi-search-api#
-IMAGE_API_URL = joshkeegan/$(IMAGE_API)#
+CONTAINER_REGISTRY_HOSTNAME = registry.gitlab.com#
+CONTAINER_REGISTRY = $(CONTAINER_REGISTRY)/joshkeegan/pisearch
+IMAGE_API = $(CONTAINER_REGISTRY)/pi-search-api#
 LOCAL_API_DOCKER_PORT = 5002#
 
 clean:
@@ -58,18 +59,23 @@ endif
 # Docker Images
 #
 
-build-api-image:
-	docker build --pull -t $(IMAGE_API):latest StringSearch.Api
-
 # Args:
 #	- buildId (remote only)
-tag-api-image: build-api-image generate-uniqueifier
-	docker tag $(IMAGE_API):latest $(IMAGE_API_URL):$(shell cat $(UNIQUEIFIER_PATH))
+build-api-image: generate-uniqueifier
+	docker build --pull -t $(IMAGE_API):$(shell cat $(UNIQUEIFIER_PATH)) StringSearch.Api
 
 # Args:
+#	- crUsername
+#	- crPassword
 #	- buildId (remote only)
-publish-api-image: tag-api-image
-	docker push $(IMAGE_API_URL):$(shell cat $(UNIQUEIFIER_PATH))
+publish-api-image: build-api-image docker-login
+	docker push $(IMAGE_API):$(shell cat $(UNIQUEIFIER_PATH))
+
+# Args:
+#	- crUsername
+#	- crPassword
+docker-login:
+	@docker login $(CONTAINER_REGISTRY_HOSTNAME) -u $(crUsername) -p $(crPassword)
 
 #
 # Run locally

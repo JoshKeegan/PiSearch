@@ -1,6 +1,7 @@
 stages:
   - build
   - unit-tests
+  - generate-docker-images
 
 build:
   image: joshkeegan/dotnet-build:2.2.100.0
@@ -14,6 +15,7 @@ build:
       - UnitTests/Makefile
       - UnitTests/UnitTests.csproj
       - UnitTests/out
+      - Makefile
     expire_in: 30 minutes
 
 unit-tests:
@@ -29,3 +31,14 @@ unit-tests:
   artifacts:
     paths:
       - artefacts/testResults/UnitTests.trx
+
+generate-docker-images:
+  only:
+    refs:
+      - master
+      # TODO: Remove once finished developing this
+      - gitlabDocker
+  image: docker:latest
+  stage: generate-docker-images
+  script:
+    - make crUsername="$crUsername" crPassword="$crPassword" buildId="$CI_JOB_ID" publish-api-image
