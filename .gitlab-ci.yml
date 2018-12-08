@@ -16,6 +16,7 @@ build:
     paths:
       - artefacts
       - StringSearch.Api/out
+      - UnitTests/Makefile
       - UnitTests/UnitTests.csproj
       - UnitTests/out
     expire_in: 30 minutes
@@ -27,6 +28,7 @@ unit-tests:
   variables:
     GIT_STRATEGY: none
   script:
+    - cd UnitTests
     - make unit-tests
   artifacts:
     paths:
