@@ -12,9 +12,13 @@ build:
   stage: build
   script:
     - make build
+  artifacts:
+    untracked: true
 
 test:
   stage: test
+  variables:
+    GIT_STRATEGY: none
   script:
     - make unit-tests
   artifacts:
