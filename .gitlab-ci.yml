@@ -2,6 +2,7 @@ stages:
   - build
   - unit-tests
   - generate-docker-images
+  - deploy-prod
 
 build:
   tags:
@@ -55,4 +56,29 @@ generate-docker-images:
     GIT_STRATEGY: none
   script:
     - apk add --no-cache make
-    - make crUsername="$crUsername" crPassword="$crPassword" buildId="$CI_JOB_ID" commitHash="${CI_COMMIT_SHA:0:8}" publish-api-image
+    - make crUsername="$CR_USERNAME" crPassword="$CR_PASSWORD" buildId="$CI_JOB_ID" commitHash="${CI_COMMIT_SHA:0:8}" publish-api-image
+  artifacts:
+    paths:
+      - artefacts/uniqueifier
+
+#TODO: Use environments & don't go straight to prod (https://docs.gitlab.com/ee/ci/environments.html)
+
+deploy-prod:
+  image: kroniak/ssh-client:3.6
+  only:
+    refs:
+      - master
+      # TODO: Remove once finished developing this
+      - gitlabDocker
+  stage: deploy-prod
+  dependencies:
+    - generate-docker-images
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - echo "$SSH_PRIVATE_KEY_PROD" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD 'uptime'
