@@ -40,15 +40,9 @@ unit-tests:
 generate-docker-images:
   tags:
     - docker
-
-  # Docker in Docker - see https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
   image: docker:stable
-  variables:
-    - DOCKER_HOST: tcp://docker:2375/
-    - DOCKER_DRIVER: overlay2
   services:
     - docker:dind
-
   only:
     refs:
       - master

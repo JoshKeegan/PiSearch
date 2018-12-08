@@ -46,7 +46,7 @@ publish-all: publish-api publish-unit-tests
 #
 
 # Args:
-#	- buildId (remote only) (gitlab env var CI_JOB_ID)
+#	- buildId (remote only)
 #	- commitHash (remote only - optional)
 generate-uniqueifier:
 # If running locally
