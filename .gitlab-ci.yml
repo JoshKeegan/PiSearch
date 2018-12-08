@@ -1,14 +1,9 @@
-image: microsoft/dotnet:latest
-
-before_script:
-  - apt-get update
-  - apt-get install -y make
-
 stages:
   - build
   - unit-tests
 
 build:
+  image: joshkeegan/dotnet-build:2.2.100.0
   stage: build
   script:
     - make publish-all
@@ -22,6 +17,7 @@ build:
     expire_in: 30 minutes
 
 unit-tests:
+  image: joshkeegan/dotnet-build:2.2.100.0
   stage: unit-tests
   dependencies:
     - build
