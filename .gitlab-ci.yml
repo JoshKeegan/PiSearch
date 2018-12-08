@@ -6,7 +6,7 @@ before_script:
 
 stages:
   - build
-  - test
+  - unit-tests:
 
 build:
   stage: build
@@ -14,9 +14,12 @@ build:
     - make build
   artifacts:
     untracked: true
+    expire_in: 30 minutes
 
-test:
+unit-tests:
   stage: test
+  dependencies:
+    build
   variables:
     GIT_STRATEGY: none
   script:
