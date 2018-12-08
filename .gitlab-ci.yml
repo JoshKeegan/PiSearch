@@ -29,7 +29,7 @@ unit-tests:
     GIT_STRATEGY: none
   script:
     - cd UnitTests
-    - make unit-tests
+    - make run
   artifacts:
     paths:
       - artefacts/testResults/UnitTests.trx
