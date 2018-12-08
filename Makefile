@@ -28,7 +28,7 @@ clean:
 build: clean
 	dotnet build -c Release
 
-unit-tests: build
+unit-tests: publish-unit-tests
 	cd UnitTests; \
 		make run
 
