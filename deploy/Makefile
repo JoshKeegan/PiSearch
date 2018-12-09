@@ -61,7 +61,7 @@ run-deployment-tests:
 #	- hostname
 generate-apache-conf: clean
 	cp apache.conf.template apache.conf
-	sed s/{{PORT}}/$(shell cat $(UNIQUEIFIER_PATH))/g -i apache.conf
+	sed s/{{PORT}}/$(shell cat $(PORT_PATH))/g -i apache.conf
 	sed s/{{ENVIRONMENT}}/$(environment)/g -i apache.conf
 	sed s/{{HOSTNAME}}/$(hostname)/g -i apache.conf
 	
