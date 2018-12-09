@@ -18,6 +18,11 @@ fi
 # Find containers to delete (as newline delimited string)
 containerNames=`docker container ls --format {{.Names}} | grep PiSearch-$environment- | grep -v $currentUniqueifier`
 
+if [ -z "$containerNames" ]; then
+	echo "No existing containers for environment $environment"
+	exit 0
+fi
+
 # Delete them one by one
 while read -r containerName; do
 	echo "Deleting container $containerName"
