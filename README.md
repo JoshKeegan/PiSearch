@@ -7,8 +7,9 @@ Appveyor: [![Build status](https://ci.appveyor.com/api/projects/status/nh3pv5yqt
 GitLab: [![GitLab CI status](https://gitlab.com/JoshKeegan/PiSearch/badges/master/pipeline.svg)](https://gitlab.com/JoshKeegan/PiSearch/commits/master)
 
 ## Docs
-- [Hosting the API](StringSearch.Api/hosting.md)
-- [Unit Tests](unitTests.md)
+- [Hosting the API via Docker (recommended)](docs/api/hostingDocker.md)
+- [Hosting the API as a Service (old, non-Docker method)](docs/api/hostingService.md)
+- [Unit Tests](docs/unitTests.md)
   
 ## Aims
 ### Aims of the project that have been met:  
