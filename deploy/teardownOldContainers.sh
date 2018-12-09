@@ -22,6 +22,6 @@ containerNames=`docker container ls --format {{.Names}} | grep PiSearch-$environ
 while read -r containerName; do
 	echo "Deleting container $containerName"
 	docker container rm -f $containerName
-done <<< "$containerName"
+done <<< "$containerNames"
 
 echo "All old containers for environment $environment deleted"
