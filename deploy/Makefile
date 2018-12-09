@@ -8,7 +8,10 @@ INTERNAL_CONTAINER_PORT = 80#
 
 include ../../sharedScripts/make/dockerImages.mk
 
-find-available-port:
+clean:
+	rm -r $(PORT_PATH) || true
+
+find-available-port: clean
 	/bin/bash findAvailablePort.sh > $(PORT_PATH)
 
 # 
@@ -53,8 +56,21 @@ run-deployment-tests:
 # Reverse Proxy
 #
 
-reverse-proxy-target-new-container:
-# TODO
+# Args:
+#	- environment
+#	- hostname
+generate-apache-conf: clean
+	cp apache.conf.template apache.conf
+	sed s/{{PORT}}/$(shell cat $(UNIQUEIFIER_PATH))/g -i apache.conf
+	sed s/{{ENVIRONMENT}}/$(environment)/g -i apache.conf
+	sed s/{{HOSTNAME}}/$(hostname)/g -i apache.conf
+	
+# Args:
+#	- environment
+#	- hostname
+reverse-proxy-target-new-container: generate-apache-conf
+	cp apache.conf /etc/apache2/sites-available/$(hostname).conf
+	sudo /etc/init.d/apache2 reload
 
 # Main deployment
 
@@ -62,5 +78,6 @@ reverse-proxy-target-new-container:
 #	- rootPath
 #	- environment
 #	- appsettingsDir
+#	- hostname
 deploy: run-container wait-for-container-ready run-deployment-tests reverse-proxy-target-new-container teardown-old-containers
 	$(info Deployment Complete. Now running version $(shell cat $(UNIQUEIFIER_PATH)) in environment $(environment))

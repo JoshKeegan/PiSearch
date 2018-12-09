@@ -1,0 +1,12 @@
+<VirtualHost *:*>
+    RequestHeader set "X-Forwarded-Proto" expr=%{REQUEST_SCHEME}
+</VirtualHost>
+
+<VirtualHost *:80>
+    ProxyPreserveHost On
+    ProxyPass / http://127.0.0.1:{{PORT}}/
+    ProxyPassReverse / http://127.0.0.1:{{PORT}}/
+    ServerName {{HOSTNAME}}
+    ErrorLog ${APACHE_LOG_DIR}/pisearch-{{ENVIRONMENT}}-error.log
+    CustomLog ${APACHE_LOG_DIR}/pisearch-{{ENVIRONMENT}}-access.log common
+</VirtualHost>
