@@ -47,8 +47,6 @@ generate-docker-images:
     - docker:dind
   only:
     - master
-    # TODO: Remove once finished developing this
-    - gitlabDocker
   stage: generate-docker-images
   dependencies:
     - build
@@ -68,6 +66,8 @@ generate-docker-images:
 
 deploy-prod:
   image: joshkeegan/deploy-ssh:latest
+  only:
+    - master
   stage: deploy-prod
   dependencies:
     - generate-docker-images
