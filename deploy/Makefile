@@ -37,8 +37,10 @@ wait-for-container-ready:
 #	Check every n seconds for port to respond, also checking the container is running
 	sleep 10
 
+# Args:
+#	- environment
 teardown-old-containers:
-	/bin/bash teardownOldContainers.sh
+	/bin/bash teardownOldContainers.sh $(environment) $(shell cat $(UNIQUEIFIER_PATH))
 
 #
 # Deployment Tests
