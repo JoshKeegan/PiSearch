@@ -22,6 +22,7 @@ find-available-port:
 run-container: find-available-port
 	export MSYS_NO_PATHCONV=1; \
 		docker run \
+			--detach \
 			--name "PiSearch-$(environment)-$(shell cat $(UNIQUEIFIER_PATH))" \
 			--restart always \
 			-v "$(rootPath)":/var/www/pi_digits:ro \
@@ -30,6 +31,11 @@ run-container: find-available-port
 			-p $(shell cat $(PORT_PATH)):$(INTERNAL_CONTAINER_PORT) \
 			-v "$(appsettingsDir)/appsettings.$(environment).json":/app/appsettings.$(environment).json \
 			$(IMAGE_API):$(shell cat $(UNIQUEIFIER_PATH))
+
+wait-for-container-ready:
+# TODO: Improve to actually wait for the web server to start.
+#	Check every n seconds for port to respond, also checking the container is running
+	sleep 10
 
 teardown-old-containers:
 # TODO
@@ -54,5 +60,5 @@ reverse-proxy-target-new-container:
 #	- rootPath
 #	- environment
 #	- appsettingsDir
-deploy: run-container run-deployment-tests reverse-proxy-target-new-container teardown-old-containers
+deploy: run-container wait-for-container-ready run-deployment-tests reverse-proxy-target-new-container teardown-old-containers
 	$(info Deployment Complete. Now running version $(shell cat $(UNIQUEIFIER_PATH)) in environment $(environment))
