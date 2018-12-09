@@ -49,8 +49,8 @@ teardown-old-containers:
 # Deployment Tests
 #
 
-run-deployment-tests:
-# TODO
+run-deployment-tests-against-container:
+	/bin/bash runDeploymentTests.sh localhost $(shell cat $(PORT_PATH))
 
 #
 # Reverse Proxy
@@ -79,5 +79,5 @@ reverse-proxy-target-new-container: generate-apache-conf
 #	- environment
 #	- appsettingsDir
 #	- hostname
-deploy: run-container wait-for-container-ready run-deployment-tests reverse-proxy-target-new-container teardown-old-containers
+deploy: run-container wait-for-container-ready run-deployment-tests-against-container reverse-proxy-target-new-container teardown-old-containers
 	$(info Deployment Complete. Now running version $(shell cat $(UNIQUEIFIER_PATH)) in environment $(environment))

@@ -6,6 +6,9 @@
 # Usage:
 #	./teardownOldContainers.sh $environment $currentUniqueifier
 
+# Exit on error
+set -e
+
 readonly environment="$1"
 readonly currentUniqueifier="$2"
 
