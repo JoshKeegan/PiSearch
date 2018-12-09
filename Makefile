@@ -1,5 +1,5 @@
 #
-# PiSearch Makefile
+# Solution Makefile
 #
 
 #
@@ -7,10 +7,9 @@
 #
 
 UNIQUEIFIER_PATH = artefacts/uniqueifier#
-CONTAINER_REGISTRY_HOSTNAME = registry.gitlab.com#
-CONTAINER_REGISTRY = $(CONTAINER_REGISTRY_HOSTNAME)/joshkeegan/pisearch
-IMAGE_API = $(CONTAINER_REGISTRY)/pi-search-api#
 LOCAL_API_DOCKER_PORT = 5002#
+
+include sharedScripts/make/dockerImages.mk
 
 clean:
 	rm -r */out || true
@@ -21,6 +20,8 @@ clean:
 	mkdir -p \
 		artefacts/testResults \
 		artefacts/local
+
+	cp -r deploy artefacts/
 
 #
 # Build
@@ -102,9 +103,9 @@ endif
 		docker run \
 			-it \
 			--rm \
-			-v "$(rootPath)":/var/www/pi_digits:rw \
+			-v "$(rootPath)":/var/www/pi_digits:ro \
 			-e ASPNETCORE_ENVIRONMENT="DockerLocal" \
 			-e ASPNETCORE_URLS="http://*:$(LOCAL_API_DOCKER_PORT)" \
 			-p $(LOCAL_API_DOCKER_PORT):$(LOCAL_API_DOCKER_PORT) \
-			-v "${PWD}/artefacts/local/appsettings.DockerLocal.json":/app/appsettings.DockerLocal.json \
+			-v "${PWD}/artefacts/local/appsettings.DockerLocal.json":/app/appsettings.DockerLocal.json:ro \
 			$(IMAGE_API):$(shell cat $(UNIQUEIFIER_PATH))

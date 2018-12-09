@@ -1,5 +1,5 @@
 #
-# PiSearch Unit Tests Makefile
+# Unit Tests Makefile
 #
 
 run:
