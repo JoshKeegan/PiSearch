@@ -85,6 +85,6 @@ deploy-prod:
     - echo "$SSH_PRIVATE_KEY_PROD" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - uniqueifier=`cat artefacts/uniqueifier`
-    - ssh $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD 'mkdir -p ~/PiSearch/cd/prod/$uniqueifier'
+    - ssh $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD "mkdir -p ~/PiSearch/cd/prod/$uniqueifier"
     - scp -r . $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD:~/PiSearch/cd/prod/$uniqueifier
-    - ssh $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD 'cd ~/PiSearch/cd/prod/$uniqueifier/artefacts/deploy; make rootPath="/var/www/pi_digits" environment="Production" appsettingsDir="/var/www/v2.api.pisearch.joshkeegan.co.uk" deploy'
+    - ssh $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD "cd ~/PiSearch/cd/prod/$uniqueifier/artefacts/deploy; make rootPath=\"/var/www/pi_digits\" environment=\"Production\" appsettingsDir=\"/var/www/v2.api.pisearch.joshkeegan.co.uk\" deploy"
