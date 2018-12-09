@@ -68,8 +68,6 @@ generate-docker-images:
 
 deploy-prod:
   image: joshkeegan/deploy-ssh:latest
-  only:
-    - master
   stage: deploy-prod
   dependencies:
     - generate-docker-images
