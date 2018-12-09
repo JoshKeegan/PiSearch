@@ -46,17 +46,17 @@ generate-docker-images:
   services:
     - docker:dind
   only:
-    refs:
-      - master
-      # TODO: Remove once finished developing this
-      - gitlabDocker
+    - master
+    # TODO: Remove once finished developing this
+    - gitlabDocker
   stage: generate-docker-images
   dependencies:
     - build
   variables:
     GIT_STRATEGY: none
-  script:
+  before_script:
     - apk add --no-cache make
+  script:
     - make crUsername="$CR_USERNAME" crPassword="$CR_PASSWORD" buildId="$CI_JOB_ID" commitHash="${CI_COMMIT_SHA:0:8}" publish-api-image
   artifacts:
     paths:
@@ -67,24 +67,16 @@ generate-docker-images:
 #TODO: Use environments & don't go straight to prod (https://docs.gitlab.com/ee/ci/environments.html)
 
 deploy-prod:
-  image: kroniak/ssh-client:3.6
+  image: joshkeegan/deploy-ssh:latest
   only:
-    refs:
-      - master
-      # TODO: Remove once finished developing this
-      - gitlabDocker
+    - master
   stage: deploy-prod
   dependencies:
     - generate-docker-images
   variables:
     GIT_STRATEGY: none
   script:
-    - apk add --no-cache curl
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - echo "$SSH_PRIVATE_KEY_PROD" > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
     - uniqueifier=`cat artefacts/uniqueifier`
     - hostname="v2.api.pisearch.joshkeegan.co.uk"
     - ssh $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD "mkdir -p ~/cd/prod/$uniqueifier"
