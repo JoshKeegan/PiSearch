@@ -14,6 +14,7 @@ build:
   artifacts:
     paths:
       - artefacts
+      - sharedScripts
       - StringSearch.Api/Dockerfile
       - StringSearch.Api/out
       - UnitTests/Makefile
@@ -60,8 +61,8 @@ generate-docker-images:
   artifacts:
     paths:
       - artefacts/deploy
-      - artefacts/sharedScripts
       - artefacts/uniqueifier
+      - sharedScripts
 
 #TODO: Use environments & don't go straight to prod (https://docs.gitlab.com/ee/ci/environments.html)
 
@@ -83,5 +84,5 @@ deploy-prod:
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - echo "$SSH_PRIVATE_KEY_PROD" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
-    - scp -r artefacts/ $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD:~/PiSearch/cd/prod/`cat artefacts/uniqueifier`
-    - ssh $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD 'cd ~/PiSearch/cd/prod/`cat artefacts/uniqueifier`/deploy; make rootPath="/var/www/pi_digits" environment="Production" appsettingsDir="/var/www/v2.api.pisearch.joshkeegan.co.uk" deploy'
+    - scp -r . $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD:~/PiSearch/cd/prod/`cat artefacts/uniqueifier`
+    - ssh $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD 'cd ~/PiSearch/cd/prod/`cat artefacts/uniqueifier`/artefacts/deploy; make rootPath="/var/www/pi_digits" environment="Production" appsettingsDir="/var/www/v2.api.pisearch.joshkeegan.co.uk" deploy'

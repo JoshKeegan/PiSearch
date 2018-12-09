@@ -6,7 +6,7 @@ UNIQUEIFIER_PATH = ../uniqueifier#
 PORT_PATH = ../port#
 INTERNAL_CONTAINER_PORT = 80#
 
-include ../sharedScripts/make/dockerImages.mk
+include ../../sharedScripts/make/dockerImages.mk
 
 find-available-port:
 	/bin/bash findAvailablePort.sh > $(PORT_PATH)
