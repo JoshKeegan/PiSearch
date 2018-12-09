@@ -38,7 +38,7 @@ wait-for-container-ready:
 	sleep 10
 
 teardown-old-containers:
-# TODO
+	/bin/bash teardownOldContainers.sh
 
 #
 # Deployment Tests
