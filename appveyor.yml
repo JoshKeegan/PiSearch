@@ -1,7 +1,7 @@
 version: 1.0.{build}
 image: Visual Studio 2017
 
-init:
+install:
 - ps: build/ci/appveyor/installDotnet2.2.ps1
 
 build_script:
