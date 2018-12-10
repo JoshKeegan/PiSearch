@@ -2,13 +2,13 @@ version: 1.0.{build}
 image: Visual Studio 2017
 
 init:
-  - ps: build/ci/appveyor/installDotnet2.2.ps1
+- ps: build/ci/appveyor/installDotnet2.2.ps1
 
 build_script:
 - ps: dotnet build
 
 test_script:
-  - ps: |
+- ps: |
     cd UnitTests
     dotnet test --logger:trx`;logfilename=UnitTests.trx
 
@@ -16,4 +16,4 @@ test_script:
     $wc.UploadFile("https://ci.appveyor.com/api/testresults/mstest/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\TestResults\UnitTests.trx))
 
 artifacts:
-  - path: UnitTests/TestResults/UnitTests.trx
+- path: UnitTests/TestResults/UnitTests.trx
