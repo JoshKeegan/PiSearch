@@ -67,13 +67,14 @@ generate-docker-images:
       - artefacts/uniqueifier
       - sharedScripts
 
-#TODO: Use environments & don't go straight to prod (https://docs.gitlab.com/ee/ci/environments.html)
-
 deploy-prod:
   image: joshkeegan/deploy-ssh:latest
   only:
     - master
   stage: deploy-prod
+  environment:
+    name: prod
+    url: http://v2.api.pisearch.joshkeegan.co.uk
   dependencies:
     - generate-docker-images
   variables:
@@ -81,7 +82,7 @@ deploy-prod:
   script:
     - echo "$SSH_PRIVATE_KEY_PROD" > ~/.ssh/id_rsa
     - uniqueifier=`cat artefacts/uniqueifier`
-    - hostname="v2.api.pisearch.joshkeegan.co.uk"
+    - hostname=`echo $CI_ENVIRONMENT_URL | awk -F [/:] '{print $4}'`
     - ssh $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD "mkdir -p ~/cd/prod/$uniqueifier"
     - scp -r . $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD:~/cd/prod/$uniqueifier
     - |
