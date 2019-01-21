@@ -72,7 +72,7 @@ run-deployment-tests-against-container:
 			-d \
 			-v ${PWD}/runDeploymentTests.sh:/app/runDeploymentTests.sh:ro \
 			--network=reverseProxy \
-			--entrypoint /bin.bash \
+			--entrypoint /bin/bash \
 			joshkeegan/deploy-ssh \
 			/app/runDeploymentTests.sh $(containerName) $(shell cat $(PORT_PATH))
 
