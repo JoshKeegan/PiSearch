@@ -21,7 +21,7 @@ find-available-port: clean
 #	- result variable
 #	- environment
 define get-container-name
-	$(1) = PiSearch-$(2)-$(shell cat $(UNIQUEIFIER_PATH))
+	$(1) = pisearch-$(2)-$(shell cat $(UNIQUEIFIER_PATH))
 endef
 
 # 

@@ -19,7 +19,7 @@ if [ -z "$environment" ] || [ -z "$currentUniqueifier" ]; then
 fi
 
 # Find containers to delete (as newline delimited string)
-containerNames=`docker container ls --format {{.Names}} | grep PiSearch-$environment- | grep -v $currentUniqueifier`
+containerNames=`docker container ls --format {{.Names}} | grep pisearch-$environment- | grep -v $currentUniqueifier`
 
 if [ -z "$containerNames" ]; then
 	echo "No existing containers for environment $environment"
