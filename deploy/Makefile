@@ -13,8 +13,8 @@ clean:
 	rm -r nginx.conf || true
 
 find-available-port: clean
-# No need to use 
-	80 > $(PORT_PATH)
+# No need to use a random port any more as it isn't bound on the host machine.
+	echo 80 > $(PORT_PATH)
 #	/bin/bash findAvailablePort.sh > $(PORT_PATH)
 
 # Args:
