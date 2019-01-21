@@ -5,8 +5,8 @@ server
 	listen 443 ssl http2;
 	server_name {{HOSTNAME}};
 	
-	ssl_certificate /etc/letsencrypt/live/v2.api.pisearch.co.uk/fullchain.pem;
-	ssl_certificate_key /etc/letsencrypt/live/v2.api.pisearch.co.uk/privkey.pem;
+	ssl_certificate /etc/letsencrypt/live/v2.api.pisearch.joshkeegan.co.uk/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/v2.api.pisearch.joshkeegan.co.uk/privkey.pem;
 
 	include /etc/letsencrypt/conf/options-ssl-nginx.conf;
 	ssl_dhparam /etc/letsencrypt/conf/ssl-dhparams.pem;
