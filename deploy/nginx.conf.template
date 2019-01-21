@@ -1,0 +1,24 @@
+# Port 80 is handled in the main config & forwards traffic to https, this conf then gets included
+
+server
+{
+	listen 443 ssl http2;
+	server_name {{HOSTNAME}};
+	
+	ssl_certificate /etc/letsencrypt/live/v2.api.pisearch.co.uk/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/v2.api.pisearch.co.uk/privkey.pem;
+
+	include /etc/letsencrypt/conf/options-ssl-nginx.conf;
+	ssl_dhparam /etc/letsencrypt/conf/ssl-dhparams.pem;
+
+	location /
+	{
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header Host $host;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+		# Define upstream in a variable so that nginx will start even if the domain cannot be resolved
+		set $upstream http://{{CONTAINER_HOSTNAME}}:{{PORT}};
+		proxy_pass $upstream;
+	}
+}

@@ -10,9 +10,19 @@ include ../../sharedScripts/make/dockerImages.mk
 
 clean:
 	rm -r $(PORT_PATH) || true
+	rm -r nginx.conf || true
 
 find-available-port: clean
-	/bin/bash findAvailablePort.sh > $(PORT_PATH)
+# No need to use 
+	80 > $(PORT_PATH)
+#	/bin/bash findAvailablePort.sh > $(PORT_PATH)
+
+# Args:
+#	- result variable
+#	- environment
+define get-container-name
+	$(1) = PiSearch-$(2)-$(shell cat $(UNIQUEIFIER_PATH))
+endef
 
 # 
 # Docker
@@ -23,16 +33,18 @@ find-available-port: clean
 #	- environment
 #	- appsettingsDir
 run-container: find-available-port
+	$(eval $(call get-container-name,containerName,$(environment)))
+
 	export MSYS_NO_PATHCONV=1; \
 		docker run \
 			--detach \
-			--name "PiSearch-$(environment)-$(shell cat $(UNIQUEIFIER_PATH))" \
+			--name "$(containerName)" \
 			--restart always \
 			-v "$(rootPath)":/var/www/pi_digits:ro \
 			-e ASPNETCORE_ENVIRONMENT="$(environment)" \
 			-e ASPNETCORE_URLS="http://*:$(INTERNAL_CONTAINER_PORT)" \
-			-p $(shell cat $(PORT_PATH)):$(INTERNAL_CONTAINER_PORT) \
 			-v "$(appsettingsDir)/appsettings.$(environment).json":/app/appsettings.$(environment).json \
+			--network=reverseProxy \
 			$(IMAGE_API):$(shell cat $(UNIQUEIFIER_PATH))
 
 wait-for-container-ready:
@@ -49,8 +61,20 @@ teardown-old-containers:
 # Deployment Tests
 #
 
+# Args:
+#	- environment
 run-deployment-tests-against-container:
-	/bin/bash runDeploymentTests.sh localhost $(shell cat $(PORT_PATH))
+	$(eval $(call get-container-name,containerName,$(environment)))
+
+# Run within docker so that we can connect to the same docker network
+	export MSYS_NO_PATHCONV=1; \
+		docker run \
+			-d \
+			-v ${PWD}/runDeploymentTests.sh:/app/runDeploymentTests.sh:ro \
+			--network=reverseProxy \
+			--entrypoint /bin.bash \
+			joshkeegan/deploy-ssh \
+			/app/runDeploymentTests.sh $(containerName) $(shell cat $(PORT_PATH))
 
 #
 # Reverse Proxy
@@ -59,18 +83,22 @@ run-deployment-tests-against-container:
 # Args:
 #	- environment
 #	- hostname
-generate-apache-conf: clean
-	cp apache.conf.template apache.conf
-	sed s/{{PORT}}/$(shell cat $(PORT_PATH))/g -i apache.conf
-	sed s/{{ENVIRONMENT}}/$(environment)/g -i apache.conf
-	sed s/{{HOSTNAME}}/$(hostname)/g -i apache.conf
+generate-nginx-conf:
+	$(eval $(call get-container-name,containerName,$(environment)))
+
+	cp nginx.conf.template nginx.conf
+	sed s/{{PORT}}/$(shell cat $(PORT_PATH))/g -i nginx.conf
+	sed s/{{ENVIRONMENT}}/$(environment)/g -i nginx.conf
+	sed s/{{HOSTNAME}}/$(hostname)/g -i nginx.conf
+	sed s/{{CONTAINER_HOSTNAME}}/$(containerName)/g -i nginx.conf
 	
 # Args:
 #	- environment
 #	- hostname
-reverse-proxy-target-new-container: generate-apache-conf
-	cp apache.conf /etc/apache2/sites-available/$(hostname).conf
-	sudo /etc/init.d/apache2 reload
+reverse-proxy-target-new-container: generate-nginx-conf
+	cp nginx.conf /home/josh/data/webServer/conf/$(hostname).conf
+	cd /home/josh/ServerAutomation/webServer && \
+		/bin/bash reload.sh
 
 # Main deployment
 

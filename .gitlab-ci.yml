@@ -89,9 +89,9 @@ deploy-prod:
       ssh $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD \
         "cd ~/cd/prod/$uniqueifier/artefacts/deploy && \
         make \
-          rootPath=\"/var/www/pi_digits\" \
+          rootPath=\"/home/josh/data/download/downloads/pi_digits\" \
           environment=\"prod\" \
-          appsettingsDir=\"/home/pisearch/config\" \
+          appsettingsDir=\"/home/josh/pisearch/config\" \
           hostname=\"$hostname\" \
           deploy"
     - /bin/bash artefacts/deploy/runDeploymentTests.sh $hostname 80
