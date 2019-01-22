@@ -199,7 +199,7 @@ namespace UnitTests.StringSearch.Collections
         [Test]
         public void TestConstructorBig()
         {
-            //number 7 requires minimum 3 bits, so thats (5bil * 3) / 8 bytes ~= 1.75GiB of RAM used
+            //number 7 requires minimum 3 bits, so that's (5bil * 3) / 8 bytes ~= 1.75GiB of RAM used
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(5000000000, 7);
         }
 
