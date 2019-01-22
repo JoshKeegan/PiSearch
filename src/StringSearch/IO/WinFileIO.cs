@@ -6,7 +6,6 @@
  * By Robert G. Bryan in Feb, 2011.
  * Modified by "Steve" for use in TVRename
  * First included in PiSearch (& modified) 02/01/2015 by Josh Keegan
- * Last Edit 08/06/2016
  * 
  * This file is under a "free for any use" license, not the same license as is used elsewhere in the PiSearch project.
  */

@@ -1,9 +1,8 @@
 ﻿/*
  * PiSearch
  * FixedLengthQueue - a generic Queue that has a fixed number of elements
- *  Can use the additional contraint of a fixed length to improve performance over that of a regular Queue
+ *  Can use the additional constraint of a fixed length to improve performance over that of a regular Queue
  * By Josh Keegan 01/12/2014
- * Last Edit 08/06/2016
  */
 
 using System;

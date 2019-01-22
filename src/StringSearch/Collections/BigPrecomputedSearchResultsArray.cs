@@ -2,7 +2,6 @@
  * PiSearch
  * BigPrecomputedSearchResultsArray
  * By Josh Keegan 28/01/2015
- * Last Edit 08/06/2016
  */
 
 using System;

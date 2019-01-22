@@ -2,7 +2,6 @@
  * PiSearch
  * Compression class
  * By Josh Keegan 06/11/2014
- * Last Edit 09/06/2016
  */
 
 using System;

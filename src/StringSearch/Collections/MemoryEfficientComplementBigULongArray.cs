@@ -2,10 +2,9 @@
  * PiSearch
  * MemoryEfficientComplementBigULongArray - an implementation of BigArray for the ulong data type
  *  Uses MemoryEfficientBigULongArray and BigBoolArray to allow for the memory-efficient storage
- *  of ulong values (up to a specifiec max) and their bitwise complements
+ *  of ulong values (up to a specified max) and their bitwise complements
  * Designed for use in suffix array generation with SAIS, which stores the bitwise complements of values
  * By Josh Keegan 12/01/2015
- * Last Edit 08/06/2016
  */
 
 using System;

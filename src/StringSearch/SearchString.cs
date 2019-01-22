@@ -3,7 +3,6 @@
  * SearchString - static class containing methods to search through a given string (or other data type)
  *  for some string (or other data type) to be found.
  * By Josh Keegan 07/11/2014
- * Last Edit 07/10/2018
  */
 
 using System;

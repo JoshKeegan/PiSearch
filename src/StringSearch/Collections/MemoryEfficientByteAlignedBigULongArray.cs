@@ -7,7 +7,6 @@
  *  Big - Capable of storing more than int.MaxValue values
  *  ULong Array - simples
  * By Josh Keegan 22/12/2014
- * Last Edit 08/06/2016
  */
 
 using System;

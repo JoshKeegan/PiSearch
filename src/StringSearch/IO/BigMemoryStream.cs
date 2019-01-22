@@ -4,7 +4,6 @@
  *  Is not limited to int.MaxValue bytes like MemoryStream.
  *  For simplicity it does not differentiate between length & capacity; treating them as the same thing
  * By Josh Keegan 02/12/2014
- * Last Edit 13/10/2018
  */
 
 using System;

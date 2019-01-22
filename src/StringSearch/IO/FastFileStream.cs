@@ -2,7 +2,6 @@
  * PiSearch
  * FastFileStream - a fast implementation of Stream, with the underlying data being stored on a file (like FileStream)
  * By Josh Keegan 02/01/2015
- * Last Edit 09/06/2016
  */
 
 using System;

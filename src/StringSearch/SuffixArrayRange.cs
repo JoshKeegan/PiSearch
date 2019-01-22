@@ -2,7 +2,6 @@
  * PiSearch
  * SuffixArrayRange - Represents a range of values in a suffix array
  * By Josh Keegan 23/01/2015
- * Last Edit 07/10/2018
  */
 
 using StringSearch.Collections;

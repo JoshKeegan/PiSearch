@@ -1,8 +1,7 @@
 ﻿/*
  * PiSearch
- * Precompted Search Result - the precomputed result for a search of a specific string in a specific set of digits
+ * Precomputed Search Result - the precomputed result for a search of a specific string in a specific set of digits
  * By Josh Keegan 28/01/2015
- * Last Edit 09/06/2016
  */
 
 using System;

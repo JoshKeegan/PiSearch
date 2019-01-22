@@ -1,7 +1,6 @@
 ﻿/*
  * Program entry point for the String Search Console application, the development interface for the PiSearch project
  * By Josh Keegan 07/11/2014
- * Last Edit 09/06/2016
  */
 
 using System;

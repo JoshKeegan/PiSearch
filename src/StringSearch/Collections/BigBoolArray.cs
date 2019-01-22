@@ -2,7 +2,6 @@
  * PiSearch
  * BigBoolArray - an implementation of BigArray for the bool data type
  * By Josh Keegan 12/02/2015
- * Last Edit 08/06/2016
  */
 
 using System;
