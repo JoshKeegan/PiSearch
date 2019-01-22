@@ -2,7 +2,7 @@
  * PiSearch
  * SearchString Unit Tests
  * By Josh Keegan 20/11/2014
- * Last Edit 08/06/2016
+ * Last Edit 22/01/2019
  */
 
 using System;
@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 using NUnit.Framework;
 using StringSearch;
-using StringSearch.BaseObjectExtensions;
 using StringSearch.Collections;
 using StringSearchConsole;
 using SuffixArray;
@@ -146,7 +145,7 @@ namespace UnitTests.StringSearch
                 {
                     string find = STR.Substring(i, j - i);
 
-                    long[] seqSearchRes = SearchString.Search(STR, find).ToLongArr();
+                    int[] seqSearchRes = SearchString.Search(STR, find);
                     SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, find);
                     long[] suffixArraySearchRes = suffixArrayRange.SortedValues;
 
