@@ -332,7 +332,7 @@ namespace UnitTests.StringSearch.IO
         }
 
         [Test]
-        public void TestReadEOS()
+        public void TestReadEos()
         {
             BigMemoryStream stream = new BigMemoryStream(5);
 
@@ -390,7 +390,7 @@ namespace UnitTests.StringSearch.IO
         }
 
         [Test]
-        public void TestReadByteEOS()
+        public void TestReadByteEos()
         {
             BigMemoryStream stream = new BigMemoryStream(100);
 
@@ -401,7 +401,7 @@ namespace UnitTests.StringSearch.IO
         }
 
         [Test]
-        public void TestReadByteEOSBig()
+        public void TestReadByteEosBig()
         {
             long length = 3L * 1024L * 1024L * 1024L; //3GiB
             BigMemoryStream stream = new BigMemoryStream(length);

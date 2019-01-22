@@ -12,7 +12,7 @@ namespace UnitTests.StringSearch.IO
 {
     [TestFixture]
     [Category("windows")]
-    public class WinFileIOTests
+    public class WinFileIoTests
     {
         private static readonly byte[] FILE_CONTENT = { 1, 2, 3, 4, 5, 7, 2, 5, 3, 6, 98, 2, 3, 6, 8, 3, 6, 56, 78, 22, 23, 123, 45, 201, 255, 0, 0, 1, 7, 255, 0, 12, 13 };
         private static HashSet<string> fileNames = new HashSet<string>();
@@ -150,17 +150,17 @@ namespace UnitTests.StringSearch.IO
         [Test]
         public void TestInitialPositionWrite()
         {
-            const string FILE_NAME = "WinFileIOTests.TestInitialPositionWrite";
+            const string fileName = "WinFileIOTests.TestInitialPositionWrite";
 
             byte[] buffer = new byte[1];
             WinFileIO wfio = new WinFileIO(buffer);
-            wfio.OpenForWriting(FILE_NAME);
+            wfio.OpenForWriting(fileName);
 
             Assert.AreEqual(0, wfio.Position);
 
             wfio.Close();
 
-            fileNames.Add(FILE_NAME);
+            fileNames.Add(fileName);
         }
 
         [Test]

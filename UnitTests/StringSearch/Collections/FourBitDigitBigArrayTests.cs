@@ -19,9 +19,9 @@ namespace UnitTests.StringSearch.Collections
         [Test]
         public void TestConstructor()
         {
-            const string STR = "1234";
+            const string str = "1234";
 
-            Stream memStream = STR.ToFourBitDigitStream();
+            Stream memStream = str.ToFourBitDigitStream();
 
             FourBitDigitBigArray a = new FourBitDigitBigArray(memStream);
         }
@@ -49,13 +49,13 @@ namespace UnitTests.StringSearch.Collections
         [Test]
         public void TestGet()
         {
-            const string STR = "391";
+            const string str = "391";
 
-            FourBitDigitBigArray a = STR.ToFourBitDigitBigArray();
+            FourBitDigitBigArray a = str.ToFourBitDigitBigArray();
 
-            for(int i = 0; i < STR.Length; i++)
+            for(int i = 0; i < str.Length; i++)
             {
-                char c = STR[i];
+                char c = str[i];
                 byte b = a[i];
 
                 Assert.AreEqual(c.ToString(), b.ToString());
@@ -65,34 +65,34 @@ namespace UnitTests.StringSearch.Collections
         [Test]
         public void TestSetEven()
         {
-            const string ORIG = "391";
+            const string orig = "391";
 
-            FourBitDigitBigArray a = ORIG.ToFourBitDigitBigArray();
+            FourBitDigitBigArray a = orig.ToFourBitDigitBigArray();
 
             a[0] = 7;
             Assert.AreEqual(7, a[0]);
 
-            for (int i = 1; i < ORIG.Length; i++)
+            for (int i = 1; i < orig.Length; i++)
             {
-                Assert.AreEqual(ORIG[i].ToString(), a[i].ToString());
+                Assert.AreEqual(orig[i].ToString(), a[i].ToString());
             }
         }
 
         [Test]
         public void TestSetOdd()
         {
-            const string ORIG = "391";
+            const string orig = "391";
 
-            FourBitDigitBigArray a = ORIG.ToFourBitDigitBigArray();
+            FourBitDigitBigArray a = orig.ToFourBitDigitBigArray();
 
             a[1] = 7;
             Assert.AreEqual(7, a[1]);
 
-            for (int i = 0; i < ORIG.Length; i++)
+            for (int i = 0; i < orig.Length; i++)
             {
                 if(i != 1)
                 {
-                    Assert.AreEqual(ORIG[i].ToString(), a[i].ToString());
+                    Assert.AreEqual(orig[i].ToString(), a[i].ToString());
                 }
             }
         }
@@ -182,33 +182,33 @@ namespace UnitTests.StringSearch.Collections
         [Test]
         public void TestLengthEmpty()
         {
-            const long LENGTH = 3;
-            FourBitDigitBigArray a = makeNew(LENGTH);
-            Assert.AreEqual(LENGTH, a.Length);
+            const long length = 3;
+            FourBitDigitBigArray a = makeNew(length);
+            Assert.AreEqual(length, a.Length);
         }
 
         [Test]
         public void TestLengthEmptyEven()
         {
-            const long LENGTH = 4;
-            FourBitDigitBigArray a = makeNew(LENGTH);
-            Assert.AreEqual(LENGTH, a.Length);
+            const long length = 4;
+            FourBitDigitBigArray a = makeNew(length);
+            Assert.AreEqual(length, a.Length);
         }
 
         [Test]
         public void TestLengthBig()
         {
-            const long LENGTH = 3000000001;
-            FourBitDigitBigArray a = makeNew(LENGTH);
-            Assert.AreEqual(LENGTH, a.Length);
+            const long length = 3000000001;
+            FourBitDigitBigArray a = makeNew(length);
+            Assert.AreEqual(length, a.Length);
         }
 
         [Test]
         public void TestLengthBigEven()
         {
-            const long LENGTH = 3000000000;
-            FourBitDigitBigArray a = makeNew(LENGTH);
-            Assert.AreEqual(LENGTH, a.Length);
+            const long length = 3000000000;
+            FourBitDigitBigArray a = makeNew(length);
+            Assert.AreEqual(length, a.Length);
         }
 
         [Test]

@@ -22,7 +22,7 @@ namespace UnitTests.StringSearch
         [Test]
         public void SequentialSearch()
         {
-            const string STR = "123456789991234";
+            const string str = "123456789991234";
 
             Dictionary<string, int[]> answers = new Dictionary<string, int[]>()
             {
@@ -37,7 +37,7 @@ namespace UnitTests.StringSearch
                 string find = kvp.Key;
                 int[] expected = kvp.Value;
 
-                int[] actual = SearchString.Search(STR, find);
+                int[] actual = SearchString.Search(str, find);
 
                 CollectionAssert.AreEqual(expected, actual);
             }
@@ -46,7 +46,7 @@ namespace UnitTests.StringSearch
         [Test]
         public void SequentialSearchLastValue()
         {
-            const string STR = "123456789991234";
+            const string str = "123456789991234";
 
             Dictionary<string, int[]> answers = new Dictionary<string, int[]>()
             {
@@ -58,7 +58,7 @@ namespace UnitTests.StringSearch
                 string find = kvp.Key;
                 int[] expected = kvp.Value;
 
-                int[] actual = SearchString.Search(STR, find);
+                int[] actual = SearchString.Search(str, find);
 
                 CollectionAssert.AreEqual(expected, actual);
             }
@@ -67,11 +67,11 @@ namespace UnitTests.StringSearch
         [Test]
         public void SequentialSearchFullString()
         {
-            const string STR = "123456789991234";
+            const string str = "123456789991234";
 
             int[] expected = new int[] { 0 };
 
-            int[] actual = SearchString.Search(STR, STR);
+            int[] actual = SearchString.Search(str, str);
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -79,12 +79,12 @@ namespace UnitTests.StringSearch
         [Test]
         public void SequentialSearchLookForLongerThanToSearch()
         {
-            const string STR = "123456789991234";
-            const string FIND = STR + "7";
+            const string str = "123456789991234";
+            const string find = str + "7";
 
             int[] expected = new int[0];
 
-            int[] actual = SearchString.Search(STR, FIND);
+            int[] actual = SearchString.Search(str, find);
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -104,21 +104,21 @@ namespace UnitTests.StringSearch
         [Test]
         public void SequentialSearchLookForEmptyString()
         {
-            const string STR = "123456789991234";
-            const string FIND = "";
+            const string str = "123456789991234";
+            const string find = "";
 
-            Assert.Throws<ArgumentException>(() => SearchString.Search(STR, FIND));
+            Assert.Throws<ArgumentException>(() => SearchString.Search(str, find));
         }
 
         [Test]
         public void SequentialSearchSearchEmptyString()
         {
-            const string STR = "";
-            const string FIND = "1";
+            const string str = "";
+            const string find = "1";
 
             int[] expected = new int[0];
 
-            int[] actual = SearchString.Search(STR, FIND);
+            int[] actual = SearchString.Search(str, find);
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -128,18 +128,18 @@ namespace UnitTests.StringSearch
         [Test]
         public void SearchSuffixArray()
         {
-            const string STR = "123456789";
+            const string str = "123456789";
 
-            IBigArray<ulong> suffixArray = buildSuffixArray(STR);
-            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
+            IBigArray<ulong> suffixArray = buildSuffixArray(str);
+            FourBitDigitBigArray fourBitDigitArray = str.ToFourBitDigitBigArray();
 
-            for(int i = 0; i < STR.Length; i++)
+            for(int i = 0; i < str.Length; i++)
             {
-                for(int j = i + 1; j <= STR.Length; j++)
+                for(int j = i + 1; j <= str.Length; j++)
                 {
-                    string find = STR.Substring(i, j - i);
+                    string find = str.Substring(i, j - i);
 
-                    int[] seqSearchRes = SearchString.Search(STR, find);
+                    int[] seqSearchRes = SearchString.Search(str, find);
                     SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, find);
                     long[] suffixArraySearchRes = suffixArrayRange.SortedValues;
 
@@ -151,7 +151,7 @@ namespace UnitTests.StringSearch
         [Test]
         public void SearchSuffixArrayManualTest()
         {
-            const string STR = "1234567899912340";
+            const string str = "1234567899912340";
 
             Dictionary<string, long[]> answers = new Dictionary<string, long[]>()
             {
@@ -161,8 +161,8 @@ namespace UnitTests.StringSearch
                 { "5", new long[] { 4 } }
             };
 
-            IBigArray<ulong> suffixArray = buildSuffixArray(STR);
-            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
+            IBigArray<ulong> suffixArray = buildSuffixArray(str);
+            FourBitDigitBigArray fourBitDigitArray = str.ToFourBitDigitBigArray();
 
             foreach (KeyValuePair<string, long[]> kvp in answers)
             {
@@ -179,16 +179,16 @@ namespace UnitTests.StringSearch
         [Test]
         public void SearchSuffixArrayLastDigits()
         {
-            const string STR = "1234567899912340";
+            const string str = "1234567899912340";
 
-            IBigArray<ulong> suffixArray = buildSuffixArray(STR);
-            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
+            IBigArray<ulong> suffixArray = buildSuffixArray(str);
+            FourBitDigitBigArray fourBitDigitArray = str.ToFourBitDigitBigArray();
 
-            const string FIND = "12340";
+            const string find = "12340";
 
             long[] expected = new long[] { 11 };
 
-            SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, FIND);
+            SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, find);
             long[] actual = suffixArrayRange.SortedValues;
 
             CollectionAssert.AreEqual(expected, actual);
@@ -197,16 +197,16 @@ namespace UnitTests.StringSearch
         [Test]
         public void SearchSuffixArrayFirstDigits()
         {
-            const string STR = "1234567899912340";
+            const string str = "1234567899912340";
 
-            IBigArray<ulong> suffixArray = buildSuffixArray(STR);
-            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
+            IBigArray<ulong> suffixArray = buildSuffixArray(str);
+            FourBitDigitBigArray fourBitDigitArray = str.ToFourBitDigitBigArray();
 
-            const string FIND = "12345678";
+            const string find = "12345678";
 
             long[] expected = new long[] { 0 };
 
-            SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, FIND);
+            SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, find);
             long[] actual = suffixArrayRange.SortedValues;
 
             CollectionAssert.AreEqual(expected, actual);
@@ -215,14 +215,14 @@ namespace UnitTests.StringSearch
         [Test]
         public void SearchSuffixArrayAllDigits()
         {
-            const string STR = "1234567899912340";
+            const string str = "1234567899912340";
 
-            IBigArray<ulong> suffixArray = buildSuffixArray(STR);
-            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
+            IBigArray<ulong> suffixArray = buildSuffixArray(str);
+            FourBitDigitBigArray fourBitDigitArray = str.ToFourBitDigitBigArray();
 
             long[] expected = new long[] { 0 };
 
-            SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, STR);
+            SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, str);
             long[] actual = suffixArrayRange.SortedValues;
 
             CollectionAssert.AreEqual(expected, actual);
@@ -231,10 +231,10 @@ namespace UnitTests.StringSearch
         [Test]
         public void SearchSuffixArrayForEmptyString()
         {
-            const string STR = "123456789";
+            const string str = "123456789";
 
-            IBigArray<ulong> suffixArray = buildSuffixArray(STR);
-            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
+            IBigArray<ulong> suffixArray = buildSuffixArray(str);
+            FourBitDigitBigArray fourBitDigitArray = str.ToFourBitDigitBigArray();
 
             Assert.Throws<ArgumentException>(() => SearchString.Search(suffixArray, fourBitDigitArray, ""));
         }
@@ -242,15 +242,15 @@ namespace UnitTests.StringSearch
         [Test]
         public void SearchSuffixArraySearchEmptyString()
         {
-            const string STR = "";
-            const string FIND = "1";
+            const string str = "";
+            const string find = "1";
 
-            IBigArray<ulong> suffixArray = buildSuffixArray(STR);
-            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
+            IBigArray<ulong> suffixArray = buildSuffixArray(str);
+            FourBitDigitBigArray fourBitDigitArray = str.ToFourBitDigitBigArray();
 
             long[] expected = new long[0];
 
-            SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, FIND);
+            SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, find);
             long[] actual = suffixArrayRange.SortedValues;
 
             CollectionAssert.AreEqual(expected, actual);
@@ -268,15 +268,15 @@ namespace UnitTests.StringSearch
         [Test]
         public void TestSuffixArraySearchDigitNotInString()
         {
-            const string STR = "1234567912340";
-            const string FIND = "8";
+            const string str = "1234567912340";
+            const string find = "8";
 
-            IBigArray<ulong> suffixArray = buildSuffixArray(STR);
-            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
+            IBigArray<ulong> suffixArray = buildSuffixArray(str);
+            FourBitDigitBigArray fourBitDigitArray = str.ToFourBitDigitBigArray();
 
             long[] expected = new long[] {  };
 
-            SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, FIND);
+            SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, find);
             long[] actual = suffixArrayRange.SortedValues;
 
             Assert.AreEqual(false, suffixArrayRange.HasResults);
@@ -288,7 +288,7 @@ namespace UnitTests.StringSearch
         [Test]
         public void TestFindNextOccurrence()
         {
-            const string STR = "123456789991234";
+            const string str = "123456789991234";
 
             Dictionary<Tuple<string, int>, int> answers = new Dictionary<Tuple<string, int>, int>()
             {
@@ -304,7 +304,7 @@ namespace UnitTests.StringSearch
                 int fromIdx = kvp.Key.Item2;
                 int expected = kvp.Value;
 
-                int actual = SearchString.FindNextOccurrence(STR, find, fromIdx);
+                int actual = SearchString.FindNextOccurrence(str, find, fromIdx);
 
                 Assert.AreEqual(expected, actual);
             }
@@ -313,51 +313,51 @@ namespace UnitTests.StringSearch
         [Test]
         public void TestFindNextOccurrenceLastDigits()
         {
-            const string STR = "123456789991234";
+            const string str = "123456789991234";
 
-            Assert.AreEqual(10, SearchString.FindNextOccurrence(STR, "91234", 0));
+            Assert.AreEqual(10, SearchString.FindNextOccurrence(str, "91234", 0));
         }
 
         [Test]
         public void TestFindNextOccurrenceSearchFullString()
         {
-            const string STR = "123456789991234";
+            const string str = "123456789991234";
 
-            Assert.AreEqual(0, SearchString.FindNextOccurrence(STR, STR, 0));
+            Assert.AreEqual(0, SearchString.FindNextOccurrence(str, str, 0));
         }
 
         [Test]
         public void TestFindNextOccurrenceLookForLongerThanToSearch()
         {
-            const string STR = "123456789991234";
+            const string str = "123456789991234";
 
-            Assert.AreEqual(-1, SearchString.FindNextOccurrence(STR, STR + "1", 0));
+            Assert.AreEqual(-1, SearchString.FindNextOccurrence(str, str + "1", 0));
         }
 
         [Test]
         public void TestFindNextOccurrenceLookForLongerThanLeftInToSearch()
         {
-            const string STR = "123456789991234";
+            const string str = "123456789991234";
 
-            Assert.AreEqual(-1, SearchString.FindNextOccurrence(STR, "43", STR.Length - 1));
+            Assert.AreEqual(-1, SearchString.FindNextOccurrence(str, "43", str.Length - 1));
         }
 
         [Test]
         public void TestFindNextOccurrenceSearchLastDigit()
         {
-            const string STR = "123456789991234";
+            const string str = "123456789991234";
 
-            Assert.AreEqual(STR.Length - 1, SearchString.FindNextOccurrence(STR, STR[STR.Length - 1].ToString(), STR.Length - 1));
-            Assert.AreEqual(-1, SearchString.FindNextOccurrence(STR, "5", STR.Length - 1));
+            Assert.AreEqual(str.Length - 1, SearchString.FindNextOccurrence(str, str[str.Length - 1].ToString(), str.Length - 1));
+            Assert.AreEqual(-1, SearchString.FindNextOccurrence(str, "5", str.Length - 1));
         }
 
         [Test]
         public void TestFindNextOccurrenceLookForEmptyString()
         {
-            const string STR = "123456789991234";
+            const string str = "123456789991234";
 
             ;
-            Assert.Throws<ArgumentException>(() => SearchString.FindNextOccurrence(STR, "", 0));
+            Assert.Throws<ArgumentException>(() => SearchString.FindNextOccurrence(str, "", 0));
         }
 
         [Test]
@@ -371,8 +371,8 @@ namespace UnitTests.StringSearch
         [Test]
         public void TestFindNextOccurrence4BitDigit()
         {
-            const string STR = "123456789991234";
-            Stream s = STR.ToFourBitDigitStream();
+            const string str = "123456789991234";
+            Stream s = str.ToFourBitDigitStream();
 
             Dictionary<Tuple<string, long>, long> answers = new Dictionary<Tuple<string, long>, long>()
             {
@@ -397,8 +397,8 @@ namespace UnitTests.StringSearch
         [Test]
         public void TestFindNextOccurrence4BitDigitLastDigits()
         {
-            const string STR = "123456789991234";
-            Stream s = STR.ToFourBitDigitStream();
+            const string str = "123456789991234";
+            Stream s = str.ToFourBitDigitStream();
 
             Assert.AreEqual(10, SearchString.FindNextOccurrence4BitDigit(s, "91234", 0));
         }
@@ -406,45 +406,45 @@ namespace UnitTests.StringSearch
         [Test]
         public void TestFindNextOccurrence4BitDigitSearchFullString()
         {
-            const string STR = "123456789991234";
-            Stream s = STR.ToFourBitDigitStream();
+            const string str = "123456789991234";
+            Stream s = str.ToFourBitDigitStream();
 
-            Assert.AreEqual(0, SearchString.FindNextOccurrence4BitDigit(s, STR, 0));
+            Assert.AreEqual(0, SearchString.FindNextOccurrence4BitDigit(s, str, 0));
         }
 
         [Test]
         public void TestFindNextOccurrence4BitDigitLookForLongerThanToSearch()
         {
-            const string STR = "123456789991234";
-            Stream s = STR.ToFourBitDigitStream();
+            const string str = "123456789991234";
+            Stream s = str.ToFourBitDigitStream();
 
-            Assert.AreEqual(-1, SearchString.FindNextOccurrence4BitDigit(s, STR + "1", 0));
+            Assert.AreEqual(-1, SearchString.FindNextOccurrence4BitDigit(s, str + "1", 0));
         }
 
         [Test]
         public void TestFindNextOccurrence4BitDigitLookForLongerThanLeftInToSearch()
         {
-            const string STR = "123456789991234";
-            Stream s = STR.ToFourBitDigitStream();
+            const string str = "123456789991234";
+            Stream s = str.ToFourBitDigitStream();
 
-            Assert.AreEqual(-1, SearchString.FindNextOccurrence4BitDigit(s, "43", STR.Length - 1));
+            Assert.AreEqual(-1, SearchString.FindNextOccurrence4BitDigit(s, "43", str.Length - 1));
         }
 
         [Test]
         public void TestFindNextOccurrence4BitDigitSearchLastDigit()
         {
-            const string STR = "123456789991234";
-            Stream s = STR.ToFourBitDigitStream();
+            const string str = "123456789991234";
+            Stream s = str.ToFourBitDigitStream();
 
-            Assert.AreEqual(STR.Length - 1, SearchString.FindNextOccurrence4BitDigit(s, STR[STR.Length - 1].ToString(), STR.Length - 1));
-            Assert.AreEqual(-1, SearchString.FindNextOccurrence4BitDigit(s, "5", STR.Length - 1));
+            Assert.AreEqual(str.Length - 1, SearchString.FindNextOccurrence4BitDigit(s, str[str.Length - 1].ToString(), str.Length - 1));
+            Assert.AreEqual(-1, SearchString.FindNextOccurrence4BitDigit(s, "5", str.Length - 1));
         }
 
         [Test]
         public void TestFindNextOccurrence4BitDigitLookForEmptyString()
         {
-            const string STR = "123456789991234";
-            Stream s = STR.ToFourBitDigitStream();
+            const string str = "123456789991234";
+            Stream s = str.ToFourBitDigitStream();
 
             Assert.Throws<ArgumentException>(() => SearchString.FindNextOccurrence4BitDigit(s, "", 0));
         }
@@ -462,17 +462,17 @@ namespace UnitTests.StringSearch
         [Test]
         public void TestDoesStartWithSuffix()
         {
-            const string STR = "12345678901234";
+            const string str = "12345678901234";
 
-            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
+            FourBitDigitBigArray fourBitDigitArray = str.ToFourBitDigitBigArray();
 
             //Start index
-            for (int i = 0; i < STR.Length - 1; i++)
+            for (int i = 0; i < str.Length - 1; i++)
             {
                 //End index
-                for (int j = i + 1; j < STR.Length; j++)
+                for (int j = i + 1; j < str.Length; j++)
                 {
-                    string strFind = STR.Substring(i, j - i);
+                    string strFind = str.Substring(i, j - i);
                     byte[] find = stringToByteArr(strFind);
 
                     Assert.AreEqual(0, SearchString.doesStartWithSuffix(fourBitDigitArray, find, i));
@@ -483,11 +483,11 @@ namespace UnitTests.StringSearch
         [Test]
         public void TestDoesStartWithSuffixTooLow()
         {
-            const string STR = "12345678901234";
+            const string str = "12345678901234";
 
-            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
+            FourBitDigitBigArray fourBitDigitArray = str.ToFourBitDigitBigArray();
 
-            string strToFind = "0" + STR.Substring(1);
+            string strToFind = "0" + str.Substring(1);
             byte[] toFind = stringToByteArr(strToFind);
 
             Assert.AreEqual(1, SearchString.doesStartWithSuffix(fourBitDigitArray, toFind, 0));
@@ -496,11 +496,11 @@ namespace UnitTests.StringSearch
         [Test]
         public void TestDoesStartWithSuffixTooHigh()
         {
-            const string STR = "12345678901234";
+            const string str = "12345678901234";
 
-            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
+            FourBitDigitBigArray fourBitDigitArray = str.ToFourBitDigitBigArray();
 
-            string strToFind = "2" + STR.Substring(1);
+            string strToFind = "2" + str.Substring(1);
             byte[] toFind = stringToByteArr(strToFind);
 
             Assert.AreEqual(-1, SearchString.doesStartWithSuffix(fourBitDigitArray, toFind, 0));
@@ -509,60 +509,60 @@ namespace UnitTests.StringSearch
         [Test]
         public void TestDoesStartWithSuffixDigitArrayTooSmallMatchUntilEnd()
         {
-            const string STR = "1234567890";
+            const string str = "1234567890";
 
-            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
+            FourBitDigitBigArray fourBitDigitArray = str.ToFourBitDigitBigArray();
 
             string strToFind = "901";
             byte[] toFind = stringToByteArr(strToFind);
 
-            Assert.AreEqual(-1, SearchString.doesStartWithSuffix(fourBitDigitArray, toFind, STR.Length - 2));
+            Assert.AreEqual(-1, SearchString.doesStartWithSuffix(fourBitDigitArray, toFind, str.Length - 2));
         }
 
         [Test]
         public void TestDoesStartWithSuffixLastDigitsInDigitArray()
         {
-            const string STR = "1234567890";
+            const string str = "1234567890";
 
-            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
+            FourBitDigitBigArray fourBitDigitArray = str.ToFourBitDigitBigArray();
 
             string strToFind = "90";
             byte[] toFind = stringToByteArr(strToFind);
 
-            Assert.AreEqual(0, SearchString.doesStartWithSuffix(fourBitDigitArray, toFind, STR.Length - 2));
+            Assert.AreEqual(0, SearchString.doesStartWithSuffix(fourBitDigitArray, toFind, str.Length - 2));
         }
 
         [Test]
         public void TestDoesStartWithSuffixDigitArrayDigitArrayTooSmallNotMatchUntilEnd()
         {
-            const string STR = "1234567890";
+            const string str = "1234567890";
 
-            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
+            FourBitDigitBigArray fourBitDigitArray = str.ToFourBitDigitBigArray();
 
             string strToFindHigh = "911";
             byte[] toFindHigh = stringToByteArr(strToFindHigh);
 
-            Assert.AreEqual(-1, SearchString.doesStartWithSuffix(fourBitDigitArray, toFindHigh, STR.Length - 2));
+            Assert.AreEqual(-1, SearchString.doesStartWithSuffix(fourBitDigitArray, toFindHigh, str.Length - 2));
 
             string strToFindLow = "871";
             byte[] toFindLow = stringToByteArr(strToFindLow);
 
-            Assert.AreEqual(1, SearchString.doesStartWithSuffix(fourBitDigitArray, toFindLow, STR.Length - 2));
+            Assert.AreEqual(1, SearchString.doesStartWithSuffix(fourBitDigitArray, toFindLow, str.Length - 2));
         }
 
         [Test]
         public void TestBinarySearchForPrefixSingleChars()
         {
-            const string STR = "2734981324";
+            const string str = "2734981324";
 
-            IBigArray<ulong> suffixArray = buildSuffixArray(STR);
-            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
+            IBigArray<ulong> suffixArray = buildSuffixArray(str);
+            FourBitDigitBigArray fourBitDigitArray = str.ToFourBitDigitBigArray();
 
-            for (int i = 0; i < STR.Length; i++)
+            for (int i = 0; i < str.Length; i++)
             {
-                byte[] find = new byte[] { (byte)(STR[i] - '0') };
+                byte[] find = new byte[] { (byte)(str[i] - '0') };
 
-                long answer = SearchString.binarySearchForPrefix(suffixArray, fourBitDigitArray, find, 0, STR.Length - 1);
+                long answer = SearchString.binarySearchForPrefix(suffixArray, fourBitDigitArray, find, 0, str.Length - 1);
 
                 Assert.AreEqual(fourBitDigitArray[i], fourBitDigitArray[(long)suffixArray[answer]]);
             }
@@ -571,10 +571,10 @@ namespace UnitTests.StringSearch
         [Test]
         public void TestBinarySearchForPrefixDoNotExist()
         {
-            const string STR = "8651287431284472619471";
+            const string str = "8651287431284472619471";
 
-            IBigArray<ulong> suffixArray = buildSuffixArray(STR);
-            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
+            IBigArray<ulong> suffixArray = buildSuffixArray(str);
+            FourBitDigitBigArray fourBitDigitArray = str.ToFourBitDigitBigArray();
             string[] toFind = { "1234", "0", "0987654321", "5676", "10", "111", "33" };
 
             foreach(string s in toFind)

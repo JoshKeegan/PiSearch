@@ -17,10 +17,10 @@ namespace UnitTests.StringSearch
         [Test]
         public void CompressFile4BitDigit()
         {
-            const string STR = "1234567890";
+            const string str = "1234567890";
             string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "testCompressFile4BitDigit.");
 
-            writeStringFile(filePath + "txt", STR);
+            writeStringFile(filePath + "txt", str);
             Compression.CompressFile4BitDigit(filePath + "txt", filePath + "4bitDigit");
 
             string readBack = read4BitDigitFileAsString(filePath + "4bitDigit");
@@ -28,17 +28,17 @@ namespace UnitTests.StringSearch
             File.Delete(filePath + ".txt");
             File.Delete(filePath + ".4bitDigit");
 
-            Assert.AreEqual(STR, readBack);
+            Assert.AreEqual(str, readBack);
             Console.WriteLine(readBack);
         }
 
         [Test]
         public void CompressFile4BitDigitOddLength()
         {
-            const string STR = "12345678905";
+            const string str = "12345678905";
             string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "testCompressFile4BitDigitOddLength.");
 
-            writeStringFile(filePath + "txt", STR);
+            writeStringFile(filePath + "txt", str);
             Compression.CompressFile4BitDigit(filePath + "txt", filePath + "4bitDigit");
 
             string readBack = read4BitDigitFileAsString(filePath + "4bitDigit");
@@ -46,7 +46,7 @@ namespace UnitTests.StringSearch
             File.Delete(filePath + ".txt");
             File.Delete(filePath + ".4bitDigit");
 
-            Assert.AreEqual(STR, readBack);
+            Assert.AreEqual(str, readBack);
             Console.WriteLine(readBack);
         }
 #endregion
