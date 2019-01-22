@@ -3,19 +3,13 @@
 #
 
 UNIQUEIFIER_PATH = ../uniqueifier#
-PORT_PATH = ../port#
 INTERNAL_CONTAINER_PORT = 80#
+EXTERNAL_CONTAINER_PORT = 80#
 
 include ../../sharedScripts/make/dockerImages.mk
 
 clean:
-	rm -r $(PORT_PATH) || true
 	rm -r nginx.conf || true
-
-find-available-port: clean
-# No need to use a random port any more as it isn't bound on the host machine.
-	echo 80 > $(PORT_PATH)
-#	/bin/bash findAvailablePort.sh > $(PORT_PATH)
 
 # Args:
 #	- result variable
@@ -32,7 +26,7 @@ endef
 #	- rootPath
 #	- environment
 #	- appsettingsDir
-run-container: find-available-port
+run-container:
 	$(eval $(call get-container-name,containerName,$(environment)))
 
 	export MSYS_NO_PATHCONV=1; \
@@ -73,7 +67,7 @@ run-deployment-tests-against-container:
 			--network=reverseProxy \
 			--entrypoint /bin/bash \
 			joshkeegan/deploy-ssh \
-			/app/runDeploymentTests.sh $(containerName) $(shell cat $(PORT_PATH))
+			/app/runDeploymentTests.sh $(containerName) $(EXTERNAL_CONTAINER_PORT)
 
 #
 # Reverse Proxy
@@ -86,7 +80,7 @@ generate-nginx-conf:
 	$(eval $(call get-container-name,containerName,$(environment)))
 
 	cp nginx.conf.template nginx.conf
-	sed s/{{PORT}}/$(shell cat $(PORT_PATH))/g -i nginx.conf
+	sed s/{{PORT}}/$(EXTERNAL_CONTAINER_PORT)/g -i nginx.conf
 	sed s/{{ENVIRONMENT}}/$(environment)/g -i nginx.conf
 	sed s/{{HOSTNAME}}/$(hostname)/g -i nginx.conf
 	sed s/{{CONTAINER_HOSTNAME}}/$(containerName)/g -i nginx.conf
