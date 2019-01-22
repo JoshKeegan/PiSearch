@@ -37,6 +37,7 @@ run-container:
 			-v "$(rootPath)":/var/www/pi_digits:ro \
 			-e ASPNETCORE_ENVIRONMENT="$(environment)" \
 			-e ASPNETCORE_URLS="http://*:$(INTERNAL_CONTAINER_PORT)" \
+			-e UNIQUEIFIER="$(shell cat $(UNIQUEIFIER_PATH))" \
 			-v "$(appsettingsDir)/appsettings.$(environment).json":/app/appsettings.$(environment).json \
 			--network=reverseProxy \
 			$(IMAGE_API):$(shell cat $(UNIQUEIFIER_PATH))

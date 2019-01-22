@@ -7,6 +7,7 @@ using Serilog;
 using Serilog.Hosting;
 using StringSearch.Api.Infrastructure.Config;
 using StringSearch.Api.Infrastructure.DataLayer;
+using StringSearch.Api.Infrastructure.Logging.Extensions;
 using StringSearch.Api.Infrastructure.StringSearch;
 using StringSearch.Api.Infrastructure.StringSearch.Wrappers;
 using StringSearch.Collections;
@@ -22,7 +23,8 @@ namespace StringSearch.Api.Infrastructure.Di
                 .registerConfig()
                 .registerLogging()
                 .registerDb()
-                .registerStringSearch();
+                .registerStringSearch()
+                .registerApiVersion();
 
             return services;
         }
@@ -50,7 +52,8 @@ namespace StringSearch.Api.Infrastructure.Di
         {
             services.AddSingleton<LoggerConfiguration>(provider => new LoggerConfiguration()
                 .ReadFrom.Configuration(provider.GetService<IConfiguration>())
-                .Enrich.FromLogContext());
+                .Enrich.FromLogContext()
+                .Enrich.WithApiVersion(provider.GetService<IApiVersionProvider>()));
 
             services.AddSingleton<ILogger>(provider => provider.GetService<LoggerConfiguration>().CreateLogger());
             services.AddSingleton<ILoggerFactory>(provider => new SerilogLoggerFactory(provider.GetService<ILogger>()));
@@ -118,6 +121,13 @@ namespace StringSearch.Api.Infrastructure.Di
             });
 
             services.AddScoped<IPrecomputedSearchResults, PrecomputedSearchResults>();
+
+            return services;
+        }
+
+        private static IServiceCollection registerApiVersion(this IServiceCollection services)
+        {
+            services.AddSingleton<IApiVersionProvider, ApiVersionProvider>();
 
             return services;
         }

@@ -106,6 +106,7 @@ endif
 			-v "$(rootPath)":/var/www/pi_digits:ro \
 			-e ASPNETCORE_ENVIRONMENT="DockerLocal" \
 			-e ASPNETCORE_URLS="http://*:$(LOCAL_API_DOCKER_PORT)" \
+			-e UNIQUEIFIER="$(shell cat $(UNIQUEIFIER_PATH))" \
 			-p $(LOCAL_API_DOCKER_PORT):$(LOCAL_API_DOCKER_PORT) \
 			-v "${PWD}/artefacts/local/appsettings.DockerLocal.json":/app/appsettings.DockerLocal.json:ro \
 			$(IMAGE_API):$(shell cat $(UNIQUEIFIER_PATH))
