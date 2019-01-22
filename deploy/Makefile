@@ -84,6 +84,7 @@ generate-nginx-conf:
 	sed s/{{ENVIRONMENT}}/$(environment)/g -i nginx.conf
 	sed s/{{HOSTNAME}}/$(hostname)/g -i nginx.conf
 	sed s/{{CONTAINER_HOSTNAME}}/$(containerName)/g -i nginx.conf
+	sed s/{{UNIQUEIFIER}}/$(shell cat $(UNIQUEIFIER_PATH))/g -i nginx.conf
 	
 # Args:
 #	- environment
