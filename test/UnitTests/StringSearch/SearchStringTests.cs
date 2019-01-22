@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using StringSearch;
 using StringSearch.Collections;
-using StringSearchConsole;
 using SuffixArray;
 using UnitTests.StringSearch.Collections;
 using UnitTests.TestObjects.Extensions;
@@ -259,7 +258,7 @@ namespace UnitTests.StringSearch
         [Test]
         public void TestSuffixArrayWrongSize()
         {
-            IBigArray<ulong> suffixArray = Program.convertIntArrayToBigUlongArray(new int[] { 1, 2, 3 });
+            IBigArray<ulong> suffixArray = new int[] { 1, 2, 3 }.ToBigULongArray();
             FourBitDigitBigArray a = "12345".ToFourBitDigitBigArray();
 
             Assert.Throws<ArgumentException>(() => SearchString.Search(suffixArray, a, "23"));

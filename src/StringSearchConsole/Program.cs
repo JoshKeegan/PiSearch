@@ -1279,18 +1279,6 @@ namespace StringSearchConsole
             writer.Close();
         }
 
-        internal static IBigArray<ulong> convertIntArrayToBigUlongArray(int[] arr)
-        {
-            IBigArray<ulong> toRet = createBigArrayFromSettings(arr.Length, (uint)arr.Length);
-
-            for(int i = 0; i < arr.Length; i++)
-            {
-                toRet[i] = (uint)arr[i];
-            }
-
-            return toRet;
-        }
-
         private static IBigArray<ulong> createBigArrayFromSettings(long length)
         {
             return createBigArrayFromSettings(length, null);

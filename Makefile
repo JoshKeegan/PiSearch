@@ -31,14 +31,16 @@ build: clean
 	dotnet build -c Release
 
 unit-tests: publish-unit-tests
-	cd UnitTests; \
+	cd test/UnitTests; \
 		make run
 
+ci: build unit-tests
+
 publish-api: build
-	dotnet publish -c Release --no-build -o out StringSearch.Api
+	dotnet publish -c Release --no-build -o out src/StringSearch.Api
 
 publish-unit-tests: build
-	dotnet publish -c Release --no-build -o out UnitTests
+	dotnet publish -c Release --no-build -o out test/UnitTests
 
 publish-all: publish-api publish-unit-tests
 
@@ -69,7 +71,7 @@ endif
 #	- buildId (remote only)
 #	- commitHash (remote only - optional)
 build-api-image: generate-uniqueifier
-	docker build --pull -t $(IMAGE_API):$(shell cat $(UNIQUEIFIER_PATH)) StringSearch.Api
+	docker build --pull -t $(IMAGE_API):$(shell cat $(UNIQUEIFIER_PATH)) src/StringSearch.Api
 
 # Args:
 #	- crUsername
