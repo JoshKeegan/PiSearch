@@ -15,11 +15,11 @@ build:
     paths:
       - artefacts
       - sharedScripts
-      - StringSearch.Api/Dockerfile
-      - StringSearch.Api/out
-      - UnitTests/Makefile
-      - UnitTests/UnitTests.csproj
-      - UnitTests/out
+      - src/StringSearch.Api/Dockerfile
+      - src/StringSearch.Api/out
+      - test/UnitTests/Makefile
+      - test/UnitTests/UnitTests.csproj
+      - test/UnitTests/out
       - Makefile
     expire_in: 30 minutes
 
@@ -33,7 +33,7 @@ unit-tests:
   variables:
     GIT_STRATEGY: none
   script:
-    - cd UnitTests
+    - cd test/UnitTests
     - make run
   artifacts:
     paths:
