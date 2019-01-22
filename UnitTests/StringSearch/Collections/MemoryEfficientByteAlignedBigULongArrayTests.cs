@@ -1,11 +1,4 @@
-﻿/*
- * PiSearch
- * MemoryEfficientByteAlignedBigULongArray Unit Tests
- * By Josh Keegan 22/12/2014
- * Last Edit 14/03/2016
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

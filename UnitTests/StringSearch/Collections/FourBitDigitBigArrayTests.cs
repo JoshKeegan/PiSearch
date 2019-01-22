@@ -1,11 +1,4 @@
-﻿/*
- * PiSearch
- * FourBitDigitArray Unit Tests
- * By Josh Keegan 27/11/2014
- * Last Edit 24/03/2016
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,6 +9,7 @@ using NUnit.Framework;
 using StringSearch;
 using StringSearch.Collections;
 using StringSearch.IO;
+using UnitTests.TestObjects.Extensions;
 
 namespace UnitTests.StringSearch.Collections
 {
@@ -27,7 +21,7 @@ namespace UnitTests.StringSearch.Collections
         {
             const string STR = "1234";
 
-            Stream memStream = convertStringTo4BitDigitStream(STR);
+            Stream memStream = STR.ToFourBitDigitStream();
 
             FourBitDigitBigArray a = new FourBitDigitBigArray(memStream);
         }
@@ -35,7 +29,7 @@ namespace UnitTests.StringSearch.Collections
         [Test]
         public void TestEmpty()
         {
-            Stream memStream = convertStringTo4BitDigitStream("");
+            Stream memStream = "".ToFourBitDigitStream();
 
             FourBitDigitBigArray a = new FourBitDigitBigArray(memStream);
 
@@ -45,7 +39,7 @@ namespace UnitTests.StringSearch.Collections
         [Test]
         public void TestOddNumberOfDigits()
         {
-            Stream memStream = convertStringTo4BitDigitStream("123");
+            Stream memStream = "123".ToFourBitDigitStream();
 
             FourBitDigitBigArray a = new FourBitDigitBigArray(memStream);
 
@@ -57,7 +51,7 @@ namespace UnitTests.StringSearch.Collections
         {
             const string STR = "391";
 
-            FourBitDigitBigArray a = convertStringTo4BitDigitArray(STR);
+            FourBitDigitBigArray a = STR.ToFourBitDigitBigArray();
 
             for(int i = 0; i < STR.Length; i++)
             {
@@ -73,7 +67,7 @@ namespace UnitTests.StringSearch.Collections
         {
             const string ORIG = "391";
 
-            FourBitDigitBigArray a = convertStringTo4BitDigitArray(ORIG);
+            FourBitDigitBigArray a = ORIG.ToFourBitDigitBigArray();
 
             a[0] = 7;
             Assert.AreEqual(7, a[0]);
@@ -89,7 +83,7 @@ namespace UnitTests.StringSearch.Collections
         {
             const string ORIG = "391";
 
-            FourBitDigitBigArray a = convertStringTo4BitDigitArray(ORIG);
+            FourBitDigitBigArray a = ORIG.ToFourBitDigitBigArray();
 
             a[1] = 7;
             Assert.AreEqual(7, a[1]);
@@ -106,7 +100,7 @@ namespace UnitTests.StringSearch.Collections
         [Test]
         public void TestAccessOutOfRangeNeg()
         {
-            FourBitDigitBigArray a = convertStringTo4BitDigitArray("123");
+            FourBitDigitBigArray a = "123".ToFourBitDigitBigArray();
 
             Assert.Throws<IndexOutOfRangeException>(() =>
             {
@@ -117,7 +111,7 @@ namespace UnitTests.StringSearch.Collections
         [Test]
         public void TestAccessOutOfRange()
         {
-            FourBitDigitBigArray a = convertStringTo4BitDigitArray("123");
+            FourBitDigitBigArray a = "123".ToFourBitDigitBigArray();
 
             Assert.Throws<IndexOutOfRangeException>(() =>
             {
@@ -128,7 +122,7 @@ namespace UnitTests.StringSearch.Collections
         [Test]
         public void TestSetOutOfRangeNeg()
         {
-            FourBitDigitBigArray a = convertStringTo4BitDigitArray("123");
+            FourBitDigitBigArray a = "123".ToFourBitDigitBigArray();
 
             Assert.Throws<IndexOutOfRangeException>(() =>
             {
@@ -139,7 +133,7 @@ namespace UnitTests.StringSearch.Collections
         [Test]
         public void TestSetOutOfRange()
         {
-            FourBitDigitBigArray a = convertStringTo4BitDigitArray("123");
+            FourBitDigitBigArray a = "123".ToFourBitDigitBigArray();
 
             Assert.Throws<IndexOutOfRangeException>(() =>
             {
@@ -150,7 +144,7 @@ namespace UnitTests.StringSearch.Collections
         [Test]
         public void TestSetOverflow()
         {
-            FourBitDigitBigArray a = convertStringTo4BitDigitArray("123");
+            FourBitDigitBigArray a = "123".ToFourBitDigitBigArray();
 
             Assert.Throws<OverflowException>(() =>
             {
@@ -163,7 +157,7 @@ namespace UnitTests.StringSearch.Collections
         {
             //Highest possible value in 4 bits (15) reserved for marking that half of the byte as not in use
             //  so it counts as overflow
-            FourBitDigitBigArray a = convertStringTo4BitDigitArray("123");
+            FourBitDigitBigArray a = "123".ToFourBitDigitBigArray();
 
             Assert.Throws<OverflowException>(() =>
             {
@@ -174,14 +168,14 @@ namespace UnitTests.StringSearch.Collections
         [Test]
         public void TestLength()
         {
-            FourBitDigitBigArray a = convertStringTo4BitDigitArray("123");
+            FourBitDigitBigArray a = "123".ToFourBitDigitBigArray();
             Assert.AreEqual(3, a.Length);
         }
 
         [Test]
         public void TestLengthEven()
         {
-            FourBitDigitBigArray a = convertStringTo4BitDigitArray("1234");
+            FourBitDigitBigArray a = "1234".ToFourBitDigitBigArray();
             Assert.AreEqual(4, a.Length);
         }
 
@@ -240,12 +234,6 @@ namespace UnitTests.StringSearch.Collections
         }
 
         #region Helpers
-        public static FourBitDigitBigArray convertStringTo4BitDigitArray(string str)
-        {
-            Stream memStream = convertStringTo4BitDigitStream(str);
-
-            return new FourBitDigitBigArray(memStream);
-        }
 
         private static FourBitDigitBigArray makeNew(long length)
         {
@@ -278,30 +266,6 @@ namespace UnitTests.StringSearch.Collections
 
             FourBitDigitBigArray a = new FourBitDigitBigArray(stream);
             return a;
-        }
-
-        public static Stream convertStringTo4BitDigitStream(string str)
-        {
-            // Write string to stream
-            using (MemoryStream uncompressedStream = new MemoryStream())
-            {
-                StreamWriter writer = new StreamWriter(uncompressedStream);
-                writer.Write(str);
-                
-                // Just flush the writer here to ensure all the data is written to the stream.
-                //  It cannot be closed/disposed as that will also close the underlying stream
-                writer.Flush();
-
-                // Reset the stream position back to the beginning, as the compressor will run from
-                //  the current position
-                uncompressedStream.Position = 0;
-
-                // Stream to hold compressed 4 bit digit output
-                MemoryStream outStream = new MemoryStream();
-
-                Compression.CompressStream4BitDigit(uncompressedStream, outStream);
-                return outStream;
-            }
         }
         #endregion
     }

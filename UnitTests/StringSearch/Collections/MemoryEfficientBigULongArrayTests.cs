@@ -1,11 +1,4 @@
-﻿/*
- * PiSearch
- * MemoryEfficientBigULongArray Unit Tests
- * By Josh Keegan 26/11/2014
- * Last Edit 24/03/2016
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

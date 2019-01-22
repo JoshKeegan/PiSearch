@@ -1,11 +1,4 @@
-﻿/*
- * PiSearch
- * BigMemoryStream Unit Tests
- * By Josh Keegan 15/12/2014
- * Last Edit 08/06/2016
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

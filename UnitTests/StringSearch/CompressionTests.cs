@@ -1,11 +1,4 @@
-﻿/*
- * PiSearch
- * Compression Unit Tests
- * By Josh Keegan 20/11/2014
- * Last Edit 21/11/2014
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

@@ -1,11 +1,4 @@
-﻿/*
- * PiSearch
- * MemoryEfficientComplementBigULongArray Tests
- * By Josh Keegan 12/01/2015
- * Last Edit 24/03/2016
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

@@ -1,11 +1,4 @@
-﻿/*
- * PiSearch
- * WinFileIO Unit Tests
- * By Josh Keegan 02/01/2015
- * Last Edit 13/10/2018
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

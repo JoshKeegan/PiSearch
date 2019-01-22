@@ -1,10 +1,4 @@
-﻿/*
- * PiSearch
- * BigBoolArray Unit Tests
- * By Josh Keegan 12/01/2015
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

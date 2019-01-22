@@ -1,11 +1,4 @@
-﻿/*
- * PiSearch
- * SearchString Unit Tests
- * By Josh Keegan 20/11/2014
- * Last Edit 22/01/2019
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,6 +11,7 @@ using StringSearch.Collections;
 using StringSearchConsole;
 using SuffixArray;
 using UnitTests.StringSearch.Collections;
+using UnitTests.TestObjects.Extensions;
 
 namespace UnitTests.StringSearch
 {
@@ -137,7 +131,7 @@ namespace UnitTests.StringSearch
             const string STR = "123456789";
 
             IBigArray<ulong> suffixArray = buildSuffixArray(STR);
-            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
 
             for(int i = 0; i < STR.Length; i++)
             {
@@ -168,7 +162,7 @@ namespace UnitTests.StringSearch
             };
 
             IBigArray<ulong> suffixArray = buildSuffixArray(STR);
-            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
 
             foreach (KeyValuePair<string, long[]> kvp in answers)
             {
@@ -188,7 +182,7 @@ namespace UnitTests.StringSearch
             const string STR = "1234567899912340";
 
             IBigArray<ulong> suffixArray = buildSuffixArray(STR);
-            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
 
             const string FIND = "12340";
 
@@ -206,7 +200,7 @@ namespace UnitTests.StringSearch
             const string STR = "1234567899912340";
 
             IBigArray<ulong> suffixArray = buildSuffixArray(STR);
-            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
 
             const string FIND = "12345678";
 
@@ -224,7 +218,7 @@ namespace UnitTests.StringSearch
             const string STR = "1234567899912340";
 
             IBigArray<ulong> suffixArray = buildSuffixArray(STR);
-            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
 
             long[] expected = new long[] { 0 };
 
@@ -240,7 +234,7 @@ namespace UnitTests.StringSearch
             const string STR = "123456789";
 
             IBigArray<ulong> suffixArray = buildSuffixArray(STR);
-            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
 
             Assert.Throws<ArgumentException>(() => SearchString.Search(suffixArray, fourBitDigitArray, ""));
         }
@@ -252,7 +246,7 @@ namespace UnitTests.StringSearch
             const string FIND = "1";
 
             IBigArray<ulong> suffixArray = buildSuffixArray(STR);
-            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
 
             long[] expected = new long[0];
 
@@ -266,7 +260,7 @@ namespace UnitTests.StringSearch
         public void TestSuffixArrayWrongSize()
         {
             IBigArray<ulong> suffixArray = Program.convertIntArrayToBigUlongArray(new int[] { 1, 2, 3 });
-            FourBitDigitBigArray a = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray("12345");
+            FourBitDigitBigArray a = "12345".ToFourBitDigitBigArray();
 
             Assert.Throws<ArgumentException>(() => SearchString.Search(suffixArray, a, "23"));
         }
@@ -278,7 +272,7 @@ namespace UnitTests.StringSearch
             const string FIND = "8";
 
             IBigArray<ulong> suffixArray = buildSuffixArray(STR);
-            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
 
             long[] expected = new long[] {  };
 
@@ -378,7 +372,7 @@ namespace UnitTests.StringSearch
         public void TestFindNextOccurrence4BitDigit()
         {
             const string STR = "123456789991234";
-            Stream s = FourBitDigitBigArrayTests.convertStringTo4BitDigitStream(STR);
+            Stream s = STR.ToFourBitDigitStream();
 
             Dictionary<Tuple<string, long>, long> answers = new Dictionary<Tuple<string, long>, long>()
             {
@@ -404,7 +398,7 @@ namespace UnitTests.StringSearch
         public void TestFindNextOccurrence4BitDigitLastDigits()
         {
             const string STR = "123456789991234";
-            Stream s = FourBitDigitBigArrayTests.convertStringTo4BitDigitStream(STR);
+            Stream s = STR.ToFourBitDigitStream();
 
             Assert.AreEqual(10, SearchString.FindNextOccurrence4BitDigit(s, "91234", 0));
         }
@@ -413,7 +407,7 @@ namespace UnitTests.StringSearch
         public void TestFindNextOccurrence4BitDigitSearchFullString()
         {
             const string STR = "123456789991234";
-            Stream s = FourBitDigitBigArrayTests.convertStringTo4BitDigitStream(STR);
+            Stream s = STR.ToFourBitDigitStream();
 
             Assert.AreEqual(0, SearchString.FindNextOccurrence4BitDigit(s, STR, 0));
         }
@@ -422,7 +416,7 @@ namespace UnitTests.StringSearch
         public void TestFindNextOccurrence4BitDigitLookForLongerThanToSearch()
         {
             const string STR = "123456789991234";
-            Stream s = FourBitDigitBigArrayTests.convertStringTo4BitDigitStream(STR);
+            Stream s = STR.ToFourBitDigitStream();
 
             Assert.AreEqual(-1, SearchString.FindNextOccurrence4BitDigit(s, STR + "1", 0));
         }
@@ -431,7 +425,7 @@ namespace UnitTests.StringSearch
         public void TestFindNextOccurrence4BitDigitLookForLongerThanLeftInToSearch()
         {
             const string STR = "123456789991234";
-            Stream s = FourBitDigitBigArrayTests.convertStringTo4BitDigitStream(STR);
+            Stream s = STR.ToFourBitDigitStream();
 
             Assert.AreEqual(-1, SearchString.FindNextOccurrence4BitDigit(s, "43", STR.Length - 1));
         }
@@ -440,7 +434,7 @@ namespace UnitTests.StringSearch
         public void TestFindNextOccurrence4BitDigitSearchLastDigit()
         {
             const string STR = "123456789991234";
-            Stream s = FourBitDigitBigArrayTests.convertStringTo4BitDigitStream(STR);
+            Stream s = STR.ToFourBitDigitStream();
 
             Assert.AreEqual(STR.Length - 1, SearchString.FindNextOccurrence4BitDigit(s, STR[STR.Length - 1].ToString(), STR.Length - 1));
             Assert.AreEqual(-1, SearchString.FindNextOccurrence4BitDigit(s, "5", STR.Length - 1));
@@ -450,7 +444,7 @@ namespace UnitTests.StringSearch
         public void TestFindNextOccurrence4BitDigitLookForEmptyString()
         {
             const string STR = "123456789991234";
-            Stream s = FourBitDigitBigArrayTests.convertStringTo4BitDigitStream(STR);
+            Stream s = STR.ToFourBitDigitStream();
 
             Assert.Throws<ArgumentException>(() => SearchString.FindNextOccurrence4BitDigit(s, "", 0));
         }
@@ -458,9 +452,8 @@ namespace UnitTests.StringSearch
         [Test]
         public void TestFindNextOccurrence4BitDigitSearchEmptyString()
         {
-            Stream s = FourBitDigitBigArrayTests.convertStringTo4BitDigitStream("");
+            Stream s = "".ToFourBitDigitStream();
 
-            ;
             Assert.Throws<ArgumentException>(() => SearchString.FindNextOccurrence4BitDigit(s, "1", 0));
         }
         #endregion
@@ -471,10 +464,10 @@ namespace UnitTests.StringSearch
         {
             const string STR = "12345678901234";
 
-            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
 
             //Start index
-            for(int i = 0; i < STR.Length - 1; i++)
+            for (int i = 0; i < STR.Length - 1; i++)
             {
                 //End index
                 for (int j = i + 1; j < STR.Length; j++)
@@ -492,7 +485,7 @@ namespace UnitTests.StringSearch
         {
             const string STR = "12345678901234";
 
-            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
 
             string strToFind = "0" + STR.Substring(1);
             byte[] toFind = stringToByteArr(strToFind);
@@ -505,7 +498,7 @@ namespace UnitTests.StringSearch
         {
             const string STR = "12345678901234";
 
-            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
 
             string strToFind = "2" + STR.Substring(1);
             byte[] toFind = stringToByteArr(strToFind);
@@ -518,7 +511,7 @@ namespace UnitTests.StringSearch
         {
             const string STR = "1234567890";
 
-            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
 
             string strToFind = "901";
             byte[] toFind = stringToByteArr(strToFind);
@@ -531,7 +524,7 @@ namespace UnitTests.StringSearch
         {
             const string STR = "1234567890";
 
-            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
 
             string strToFind = "90";
             byte[] toFind = stringToByteArr(strToFind);
@@ -544,7 +537,7 @@ namespace UnitTests.StringSearch
         {
             const string STR = "1234567890";
 
-            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
 
             string strToFindHigh = "911";
             byte[] toFindHigh = stringToByteArr(strToFindHigh);
@@ -563,9 +556,9 @@ namespace UnitTests.StringSearch
             const string STR = "2734981324";
 
             IBigArray<ulong> suffixArray = buildSuffixArray(STR);
-            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
 
-            for(int i = 0; i < STR.Length; i++)
+            for (int i = 0; i < STR.Length; i++)
             {
                 byte[] find = new byte[] { (byte)(STR[i] - '0') };
 
@@ -576,12 +569,12 @@ namespace UnitTests.StringSearch
         }
 
         [Test]
-        public void TestBinarySearchForPrefixDontExist()
+        public void TestBinarySearchForPrefixDoNotExist()
         {
             const string STR = "8651287431284472619471";
 
             IBigArray<ulong> suffixArray = buildSuffixArray(STR);
-            FourBitDigitBigArray fourBitDigitArray = FourBitDigitBigArrayTests.convertStringTo4BitDigitArray(STR);
+            FourBitDigitBigArray fourBitDigitArray = STR.ToFourBitDigitBigArray();
             string[] toFind = { "1234", "0", "0987654321", "5676", "10", "111", "33" };
 
             foreach(string s in toFind)
