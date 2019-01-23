@@ -1,7 +1,6 @@
 using System;
-using StringSearch.Api.Health;
 
-namespace StringSearch.Api.Contracts.Health
+namespace StringSearch.Api.Health
 {
     public class HealthResourceSummary
     {

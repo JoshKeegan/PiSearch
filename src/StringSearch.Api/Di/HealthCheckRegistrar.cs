@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -8,22 +7,26 @@ using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using StringSearch.Api.Health;
 using StringSearch.Api.Infrastructure.Config;
-using StringSearch.Api.Infrastructure.Di;
 
 namespace StringSearch.Api.Di
 {
-    public static class ServiceCollectionExtensions
+    public static class HealthCheckRegistrar
     {
-        public static IServiceCollection RegisterApiDependencies(this IServiceCollection services)
+        public static IServiceCollection RegisterHealthChecks(this IServiceCollection services)
         {
-            services
-                .RegisterInfrastructureDependencies()
-                .registerHealthDependencies();
+            return services
+                .registerServices()
+                .registerChecks();
+        }
+
+        private static IServiceCollection registerServices(this IServiceCollection services)
+        {
+            services.AddSingleton<IHealthCheckServices, HealthCheckServices>();
 
             return services;
         }
 
-        private static IServiceCollection registerHealthDependencies(this IServiceCollection services)
+        private static IServiceCollection registerChecks(this IServiceCollection services)
         {
             // Digits file (critical)
             services.AddSingleton<IHealthResource>(provider =>
@@ -48,7 +51,7 @@ namespace StringSearch.Api.Di
                 return new OptionalDirectoryHealthResource("Precomputed search results directory", true,
                     config.AbsolutePrecomputedResultsDirPath);
             });
-            
+
             // Database connection (critical)
             services.AddSingleton<IHealthResource>(provider =>
             {
@@ -77,7 +80,7 @@ namespace StringSearch.Api.Di
                 ILogger log = provider.GetService<ILogger>();
                 return new MySqlHealthResource("Logs Database", false, log, connStr);
             });
-            
+
             return services;
         }
     }

@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\StringSearch.Api\StringSearch.Api.csproj" />
     <ProjectReference Include="..\..\src\StringSearch\StringSearch.csproj" />
     <ProjectReference Include="..\..\src\SuffixArray\SuffixArray.csproj" />
   </ItemGroup>
