@@ -15,8 +15,8 @@ build:
     paths:
       - artefacts
       - sharedScripts
-      - src/StringSearch.Api/Dockerfile
-      - src/StringSearch.Api/out
+      - src/StringSearch.Api.Host/Dockerfile
+      - src/StringSearch.Api.Host/out
       - test/UnitTests/Makefile
       - test/UnitTests/UnitTests.csproj
       - test/UnitTests/out
