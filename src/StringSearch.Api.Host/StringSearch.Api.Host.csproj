@@ -9,7 +9,6 @@
     <Content Remove="appsettings.Development.json" />
     <Content Remove="appsettings.Development.Sample.json" />
     <Content Remove="appsettings.DockerLocal.json" />
-    <Content Remove="appsettings.json" />
     <Content Remove="appsettings.prod.json" />
   </ItemGroup>
 
@@ -17,7 +16,6 @@
     <None Include="appsettings.Development.json" />
     <None Include="appsettings.Development.Sample.json" />
     <None Include="appsettings.DockerLocal.json" />
-    <None Include="appsettings.json" />
     <None Include="appsettings.prod.json" />
   </ItemGroup>
 
@@ -27,6 +25,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\StringSearch.Api\StringSearch.Api.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

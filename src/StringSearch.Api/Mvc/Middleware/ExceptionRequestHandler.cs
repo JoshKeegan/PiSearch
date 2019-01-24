@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Serilog;
-using StringSearch.Api.Contracts;
 using StringSearch.Api.Contracts.Errors;
 
 namespace StringSearch.Api.Mvc.Middleware

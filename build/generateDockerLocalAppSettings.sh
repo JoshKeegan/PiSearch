@@ -5,7 +5,7 @@
 #	Gets outputted into the artefacts/local dir	
 #
 
-cp ../StringSearch.Api/appsettings.DockerLocal.json ../artefacts/local/appsettings.DockerLocal.json
+cp ../src/StringSearch.Api.Host/appsettings.DockerLocal.json ../artefacts/local/appsettings.DockerLocal.json
 
 # On some platforms, host.docker.internal must be replaced with an actual IP
 hostIp=""
