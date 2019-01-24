@@ -12,8 +12,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using StringSearch;
-using StringSearch.Collections;
-using StringSearch.IO;
+using StringSearch.Legacy;
+using StringSearch.Legacy.Collections;
+using StringSearch.Legacy.IO;
 using SuffixArray;
 
 namespace StringSearchConsole

@@ -6,6 +6,6 @@
     <Copyright>Copyright © 2016</Copyright>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StringSearch\StringSearch.csproj" />
+    <ProjectReference Include="..\StringSearch.Legacy\StringSearch.Legacy.csproj" />
   </ItemGroup>
 </Project>

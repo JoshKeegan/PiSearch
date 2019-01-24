@@ -11,7 +11,6 @@ namespace StringSearch.Api.Di
         public static IServiceCollection RegisterApiDependencies(this IServiceCollection services)
         {
             services
-                .RegisterHealthChecks()
                 .AddAutoMapper();
 
             return services;

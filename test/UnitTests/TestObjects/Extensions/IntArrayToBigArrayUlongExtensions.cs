@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using StringSearch.Collections;
+using StringSearch.Legacy.Collections;
 
 namespace UnitTests.TestObjects.Extensions
 {

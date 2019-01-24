@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using StringSearch;
+using StringSearch.Legacy;
 
 namespace UnitTests.TestObjects.Extensions
 {

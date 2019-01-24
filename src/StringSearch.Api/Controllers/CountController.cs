@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StringSearch.Api.Contracts;
 using StringSearch.Api.Contracts.Searches.Counts;
-using StringSearch.Api.Infrastructure.DataLayer;
-using StringSearch.Api.Infrastructure.StringSearch;
-using StringSearch.Api.Infrastructure.StringSearch.Wrappers;
-using StringSearch.Api.Search;
+using StringSearch.DataLayer;
+using StringSearch.Legacy;
+using StringSearch.LegacyWrappers;
 
 namespace StringSearch.Api.Controllers
 {

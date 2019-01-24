@@ -6,7 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using StringSearch.Api.Contracts;
 using StringSearch.Api.Contracts.Health;
-using StringSearch.Api.Health;
+using StringSearch.Health;
 
 namespace StringSearch.Api.Controllers
 {

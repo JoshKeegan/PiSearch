@@ -41,8 +41,7 @@
 
 using System;
 using System.IO;
-
-using StringSearch.Collections;
+using StringSearch.Legacy.Collections;
 
 namespace SuffixArray
 {

@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\StringSearch.Api\StringSearch.Api.csproj" />
+    <ProjectReference Include="..\StringSearch.Infrastructure\StringSearch.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

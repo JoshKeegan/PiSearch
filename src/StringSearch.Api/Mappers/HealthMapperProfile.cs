@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using StringSearch.Api.Contracts.Health;
-using StringSearch.Api.Health;
+using StringSearch.Health;
 
 namespace StringSearch.Api.Mappers
 {

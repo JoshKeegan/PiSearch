@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using StringSearch.Api.Infrastructure.Di;
+using StringSearch.Infrastructure.Di;
 
 namespace StringSearch.Api.Host
 {
