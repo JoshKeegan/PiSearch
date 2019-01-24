@@ -9,10 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using StringSearch.Api.Di;
 using StringSearch.Api.Mvc.ActionFilters;
 using StringSearch.Api.Mvc.Middleware;
-using StringSearch.Api.Di;
-using StringSearch.Api.Infrastructure.Di;
 using StringSearch.Api.Mvc.ModelBinding;
 
 namespace StringSearch.Api
@@ -31,9 +30,7 @@ namespace StringSearch.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .RegisterApiDependencies()
-                .RegisterInfrastructureDependencies();
+            services.RegisterApiDependencies();
 
             services
                 .AddMvc(options =>

@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringSearchConsole", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringSearch.Api", "src\StringSearch.Api\StringSearch.Api.csproj", "{371A64B6-103B-4E21-9A09-18E81C762E24}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringSearch.Api.Host", "src\StringSearch.Api.Host\StringSearch.Api.Host.csproj", "{51F66ADA-72FA-4414-94C3-1F30B6A0B737}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{371A64B6-103B-4E21-9A09-18E81C762E24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{371A64B6-103B-4E21-9A09-18E81C762E24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{371A64B6-103B-4E21-9A09-18E81C762E24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51F66ADA-72FA-4414-94C3-1F30B6A0B737}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51F66ADA-72FA-4414-94C3-1F30B6A0B737}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51F66ADA-72FA-4414-94C3-1F30B6A0B737}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51F66ADA-72FA-4414-94C3-1F30B6A0B737}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +59,7 @@ Global
 		{2B224B35-A15F-4BC7-B5E9-F55578F8494B} = {6BFC8641-CDEC-473D-96B3-0F74B9E4C927}
 		{5564FA7C-AD0E-4F41-9340-1DE91B3C10AB} = {6BFC8641-CDEC-473D-96B3-0F74B9E4C927}
 		{371A64B6-103B-4E21-9A09-18E81C762E24} = {6BFC8641-CDEC-473D-96B3-0F74B9E4C927}
+		{51F66ADA-72FA-4414-94C3-1F30B6A0B737} = {6BFC8641-CDEC-473D-96B3-0F74B9E4C927}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F105FED6-FACC-41D3-BF01-404E894EDDCE}

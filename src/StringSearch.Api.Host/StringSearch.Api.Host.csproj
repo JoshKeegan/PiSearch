@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="appsettings.Development.json" />
+    <Content Remove="appsettings.Development.Sample.json" />
+    <Content Remove="appsettings.DockerLocal.json" />
+    <Content Remove="appsettings.json" />
+    <Content Remove="appsettings.prod.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="appsettings.Development.json" />
+    <None Include="appsettings.Development.Sample.json" />
+    <None Include="appsettings.DockerLocal.json" />
+    <None Include="appsettings.json" />
+    <None Include="appsettings.prod.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StringSearch.Api\StringSearch.Api.csproj" />
+  </ItemGroup>
+
+</Project>
