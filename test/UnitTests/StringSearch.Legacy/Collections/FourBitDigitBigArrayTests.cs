@@ -5,7 +5,7 @@ using StringSearch.Legacy.Collections;
 using StringSearch.Legacy.IO;
 using UnitTests.TestObjects.Extensions;
 
-namespace UnitTests.libStringSearch.Collections
+namespace UnitTests.StringSearch.Legacy.Collections
 {
     [TestFixture]
     public class FourBitDigitBigArrayTests

@@ -1,8 +1,6 @@
 ﻿using System;
 using Serilog;
 using Serilog.Configuration;
-using StringSearch.Api;
-using StringSearch.Api.Infrastructure.Logging;
 
 namespace StringSearch.Infrastructure.Logging.Extensions
 {

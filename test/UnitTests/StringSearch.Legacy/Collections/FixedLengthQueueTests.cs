@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using StringSearch.Legacy.Collections;
 
-namespace UnitTests.libStringSearch.Collections
+namespace UnitTests.StringSearch.Legacy.Collections
 {
     [TestFixture]
     public class FixedLengthQueueTests

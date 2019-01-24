@@ -4,8 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Hosting;
-using StringSearch.Api;
-using StringSearch.Api.Infrastructure;
 using StringSearch.DataLayer;
 using StringSearch.Infrastructure.Config;
 using StringSearch.Infrastructure.DataLayer;

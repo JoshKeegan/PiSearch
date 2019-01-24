@@ -7,7 +7,7 @@ using StringSearch.Legacy.Collections;
 using SuffixArray;
 using UnitTests.TestObjects.Extensions;
 
-namespace UnitTests.libStringSearch
+namespace UnitTests.StringSearch.Legacy
 {
     [TestFixture]
     public class SearchStringTests

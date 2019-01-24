@@ -5,7 +5,7 @@ using System.Linq;
 using NUnit.Framework;
 using StringSearch.Legacy.IO;
 
-namespace UnitTests.libStringSearch.IO
+namespace UnitTests.StringSearch.Legacy.IO
 {
     [TestFixture]
     [Category("windows")]
