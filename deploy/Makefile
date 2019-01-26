@@ -29,20 +29,25 @@ endef
 run-container:
 	$(eval $(call get-container-name,containerName,$(environment)))
 
+	# Make the container
 	export MSYS_NO_PATHCONV=1; \
-		docker run \
-			--detach \
+		docker container create \
 			--name "$(containerName)" \
 			--restart always \
 			-v "$(rootPath)":/var/www/pi_digits:ro \
+			-v "$(appsettingsDir)/appsettings.$(environment).json":/app/appsettings.$(environment).json \
 			-e ASPNETCORE_ENVIRONMENT="$(environment)" \
 			-e ASPNETCORE_URLS="http://*:$(INTERNAL_CONTAINER_PORT)" \
 			-e UNIQUEIFIER="$(shell cat $(UNIQUEIFIER_PATH))" \
-			-v "$(appsettingsDir)/appsettings.$(environment).json":/app/appsettings.$(environment).json \
-			--network=reverseProxy \
-			--network=mysql \
 			$(IMAGE_API):$(shell cat $(UNIQUEIFIER_PATH))
 
+	# Join networks
+	docker network connect reverseProxy $(containerName)
+	docker network connect mysql $(containerName)
+
+	# Start the container
+	docker start $(containerName)
+	
 wait-for-container-ready:
 # TODO: Improve to actually wait for the web server to start.
 #	Check every n seconds for port to respond, also checking the container is running
