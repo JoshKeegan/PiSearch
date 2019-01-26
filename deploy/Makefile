@@ -40,6 +40,7 @@ run-container:
 			-e UNIQUEIFIER="$(shell cat $(UNIQUEIFIER_PATH))" \
 			-v "$(appsettingsDir)/appsettings.$(environment).json":/app/appsettings.$(environment).json \
 			--network=reverseProxy \
+			--network=mysql \
 			$(IMAGE_API):$(shell cat $(UNIQUEIFIER_PATH))
 
 wait-for-container-ready:
