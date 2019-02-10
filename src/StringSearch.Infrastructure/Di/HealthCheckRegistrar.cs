@@ -2,54 +2,27 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using StringSearch.Config;
 using StringSearch.Health;
+using StringSearch.Health.Factories;
 using StringSearch.Infrastructure.Config;
 using StringSearch.Infrastructure.Health;
+using StringSearch.Infrastructure.Health.Factories;
 
 namespace StringSearch.Infrastructure.Di
 {
-    public static class HealthCheckRegistrar
+    internal static class HealthCheckRegistrar
     {
-        public static IServiceCollection RegisterHealthChecks(this IServiceCollection services)
+        internal static IServiceCollection AddHealthChecks(this IServiceCollection services)
         {
-            return services
-                .registerServices()
-                .registerChecks();
-        }
-
-        private static IServiceCollection registerServices(this IServiceCollection services)
-        {
-            services.AddSingleton<IHealthCheckServices, HealthCheckServices>();
+            services.addSharedHealthChecks();
+            services.AddSingleton<IDigitsHealthChecksFactory, DigitsHealthChecksFactory>();
 
             return services;
         }
 
-        private static IServiceCollection registerChecks(this IServiceCollection services)
+        private static IServiceCollection addSharedHealthChecks(this IServiceCollection services)
         {
-            // Digits file (critical)
-            services.AddSingleton<IHealthResource>(provider =>
-            {
-                StringSearchConfig config = provider.GetService<StringSearchConfig>();
-                return new FileHealthResource("Absolute Digits File", true, config.AbsoluteDigitsPath);
-            });
-
-            // Suffix array file (critical)
-            services.AddSingleton<IHealthResource>(provider =>
-            {
-                StringSearchConfig config = provider.GetService<StringSearchConfig>();
-                return new FileHealthResource("Suffix array file", true, config.AbsoluteSuffixArrayPath);
-            });
-
-            // Precomputed search results directory (critical if specified, but optional)
-            //  Note: despite being optional, not having this can cause massive performance degradation
-            //  when searching a large number of digits for a small string 
-            services.AddSingleton<IHealthResource>(provider =>
-            {
-                StringSearchConfig config = provider.GetService<StringSearchConfig>();
-                return new OptionalDirectoryHealthResource("Precomputed search results directory", true,
-                    config.AbsolutePrecomputedResultsDirPath);
-            });
-
             // Database connection (critical)
             services.AddSingleton<IHealthResource>(provider =>
             {

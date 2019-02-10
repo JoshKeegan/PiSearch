@@ -44,23 +44,23 @@ namespace StringSearch.Api.Mvc.Middleware
                     errorId, context.Request.QueryString, requestBody);
 
                 // Construct an error. If in development, add additional info
-                Error error;
+                ErrorDto error;
                 if (hostingEnvironment.IsDevelopment())
                 {
-                    error = new DevelopmentError()
+                    error = new DevelopmentErrorDto()
                     {
                         Exception = e
                     };
                 }
                 else
                 {
-                    error = new Error();
+                    error = new ErrorDto();
                 }
                 error.Message = "An unexpected error has occurred";
                 error.Id = errorId;
 
-                ErrorResponse response = new ErrorResponse() { Error = error };
-                string strResponse = JsonConvert.SerializeObject(response, new JsonSerializerSettings()
+                ErrorResponseDto responseDto = new ErrorResponseDto() { Error = error };
+                string strResponse = JsonConvert.SerializeObject(responseDto, new JsonSerializerSettings()
                 {
                     // An exception may have circular references... Ignore and just serialise what we can.
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore

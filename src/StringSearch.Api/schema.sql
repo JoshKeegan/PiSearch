@@ -9,5 +9,6 @@ CREATE TABLE `searches` (
   `searchDate` datetime NOT NULL,
   `processingTimeMs` bigint(20) NOT NULL,
   `numSurroundingDigits` int(11) NULL,
+  `namedDigits` varchar(1000) NULL
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;

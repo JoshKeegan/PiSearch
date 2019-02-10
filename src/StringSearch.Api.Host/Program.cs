@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using StringSearch.Di;
 using StringSearch.Infrastructure.Di;
 
 namespace StringSearch.Api.Host
@@ -14,9 +15,9 @@ namespace StringSearch.Api.Host
         private static IWebHostBuilder createWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .ConfigureServices(services =>
-                {
-                    services.RegisterInfrastructureDependencies();
-                });
+                .ConfigureServices(services => 
+                    services
+                        .RegisterInfrastructureDependencies()
+                        .AddStringSearch());
     }
 }

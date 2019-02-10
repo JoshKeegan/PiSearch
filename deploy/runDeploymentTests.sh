@@ -23,7 +23,7 @@ readonly uri="http://$hostname:$port"
 readonly curl="curl -L --silent --fail --output /dev/null --write-out '%{http_code}: %{url_effective}\n'"
 
 # Health check
-eval $curl $uri/api/Health
+eval $curl $uri/api/v1/Health
 
 # Quick happy path
-eval $curl $uri/api/Lookup?find=230893
+eval $curl $uri/api/v1/Lookup?find=230893

@@ -16,9 +16,9 @@ namespace StringSearch.Api.Mvc.ActionResults
             StatusCode = 400;
         }
 
-        private static BadRequest generateBadRequest(ModelStateDictionary modelState)
+        private static BadRequestDto generateBadRequest(ModelStateDictionary modelState)
         {
-            return new BadRequest(generateValidationErrors(modelState));
+            return new BadRequestDto(generateValidationErrors(modelState));
         }
 
         private static IDictionary<string, IEnumerable<string>> generateValidationErrors(ModelStateDictionary modelState)

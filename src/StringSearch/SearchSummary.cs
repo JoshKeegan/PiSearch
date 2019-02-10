@@ -22,12 +22,13 @@ namespace StringSearch
         public readonly string ClientIp;
         public readonly DateTime SearchDate;
         public long ProcessingTimeMs;
+        public readonly string NamedDigits;
 
         public bool HasSuffixArrayIndices => MinSuffixArrayIdx != NO_SUFFIX_ARRAY_INDICES &&
                                              MaxSuffixArrayIdx != NO_SUFFIX_ARRAY_INDICES;
 
         public SearchSummary(string find, int? resultId, long? minSuffixArrayIdx, long? maxSuffixArrayIdx,
-            bool justCount, int? numSurroundingDigits, IPAddress clientIp)
+            bool justCount, int? numSurroundingDigits, IPAddress clientIp, string namedDigits)
         {
             Find = find ?? throw new ArgumentNullException(nameof(find));
             ResultId = resultId ?? NO_RESULT_ID;
@@ -37,6 +38,7 @@ namespace StringSearch
             NumSurroundingDigits = numSurroundingDigits;
             ClientIp = clientIp != null ? clientIp.ToString() : UNDETERMINED_IP;
             SearchDate = DateTime.UtcNow;
+            NamedDigits = namedDigits;
         }
     }
 }

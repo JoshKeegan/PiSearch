@@ -17,6 +17,7 @@ namespace StringSearch.Infrastructure.DataLayer
         private const DbType SEARCH_DATE_TYPE = DbType.DateTime;
         private const DbType PROCESSING_TIME_MS_TYPE = DbType.Int64;
         private const DbType NUM_SURROUNDING_DIGITS_TYPE = DbType.Int32;
+        private const DbType NAMED_DIGITS_TYPE = DbType.String;
 
         private readonly IDbConnectionFactory dbConnFact;
 
@@ -35,9 +36,9 @@ namespace StringSearch.Infrastructure.DataLayer
                 // Build the command
                 command.CommandText = 
 @"INSERT INTO searches (find, minSuffixArrayIdx, maxSuffixArrayIdx, resultId, justCount, clientIp, searchDate, 
-    processingTimeMs, numSurroundingDigits)
+    processingTimeMs, numSurroundingDigits, namedDigits)
 VALUES (@find, @minSuffixArrayIdx, @maxSuffixArrayIdx, @resultId, @justCount, @clientIp, @searchDate, 
-    @processingTimeMs, @numSurroundingDigits)";
+    @processingTimeMs, @numSurroundingDigits, @namedDigits)";
 
                 // Add the parameters
                 command.AddParameter("@find", search.Find, FIND_TYPE);
@@ -49,6 +50,7 @@ VALUES (@find, @minSuffixArrayIdx, @maxSuffixArrayIdx, @resultId, @justCount, @c
                 command.AddParameter("@searchDate", search.SearchDate, SEARCH_DATE_TYPE);
                 command.AddParameter("@processingTimeMs", search.ProcessingTimeMs, PROCESSING_TIME_MS_TYPE);
                 command.AddParameter("@numSurroundingDigits", search.NumSurroundingDigits, NUM_SURROUNDING_DIGITS_TYPE);
+                command.AddParameter("@namedDigits", search.NamedDigits, NAMED_DIGITS_TYPE);
 
                 // Run the command
                 await command.ExecuteNonQueryAsync();
