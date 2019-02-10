@@ -26,4 +26,4 @@ readonly curl="curl -L --silent --fail --output /dev/null --write-out '%{http_co
 eval $curl $uri/api/v1/Health
 
 # Quick happy path
-eval $curl $uri/api/v1/Lookup?find=230893
+eval $curl $uri/api/v1/Lookup?namedDigits=pi&find=230893
