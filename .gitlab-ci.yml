@@ -84,7 +84,11 @@ deploy-prod:
     - uniqueifier=`cat artefacts/uniqueifier`
     - hostname=`echo $CI_ENVIRONMENT_URL | awk -F [/:] '{print $4}'`
     - ssh $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD "mkdir -p ~/cd/prod/$uniqueifier"
-    - scp -r $PWD/\* $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD:~/cd/prod/$uniqueifier
+    - |
+      for l in `ls`; \
+      do \
+        scp -r $PWD/$l $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD:~/cd/prod/$uniqueifier ; \
+      done
     - |
       ssh $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD \
         "cd ~/cd/prod/$uniqueifier/artefacts/deploy && \
