@@ -31,7 +31,13 @@ namespace StringSearch.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.RegisterApiDependencies();
+            services
+                .RegisterApiDependencies()
+                .AddCors()
+                .AddSwaggerGen(c =>
+                {
+                    c.SwaggerDoc("v1", new Info { Title = "PiSearch API v1", Version = "v1" });
+                });
 
             services
                 .AddMvc(options =>
@@ -40,19 +46,14 @@ namespace StringSearch.Api
                     options.RegisterAllCustomModelBinders(loggerFactory);
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info { Title = "PiSearch API v1", Version = "v1" });
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors(builder => builder.AllowAnyOrigin());
             app.UseMiddleware<ExceptionRequestHandler>();
             app.UseMvc();
-            app.UseCors();
             app.UseForwardedHeaders(new ForwardedHeadersOptions()
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
