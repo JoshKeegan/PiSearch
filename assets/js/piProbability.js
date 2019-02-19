@@ -1,7 +1,8 @@
 /*
 	piProbability - calculates the probability of finding a string of digits of a specified length
 		in some number of digits of pi
-	By Josh Keegan 08/02/2015
+	Authors:
+		Josh Keegan 08/02/2015
  */
 var piProbability = 
 {

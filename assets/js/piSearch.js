@@ -1,7 +1,7 @@
 /*
 	piSearch - Main entry point for searching pi on the website
-	By Josh Keegan 30/01/2015
-	Last Edit 14/03/2015
+	Authors:
+		Josh Keegan 30/01/2015
  */
 var piSearch = 
 {
@@ -106,7 +106,7 @@ var piSearch =
 		var localResult = localSearch.compatibleSearch(find, fromStringIdx, afterResultId);
 
 		//If a result was found locally
-		if(localResult.ResultStringIndex !== -1)
+		if(localResult.resultStringIdx !== -1)
 		{
 			//TODO: If the digits are found at the very end of what's available locally, the surrounding digits after should be fetched from the server
 			piSearch.displayResult(find, localResult);
@@ -146,7 +146,7 @@ var piSearch =
 		//	Action: local (if found) or remote (if not found locally, so a request will be sent to the server)
 		//	Label: The string being searched for
 		//	Value: The ResultID being fetched
-		ga("send", "event", "search", (localResult.ResultStringIndex !== -1 ? "local" : "remote"), find, afterResultId + 1);	
+		ga("send", "event", "search", (localResult.ResultStringIdx !== -1 ? "local" : "remote"), find, afterResultId + 1);	
 	},
 
 	searchNext: function()
@@ -170,15 +170,15 @@ var piSearch =
 
 		//TODO: UI Improvements
 		$("#noSearchPerformed").addClass("hide");
-		if(result.NumResults === 0)
+		if(result.numResults === 0)
 		{
 			$("#searchResult").addClass("hide");
 			$("#searchNoResults").removeClass("hide");
 		}
 		else //There are results
 		{
-			$("#searchResultIndex").html(numberHelpers.insertCommas(result.ResultStringIndex + 1));
-			$("#searchResultOrdinal").html(piSearch.getOrdinal(result.ResultStringIndex + 1));
+			$("#searchResultIndex").html(numberHelpers.insertCommas(result.resultStringIdx + 1));
+			$("#searchResultOrdinal").html(piSearch.getOrdinal(result.resultStringIdx + 1));
 
 			$("#searchNoResults").addClass("hide");
 			$("#searchResult").removeClass("hide");
@@ -188,18 +188,18 @@ var piSearch =
 		var digitsBefore = "";
 		var digitsFound = "";
 		var digitsAfter = "";
-		if(result.SurroundingDigits !== null)
+		if(result.surroundingDigits !== null)
 		{
-			digitsBefore = result.SurroundingDigits.Before;
+			digitsBefore = result.surroundingDigits.before;
 			digitsFound = find;
-			digitsAfter = result.SurroundingDigits.After;
+			digitsAfter = result.surroundingDigits.after;
 		}
 		$("#searchResultDigitsBefore").html(digitsBefore);
 		$("#searchResultDigitsFound").html(digitsFound);
 		$("#searchResultDigitsAfter").html(digitsAfter);
 
 		//Occurrence Number
-		$("#searchResultOccurrenceNumber").html(result.ResultId + 1);
+		$("#searchResultOccurrenceNumber").html(result.resultId + 1);
 
 		//Set the current processing time to 0, as it gets added to
 		$("#searchResultProcessingTimeMs").html(0);
@@ -209,20 +209,20 @@ var piSearch =
 
 	displayCountAndProcessingTime: function(result)
 	{
-		//If a local search has been performed, NumResults is set to -1
-		var strNumResults = result.NumResults < 0 ? "Loading . . ." : numberHelpers.insertCommas(result.NumResults);
+		//If a local search has been performed, numResults is set to -1
+		var strNumResults = result.numResults < 0 ? "Loading . . ." : numberHelpers.insertCommas(result.numResults);
 		$("#searchResultNumResults").html(strNumResults);
 
 		//Get the existing processing time
 		var currProcTime = parseFloat(numberHelpers.removeCommas($("#searchResultProcessingTimeMs").html()));
 		//Add this processing time to it
-		var procTime = currProcTime + result.ProcessingTimeMs;
+		var procTime = currProcTime + result.processingTimeMs;
 		//Display the summed procesing time
 		$("#searchResultProcessingTimeMs").html(numberHelpers.insertCommas(procTime.toFixed(0)));
 
 		//If there are more results to be displayed after this one, enable the find next occurrence button
 		var resultId = parseInt(numberHelpers.removeCommas($("#searchResultOccurrenceNumber").html())) - 1;
-		if(resultId != result.NumResults - 1)
+		if(resultId != result.numResults - 1)
 		{
 			$("#btnFindNext").prop("disabled", false);
 		}

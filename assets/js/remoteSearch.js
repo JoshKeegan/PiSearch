@@ -1,17 +1,21 @@
 /*
 	remoteSearch - search the digits of pi by sending the request to a remote API
-	By Josh Keegan 30/01/2015
-	Last Edit 28/09/2018
+	Authors:
+		Josh Keegan 30/01/2015
  */
 var remoteSearch = 
 {
-	//Constants
-    API_URL: "http://api.pisearch.joshkeegan.co.uk/index.aspx",
+	// Constants
+	API_URL: "https://v2.api.pisearch.joshkeegan.co.uk/",
+	//API_URL: "http://localhost:5000/",
+	COUNT_EP: "api/v1/Count",
+	LOOKUP_EP: "api/v1/Lookup",
+	NAMED_DIGITS: "pi",
 	
-	//Variables
+	// Variables
 	prevSearchResults: {  },
 	
-	//Methods
+	// Methods
 	init: function()
 	{
 		console.log("remoteSearch.init");
@@ -21,49 +25,49 @@ var remoteSearch =
 	{
 		console.log("remoteSearch.search");
 
-		//If it hasn't been specified which result to get for this search, get the first
-		if(typeof(resultId) === "undefined")
+		// If it hasn't been specified which result to get for this search, get the first
+		if (typeof(resultId) === "undefined")
 		{
 			resultId = 0;
 		}
-		else if(!justCount && (typeof(resultId) !== "number" || resultId % 1 !== 0))
+		else if (!justCount && (typeof(resultId) !== "number" || resultId % 1 !== 0))
 		{
 			throw "resultId must be an integer number when not just counting";
 		}
 
-		//Check the cache
+		// Check the cache
 		var cachedResult = remoteSearch.getPrevResult(find, resultId);
 
-		//Cache hit
+		// Cache hit
 		if(cachedResult !== null)
 		{
 			successCallback(cachedResult);
 		}
-		else //Cache miss
+		else // Cache miss
 		{
-			//If we've searched for this string before (not for this resultId) then check that the resultId we're requesting exists
+			// If we've searched for this string before (not for this resultId) then check that the resultId we're requesting exists
 			var prevResults = remoteSearch.getPrevResults(find);
-			if(prevResults !== null && prevResults.NumResults <= resultId)
+			if (prevResults !== null && prevResults.numResults <= resultId)
 			{
-				//We know this doesn't exist
+				// We know this doesn't exist
 				failureCallback("max possible resultId for the minSuffixArrayIdx and maxSuffixArrayIdx is " + (prevResults.NumResults - 1));
 			}
-			else //Otherwise we don't know any information client-side that would make this a wasted request
+			else // Otherwise we don't know any information client-side that would make this a wasted request
 			{
 				$.ajax(
 				{
-					type: "POST",
-					data: remoteSearch.buildPostData(find, resultId, justCount),
-					async: true,
-					url: remoteSearch.API_URL,
+					type: "GET",
+					data: remoteSearch.buildData(find, resultId, justCount),
+                    async: true,
+                    url: remoteSearch.API_URL + (justCount ? remoteSearch.COUNT_EP : remoteSearch.LOOKUP_EP),
 					cache: true,
 					dataType: "json",
 					success: function(json)
                     {
-						//Store this search result so that it can be used to help reduce API load for future searches
+						// Store this search result so that it can be used to help reduce API load for future searches
 						remoteSearch.storeSearchResult(find, json);
 
-						//Use getPrevResult as the json may be changed around a bit to what we give to the callback & this ensures consistency
+						// Use getPrevResult as the json may be changed around a bit to what we give to the callback & this ensures consistency
 						var result = remoteSearch.getPrevResult(find, resultId);
 
 						successCallback(result);
@@ -100,33 +104,35 @@ var remoteSearch =
 	{
 		console.log("remoteSearch.storeSearchResult");
 
-		//If we've never searched for find before, store the results for find
-		if(!(find in remoteSearch.prevSearchResults))
+		// If we've never searched for find before, store the results for find
+		if (!(find in remoteSearch.prevSearchResults))
 		{
 			remoteSearch.prevSearchResults[find] = 
 			{
-				SuffixArrayMinIdx: result.SuffixArrayMinIdx,
-				SuffixArrayMaxIdx: result.SuffixArrayMaxIdx,
-				NumResults: result.NumResults
+				minSuffixArrayIdx: result.minSuffixArrayIdx,
+				maxSuffixArrayIdx: result.maxSuffixArrayIdx,
+				numResults: result.numResults,
+				processingTimeMs: result.processingTimeMs
 			};
 		}
 
-		//Store the results for this resultId in find
-		remoteSearch.prevSearchResults[find][result.ResultId] = 
+		// If we have data for a specific result ID (i.e. we did a Lookup), store them
+		if ("resultId" in result)
 		{
-			ResultId: result.ResultId,
-			NumResults: result.NumResults,
-			ResultStringIndex: result.ResultStringIndex,
-			ProcessingTimeMs: result.ProcessingTimeMs,
-			SurroundingDigits: result.SurroundingDigits
-		};
+			remoteSearch.prevSearchResults[find][result.resultId] =
+			{
+				resultStringIdx: result.resultStringIdx,
+				surroundingDigits: result.surroundingDigits,
+				processingTimeMs: result.processingTimeMs
+			};
+		}
 	},
 
 	getPrevResults: function(find)
 	{
 		console.log("remoteSearch.getPrevResults");
 
-		if(find in remoteSearch.prevSearchResults)
+		if (find in remoteSearch.prevSearchResults)
 		{
 			return remoteSearch.prevSearchResults[find];
 		}
@@ -140,52 +146,67 @@ var remoteSearch =
 	{
 		console.log("remoteSearch.getPrevResult");
 
-		if(typeof(resultId) === "undefined" || resultId === null)
-		{
-			resultId = -1;
-		}
-
 		var results = remoteSearch.getPrevResults(find);
 
-		if(results !== null && resultId in results)
+		// If doing a count, just return the results (which contains all fields that a count would)
+		if (typeof (resultId) === "undefined" || resultId === null)
 		{
-			return results[resultId];
+			return results;
 		}
+
+		// Otherwise, if we have results for this ID
+		if (results !== null && resultId in results)
+		{
+			var lookupSpecific = results[resultId];
+			var toRet =
+			{
+				// Properties shared between all results for this string
+				minSuffixArrayIdx: results.minSuffixArrayIdx,
+				maxSuffixArrayIdx: results.maxSuffixArrayIdx,
+				numResults: results.numResults,
+
+				// Properties specified to this result ID
+				resultStringIdx: lookupSpecific.resultStringIdx,
+				surroundingDigits: lookupSpecific.surroundingDigits,
+				processingTimeMs: lookupSpecific.processingTimeMs,
+
+				// Result ID (not kept on the object to save on memory)
+				resultId: resultId
+			};
+			return toRet;
+        }
 
 		return null;
 	},
 
-	buildPostData: function(find, resultId, justCount)
+	buildData: function(find, resultId, justCount)
 	{
-		console.log("remoteSearch.buildPostData");
+		console.log("remoteSearch.buildData");
 
 		var postData =
-		{
+        {
+			namedDigits: remoteSearch.NAMED_DIGITS,
 			find: find,
-			resultId: resultId,
-			justCount: justCount
+			resultId: resultId
 		};
 
-		//If there have been previous results for this search, include the additional suffix array information that will have been returned by those searches
+		// If there have been previous results for this search, include the additional suffix array information that will have been returned by those searches
 		var prevResults = remoteSearch.getPrevResults(find);
-		if(prevResults !== null)
-		{
-			postData.minSuffixArrayIdx = prevResults.SuffixArrayMinIdx;
-			postData.maxSuffixArrayIdx = prevResults.SuffixArrayMaxIdx;
+		if (prevResults !== null)
+        {
+            postData.minSuffixArrayIdx = prevResults.minSuffixArrayIdx;
+            postData.maxSuffixArrayIdx = prevResults.maxSuffixArrayIdx;
 		}
 		
 		return postData;
 	},
 
 	getUserFriendlyError: function(error)
-	{
-		if(/^max\ssuffix\sarray\srange\sallowed\sis\s[0-9]+$/i.test(error))
-		{
-			return "There's a very large number of results for this search, please try searching for more digits";
-		}
-		else //Otherwise there isn't a user-friendly version of this error message
-		{
-			return error;
-		}
+    {
+		// In v2 of the API, all limitations have been removed.
+		//	Now all known conditions *should* be being checked client-side,
+		//	so anything server-side is unexpected, which we won't have a friendly name for.
+		//	Have left this here in case it's required though.
+		return error;
 	}
 };
