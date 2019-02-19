@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using StringSearch.Api.Contracts.Searches.Counts;
+using StringSearch.Api.Extensions;
 using StringSearch.DataLayer;
 using StringSearch.Models;
 using StringSearch.Services;
@@ -33,7 +34,7 @@ namespace StringSearch.Api.Controllers
         public IActionResult Index(CountRequestDto requestDto)
         {
             SearchSummary summary = new SearchSummary(requestDto.Find, null, null,
-                null, true, null, Request.HttpContext.Connection.RemoteIpAddress, requestDto.NamedDigits);
+                null, true, null, Request.GetClientIp(), requestDto.NamedDigits);
 
             // Time the requestDto being processed
             Stopwatch stopwatch = new Stopwatch();

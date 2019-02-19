@@ -1,7 +1,10 @@
 ﻿using System.Diagnostics;
+using System.Net;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using StringSearch.Api.Contracts.Searches.Lookups;
+using StringSearch.Api.Extensions;
 using StringSearch.DataLayer;
 using StringSearch.Models;
 using StringSearch.Services;
@@ -30,7 +33,7 @@ namespace StringSearch.Api.Controllers
         {
             SearchSummary summary = new SearchSummary(requestDto.Find, requestDto.ResultId, requestDto.MinSuffixArrayIdx,
                 requestDto.MaxSuffixArrayIdx, false, requestDto.NumSurroundingDigits,
-                Request.HttpContext.Connection.RemoteIpAddress, requestDto.NamedDigits);
+                Request.GetClientIp(), requestDto.NamedDigits);
 
             // Time the requestDto being processed
             Stopwatch stopwatch = new Stopwatch();
