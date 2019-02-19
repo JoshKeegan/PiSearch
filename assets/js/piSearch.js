@@ -188,7 +188,7 @@ var piSearch =
 		var digitsBefore = "";
 		var digitsFound = "";
 		var digitsAfter = "";
-		if(result.surroundingDigits !== null)
+		if ("surroundingDigits" in result && result.surroundingDigits !== null)
 		{
 			digitsBefore = result.surroundingDigits.before;
 			digitsFound = find;

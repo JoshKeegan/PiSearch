@@ -104,7 +104,7 @@ var remoteSearch =
 	{
 		console.log("remoteSearch.storeSearchResult");
 
-		// If we've never searched for find before, store the results for find
+		// If we've never searched for find before, store its results
 		if (!(find in remoteSearch.prevSearchResults))
 		{
 			remoteSearch.prevSearchResults[find] = 
@@ -116,8 +116,8 @@ var remoteSearch =
 			};
 		}
 
-		// If we have data for a specific result ID (i.e. we did a Lookup), store them
-		if ("resultId" in result)
+		// If we have data for a specific result ID (i.e. we did a Lookup and got results), store them
+		if ("resultId" in result && result.resultId !== null)
 		{
 			remoteSearch.prevSearchResults[find][result.resultId] =
 			{
@@ -148,8 +148,8 @@ var remoteSearch =
 
 		var results = remoteSearch.getPrevResults(find);
 
-		// If doing a count, just return the results (which contains all fields that a count would)
-		if (typeof (resultId) === "undefined" || resultId === null)
+		// If doing a count or there are no results, just return the results (which contains all fields that a count would)
+		if (typeof (resultId) === "undefined" || resultId === null || (results !== null && results.numResults === 0))
 		{
 			return results;
 		}
