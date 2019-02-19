@@ -25,6 +25,7 @@ namespace StringSearch.Api.Controllers
             this.mapper = mapper;
         }
 
+        [HttpGet]
         public IActionResult Index(LookupRequestDto requestDto)
         {
             SearchSummary summary = new SearchSummary(requestDto.Find, requestDto.ResultId, requestDto.MinSuffixArrayIdx,

@@ -29,6 +29,7 @@ namespace StringSearch.Api.Controllers
             this.mapper = mapper;
         }
 
+        [HttpGet]
         public IActionResult Index(CountRequestDto requestDto)
         {
             SearchSummary summary = new SearchSummary(requestDto.Find, null, null,

@@ -13,6 +13,7 @@ using StringSearch.Api.Di;
 using StringSearch.Api.Mvc.ActionFilters;
 using StringSearch.Api.Mvc.Middleware;
 using StringSearch.Api.Mvc.ModelBinding;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace StringSearch.Api
 {
@@ -39,6 +40,11 @@ namespace StringSearch.Api
                     options.RegisterAllCustomModelBinders(loggerFactory);
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "PiSearch API v1", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +56,16 @@ namespace StringSearch.Api
             app.UseForwardedHeaders(new ForwardedHeadersOptions()
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PiSearch API v1");
             });
         }
     }
