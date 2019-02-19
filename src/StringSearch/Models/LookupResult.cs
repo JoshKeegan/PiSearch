@@ -7,7 +7,7 @@ namespace StringSearch.Models
     public class LookupResult : SearchResult
     {
         public int? ResultId;
-        public long? ResultStringIndex;
+        public long? ResultStringIdx;
         public SurroundingDigits SurroundingDigits;
     }
 }

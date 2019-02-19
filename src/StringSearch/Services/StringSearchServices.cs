@@ -57,7 +57,7 @@ namespace StringSearch.Services
 
                 // TODO: LookupResult could contain an OccurrenceLookupResult??
                 result.ResultId = request.ResultId;
-                result.ResultStringIndex = occurrence.ResultStringIndex;
+                result.ResultStringIdx = occurrence.ResultStringIndex;
                 result.SurroundingDigits = occurrence.SurroundingDigits;
             }
 

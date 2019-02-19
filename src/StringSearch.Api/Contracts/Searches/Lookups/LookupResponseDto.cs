@@ -3,7 +3,7 @@
     public class LookupResponseDto : SearchResponseDto
     {
         public int? ResultId;
-        public long? ResultStringIndex;
+        public long? ResultStringIdx;
         public SurroundingDigitsDto SurroundingDigits;
     }
 }
