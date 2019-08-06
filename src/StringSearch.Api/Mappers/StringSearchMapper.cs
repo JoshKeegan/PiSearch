@@ -9,13 +9,14 @@ using StringSearch.Models;
 
 namespace StringSearch.Api.Mappers
 {
-    public class StringSearchResponseMapperProfile : Profile
+    public class StringSearchMapper : Profile
     {
-        public StringSearchResponseMapperProfile()
+        public StringSearchMapper()
         {
             CreateMap<SurroundingDigits, SurroundingDigitsDto>();
             CreateMap<SearchResult, CountResponseDto>().ForMember(dest => dest.ProcessingTimeMs, opt => opt.Ignore());
             CreateMap<LookupResult, LookupResponseDto>().ForMember(dest => dest.ProcessingTimeMs, opt => opt.Ignore());
+            CreateMap<LookupRequestDto, LookupRequest>();
         }
     }
 }
