@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Custom Rulset" Description="Custom Rulset" ToolsVersion="14.0">
+  <Rules AnalyzerId="SerilogAnalyzer" RuleNamespace="SerilogAnalyzer">
+    <Rule Id="Serilog006" Action="None" />
+  </Rules>
+</RuleSet>

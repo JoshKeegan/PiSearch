@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2041
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{95DF04AA-18E7-4BE0-8D70-81E4301475DC}"
 EndProject
@@ -15,11 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringSearchConsole", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringSearch.Api", "src\StringSearch.Api\StringSearch.Api.csproj", "{371A64B6-103B-4E21-9A09-18E81C762E24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringSearch.Api.Host", "src\StringSearch.Api.Host\StringSearch.Api.Host.csproj", "{51F66ADA-72FA-4414-94C3-1F30B6A0B737}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringSearch.Api.Host", "src\StringSearch.Api.Host\StringSearch.Api.Host.csproj", "{51F66ADA-72FA-4414-94C3-1F30B6A0B737}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringSearch.Infrastructure", "src\StringSearch.Infrastructure\StringSearch.Infrastructure.csproj", "{723A10B1-E710-4011-987E-76262C4349AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringSearch.Infrastructure", "src\StringSearch.Infrastructure\StringSearch.Infrastructure.csproj", "{723A10B1-E710-4011-987E-76262C4349AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringSearch", "src\StringSearch\StringSearch.csproj", "{4900D5E5-B85F-46DC-A619-59F50635D028}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringSearch", "src\StringSearch\StringSearch.csproj", "{4900D5E5-B85F-46DC-A619-59F50635D028}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringSearch.Legacy", "src\StringSearch.Legacy\StringSearch.Legacy.csproj", "{51520E5D-9F55-493D-95C1-E635BAFCF3C9}"
 EndProject
