@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
+using MethodTimer;
 using StringSearch.DataLayer;
 
 namespace StringSearch.Infrastructure.DataLayer
@@ -26,6 +27,7 @@ namespace StringSearch.Infrastructure.DataLayer
             this.dbConnFact = dbConnFact;
         }
 
+        [Time]
         public async Task Insert(SearchSummary search)
         {
             using (DbConnection conn = dbConnFact.GetConnection())

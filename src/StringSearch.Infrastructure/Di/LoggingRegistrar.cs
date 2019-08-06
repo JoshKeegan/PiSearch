@@ -21,7 +21,12 @@ namespace StringSearch.Infrastructure.Di
                 .Enrich.FromLogContext()
                 .Enrich.WithVersion(provider.GetService<IVersionProvider>()));
 
-            services.AddSingleton<ILogger>(provider => provider.GetService<LoggerConfiguration>().CreateLogger());
+            services.AddSingleton<ILogger>(provider =>
+            {
+                // Also set static logger so that it can be accessed from outside of DI
+                Log.Logger = provider.GetService<LoggerConfiguration>().CreateLogger();
+                return Log.Logger;
+            });
             services.AddSingleton<ILoggerFactory>(provider => new SerilogLoggerFactory(provider.GetService<ILogger>()));
 
             return services;
