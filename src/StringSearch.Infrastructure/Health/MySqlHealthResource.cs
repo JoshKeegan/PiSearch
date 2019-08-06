@@ -40,8 +40,7 @@ namespace StringSearch.Infrastructure.Health
             }
             catch (Exception e)
             {
-                log.Error("An error occurred during a MySQL health check for \"{name}\". Exception: {@exception}", Name,
-                    e);
+                log.Error(e, "An error occurred during a MySQL health check for \"{name}\"", Name);
 
                 return new HealthState(false, "Failed to connect to database");
             }
