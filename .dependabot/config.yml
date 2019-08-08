@@ -5,5 +5,5 @@ update_configs:
     update_schedule: "live"
 
   - package_manager: "docker"
-  directory: "/src/StringSearch.Api.Host"
-  update_schedule: "daily"
+    directory: "/src/StringSearch.Api.Host"
+    update_schedule: "daily"
