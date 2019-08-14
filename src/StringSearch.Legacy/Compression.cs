@@ -1,4 +1,4 @@
-﻿/*
+/*
  * PiSearch
  * Compression class
  * By Josh Keegan 06/11/2014

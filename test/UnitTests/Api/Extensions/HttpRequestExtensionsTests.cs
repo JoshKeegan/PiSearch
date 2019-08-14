@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Http.Internal;
 using NSubstitute;
 using NUnit.Framework;
 using StringSearch.Api.Extensions;
-using UnitTests.TestObjects.Http;
 
 namespace UnitTests.Api.Extensions
 {
@@ -24,13 +23,12 @@ namespace UnitTests.Api.Extensions
         public void GetClientIp_ForwardedForSingle_ReturnsForwardedFor(string strIp)
         {
             // Arrange
-            TestHttpRequest request = new TestHttpRequest
+            HttpRequest request = Substitute.For<HttpRequest>();
+            request.Headers.Returns(new HeaderDictionary()
             {
-                TestHeaders = new HeaderDictionary
-                {
-                    {"X-Forwarded-For", new Microsoft.Extensions.Primitives.StringValues(strIp)}
-                }
-            };
+                { "X-Forwarded-For", new Microsoft.Extensions.Primitives.StringValues(strIp) }
+            });
+
             IPAddress expected = IPAddress.Parse(strIp);
 
             // Act
@@ -50,17 +48,9 @@ namespace UnitTests.Api.Extensions
         {
             // Arrange
             IPAddress expected = IPAddress.Parse(strIp);
-            TestHttpRequest request = new TestHttpRequest
-            {
-                TestHeaders = new HeaderDictionary(),
-                TestHttpContext = new TestHttpContext()
-                {
-                    TestConnection = new DefaultConnectionInfo(Substitute.For<IFeatureCollection>())
-                    {
-                        RemoteIpAddress = expected
-                    }
-                }
-            };
+
+            HttpRequest request = Substitute.For<HttpRequest>();
+            request.HttpContext.Connection.RemoteIpAddress.Returns(expected);
 
             // Act
             IPAddress actual = request.GetClientIp();
