@@ -469,7 +469,7 @@ namespace UnitTests.Legacy
                     string strFind = str.Substring(i, j - i);
                     byte[] find = stringToByteArr(strFind);
 
-                    Assert.AreEqual(0, SearchString.doesStartWithSuffix(fourBitDigitArray, find, i));
+                    Assert.AreEqual(0, SearchString.DoesStartWithSuffix(fourBitDigitArray, find, i));
                 }
             }
         }
@@ -484,7 +484,7 @@ namespace UnitTests.Legacy
             string strToFind = "0" + str.Substring(1);
             byte[] toFind = stringToByteArr(strToFind);
 
-            Assert.AreEqual(1, SearchString.doesStartWithSuffix(fourBitDigitArray, toFind, 0));
+            Assert.AreEqual(1, SearchString.DoesStartWithSuffix(fourBitDigitArray, toFind, 0));
         }
 
         [Test]
@@ -497,7 +497,7 @@ namespace UnitTests.Legacy
             string strToFind = "2" + str.Substring(1);
             byte[] toFind = stringToByteArr(strToFind);
 
-            Assert.AreEqual(-1, SearchString.doesStartWithSuffix(fourBitDigitArray, toFind, 0));
+            Assert.AreEqual(-1, SearchString.DoesStartWithSuffix(fourBitDigitArray, toFind, 0));
         }
 
         [Test]
@@ -510,7 +510,7 @@ namespace UnitTests.Legacy
             string strToFind = "901";
             byte[] toFind = stringToByteArr(strToFind);
 
-            Assert.AreEqual(-1, SearchString.doesStartWithSuffix(fourBitDigitArray, toFind, str.Length - 2));
+            Assert.AreEqual(-1, SearchString.DoesStartWithSuffix(fourBitDigitArray, toFind, str.Length - 2));
         }
 
         [Test]
@@ -523,7 +523,7 @@ namespace UnitTests.Legacy
             string strToFind = "90";
             byte[] toFind = stringToByteArr(strToFind);
 
-            Assert.AreEqual(0, SearchString.doesStartWithSuffix(fourBitDigitArray, toFind, str.Length - 2));
+            Assert.AreEqual(0, SearchString.DoesStartWithSuffix(fourBitDigitArray, toFind, str.Length - 2));
         }
 
         [Test]
@@ -536,12 +536,12 @@ namespace UnitTests.Legacy
             string strToFindHigh = "911";
             byte[] toFindHigh = stringToByteArr(strToFindHigh);
 
-            Assert.AreEqual(-1, SearchString.doesStartWithSuffix(fourBitDigitArray, toFindHigh, str.Length - 2));
+            Assert.AreEqual(-1, SearchString.DoesStartWithSuffix(fourBitDigitArray, toFindHigh, str.Length - 2));
 
             string strToFindLow = "871";
             byte[] toFindLow = stringToByteArr(strToFindLow);
 
-            Assert.AreEqual(1, SearchString.doesStartWithSuffix(fourBitDigitArray, toFindLow, str.Length - 2));
+            Assert.AreEqual(1, SearchString.DoesStartWithSuffix(fourBitDigitArray, toFindLow, str.Length - 2));
         }
 
         [Test]
@@ -556,7 +556,7 @@ namespace UnitTests.Legacy
             {
                 byte[] find = new byte[] { (byte)(str[i] - '0') };
 
-                long answer = SearchString.binarySearchForPrefix(suffixArray, fourBitDigitArray, find, 0, str.Length - 1);
+                long answer = SearchString.BinarySearchForPrefix(suffixArray, fourBitDigitArray, find, 0, str.Length - 1);
 
                 Assert.AreEqual(fourBitDigitArray[i], fourBitDigitArray[(long)suffixArray[answer]]);
             }
@@ -575,7 +575,7 @@ namespace UnitTests.Legacy
             {
                 byte[] find = stringToByteArr(s);
 
-                long answer = SearchString.binarySearchForPrefix(suffixArray, fourBitDigitArray, find, 0, fourBitDigitArray.Length - 1);
+                long answer = SearchString.BinarySearchForPrefix(suffixArray, fourBitDigitArray, find, 0, fourBitDigitArray.Length - 1);
 
                 Assert.AreEqual(-1, answer);
             }

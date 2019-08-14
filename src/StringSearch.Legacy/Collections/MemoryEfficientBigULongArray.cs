@@ -1,4 +1,4 @@
-﻿/*
+/*
  * PiSearch
  * MemoryEfficientBigULongArray - an implementation of BigArray for the ulong data type, fulfilling the following goals:
  *  Memory Efficient - Doesn't use 64 bits per value unless actually necessary to do so
@@ -37,8 +37,8 @@ namespace StringSearch.Legacy.Collections
                 long startByteIdx = startBitIdx / 8;
 
                 //Move the stream to where it should be
-                stream.Position = startByteIdx;
-                byte b = (byte)stream.ReadByte();
+                Stream.Position = startByteIdx;
+                byte b = (byte)Stream.ReadByte();
 
                 long bitIdx = startBitIdx;
                 int thisByteIdx = (int)(bitIdx % 8);
@@ -63,7 +63,7 @@ namespace StringSearch.Legacy.Collections
                     //If at the end of this byte (and there's still more to read), load the next one
                     if(thisByteIdx == 8 && bitIdx < endBitIdx)
                     {
-                        b = (byte)stream.ReadByte();
+                        b = (byte)Stream.ReadByte();
                         thisByteIdx = 0;
                     }
                 }
@@ -96,7 +96,7 @@ namespace StringSearch.Legacy.Collections
                 }
 
                 //Move the stream to where it should be
-                stream.Position = startByteIdx;
+                Stream.Position = startByteIdx;
 
                 //For each byte that will be effected by this
                 long lastByteEffectedIdx = endByteIdx - 1;
@@ -173,10 +173,10 @@ namespace StringSearch.Legacy.Collections
                     else //Otherwise only part of this byte needs copying over what's there already
                     {
                         //Get the original byte
-                        byte origByte = (byte)stream.ReadByte();
+                        byte origByte = (byte)Stream.ReadByte();
 
                         //Reset the stream position back to account for the byte that has just bean read
-                        stream.Position--;
+                        Stream.Position--;
 
                         //Calculate the start and end indices (to be replaced) within this byte
                         int startOffset = 0;
@@ -227,7 +227,7 @@ namespace StringSearch.Legacy.Collections
                     }
                     
                     //Write this byte to the stream
-                    stream.WriteByte(toStore);
+                    Stream.WriteByte(toStore);
 
                     //Increment the value bit index
                     valueBitIdx += 8;
@@ -245,13 +245,13 @@ namespace StringSearch.Legacy.Collections
             MaxValue = maxValue;
 
             //Calculate the number of bits to leave per value
-            bitsPerValue = calculateBitsPerValue(MaxValue);
+            bitsPerValue = CalculateBitsPerValue(MaxValue);
 
             //Calculate the number of bytes that will be used to store all of the values
             long numBytes = calculateMinimumStreamLength();
 
             //Store the array in memory by default
-            stream = new BigMemoryStream(numBytes);
+            Stream = new BigMemoryStream(numBytes);
         }
 
         public MemoryEfficientBigULongArray(long length, ulong maxValue, Stream underlyingStream)
@@ -260,18 +260,18 @@ namespace StringSearch.Legacy.Collections
             MaxValue = maxValue;
 
             //Calculate the number of bits to leave per value
-            bitsPerValue = calculateBitsPerValue(MaxValue);
+            bitsPerValue = CalculateBitsPerValue(MaxValue);
 
             //Use the specified stream to store the values in this array
-            stream = underlyingStream;
+            Stream = underlyingStream;
 
             //Calculate the required minimum length of the underlying stream
             long minStreamLength = calculateMinimumStreamLength();
 
             //If the provided underlying stream isn't long enough, make it bigger
-            if(stream.Length < minStreamLength)
+            if(Stream.Length < minStreamLength)
             {
-                stream.SetLength(minStreamLength);
+                Stream.SetLength(minStreamLength);
             }
         }
 
@@ -293,7 +293,7 @@ namespace StringSearch.Legacy.Collections
         }
 
         //Helpers
-        internal static byte calculateBitsPerValue(ulong maxValue)
+        internal static byte CalculateBitsPerValue(ulong maxValue)
         {
             byte numBits = 1;
             ulong largestPossible = 1;

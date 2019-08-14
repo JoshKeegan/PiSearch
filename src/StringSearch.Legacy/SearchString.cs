@@ -135,7 +135,7 @@ namespace StringSearch.Legacy
             }
             else //Otherwise we don't have the precomputed results for this search, run the suffix array search
             {
-                long matchingPosition = binarySearchForPrefix(suffixArray, digitArray, lookFor, 0,
+                long matchingPosition = BinarySearchForPrefix(suffixArray, digitArray, lookFor, 0,
                     suffixArray.Length - 1);
 
                 //If there were no matches
@@ -148,13 +148,13 @@ namespace StringSearch.Legacy
                     long min = matchingPosition;
                     long max = matchingPosition;
 
-                    while (min > 0 && doesStartWithSuffix(digitArray, lookFor, (long)suffixArray[min - 1]) == 0)
+                    while (min > 0 && DoesStartWithSuffix(digitArray, lookFor, (long)suffixArray[min - 1]) == 0)
                     {
                         min--;
                     }
 
                     while (max < digitArray.Length - 1 &&
-                           doesStartWithSuffix(digitArray, lookFor, (long) suffixArray[max + 1]) == 0)
+                           DoesStartWithSuffix(digitArray, lookFor, (long) suffixArray[max + 1]) == 0)
                     {
                         max++;
                     }
@@ -165,7 +165,7 @@ namespace StringSearch.Legacy
             }
         }
 
-        internal static long binarySearchForPrefix(IBigArray<ulong> suffixArray, IBigArray<byte> digitArray,
+        internal static long BinarySearchForPrefix(IBigArray<ulong> suffixArray, IBigArray<byte> digitArray,
             byte[] findPrefix, long min, long max)
         {
             long numLeftToSearch = max - min + 1;
@@ -180,7 +180,7 @@ namespace StringSearch.Legacy
             {
                 long idx = min + ((numLeftToSearch - 1) / 2);
 
-                int hit = doesStartWithSuffix(digitArray, findPrefix, (long)suffixArray[idx]);
+                int hit = DoesStartWithSuffix(digitArray, findPrefix, (long)suffixArray[idx]);
 
                 //If this is the answer
                 if(hit == 0)
@@ -190,17 +190,17 @@ namespace StringSearch.Legacy
                 //Otherwise if we're too high in the array
                 else if(hit == 1)
                 {
-                    return binarySearchForPrefix(suffixArray, digitArray, findPrefix, min, idx - 1);
+                    return BinarySearchForPrefix(suffixArray, digitArray, findPrefix, min, idx - 1);
                 }
                 //Otherwise we're too low in the array
                 else // hit == -1
                 {
-                    return binarySearchForPrefix(suffixArray, digitArray, findPrefix, idx + 1, max);
+                    return BinarySearchForPrefix(suffixArray, digitArray, findPrefix, idx + 1, max);
                 }
             }
         }
 
-        internal static int doesStartWithSuffix(IBigArray<byte> digitArray, byte[] findPrefix, long startIdx)
+        internal static int DoesStartWithSuffix(IBigArray<byte> digitArray, byte[] findPrefix, long startIdx)
         {
             //Number of digits in the digit array from startIdx (inclusive)
             long numDigitsAfter = digitArray.Length - startIdx;

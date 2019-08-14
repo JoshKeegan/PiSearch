@@ -72,7 +72,7 @@ namespace StringSearch.Legacy
 
         public static void WriteStreamNoCompression(UnderlyingStream obj, string filePath)
         {
-            WriteStreamNoCompression(obj.stream, filePath);
+            WriteStreamNoCompression(obj.Stream, filePath);
         }
 
         /*

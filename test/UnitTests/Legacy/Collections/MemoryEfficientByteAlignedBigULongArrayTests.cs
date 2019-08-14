@@ -238,7 +238,7 @@ namespace UnitTests.Legacy.Collections
                 ulong num = kvp.Key;
                 byte numBits = kvp.Value;
 
-                byte actual = MemoryEfficientByteAlignedBigULongArray.calculateBytesPerValue(num);
+                byte actual = MemoryEfficientByteAlignedBigULongArray.CalculateBytesPerValue(num);
                 Assert.AreEqual(numBits, actual);
             }
         }

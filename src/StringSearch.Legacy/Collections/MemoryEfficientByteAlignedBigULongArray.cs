@@ -1,4 +1,4 @@
-﻿/*
+/*
  * PiSearch
  * MemoryEfficientByteAlignedBigULongArray - implementation of BigArray for the ulong data type, fulfilling the following goals:
  *  Memory Efficient - Doesn't use 64 bits per value unless actually necessary to do so
@@ -36,11 +36,11 @@ namespace StringSearch.Legacy.Collections
                 long startByteIdx = i * bytesPerValue;
                 
                 //Move the stream to where it should be
-                stream.Position = startByteIdx;
+                Stream.Position = startByteIdx;
 
                 //Read in the bytes for this value
                 byte[] bytes = new byte[8];
-                stream.Read(bytes, 0, bytesPerValue);
+                Stream.Read(bytes, 0, bytesPerValue);
 
                 //Convert the bytes into a ulong
                 ulong toRet = BitConverter.ToUInt64(bytes, 0);
@@ -62,13 +62,13 @@ namespace StringSearch.Legacy.Collections
                 long startByteIdx = i * bytesPerValue;
 
                 //Move the stream to where it should be
-                stream.Position = startByteIdx;
+                Stream.Position = startByteIdx;
 
                 //Get the bytes for this value
                 byte[] bytes = BitConverter.GetBytes(value);
 
                 //Write the bytes for this value onto the stream
-                stream.Write(bytes, 0, bytesPerValue);
+                Stream.Write(bytes, 0, bytesPerValue);
             }
         }
 
@@ -82,13 +82,13 @@ namespace StringSearch.Legacy.Collections
             MaxValue = maxValue;
 
             //Calculate the number of bytes to leave per value
-            bytesPerValue = calculateBytesPerValue(MaxValue);
+            bytesPerValue = CalculateBytesPerValue(MaxValue);
 
             //Calculate the number of bytes that will be used to store all of the values
             long numBytes = length * bytesPerValue;
 
             //Store the array in memory by default (could be changed to another type of stream later)
-            stream = new BigMemoryStream(numBytes);
+            Stream = new BigMemoryStream(numBytes);
         }
 
         public MemoryEfficientByteAlignedBigULongArray(long length, ulong maxValue, Stream underlyingStream)
@@ -97,10 +97,10 @@ namespace StringSearch.Legacy.Collections
             MaxValue = maxValue;
 
             //Calculate the number of bytes to leave per value
-            bytesPerValue = calculateBytesPerValue(MaxValue);
+            bytesPerValue = CalculateBytesPerValue(MaxValue);
 
             //Use the specified stream to store the values in this array
-            stream = underlyingStream;
+            Stream = underlyingStream;
         }
 
         public MemoryEfficientByteAlignedBigULongArray(long length, Stream underlyingStream)
@@ -121,9 +121,9 @@ namespace StringSearch.Legacy.Collections
         }
 
         //Helpers
-        internal static byte calculateBytesPerValue(ulong maxValue)
+        internal static byte CalculateBytesPerValue(ulong maxValue)
         {
-            byte numBitsPerValue = MemoryEfficientBigULongArray.calculateBitsPerValue(maxValue);
+            byte numBitsPerValue = MemoryEfficientBigULongArray.CalculateBitsPerValue(maxValue);
 
             byte numBytesPerValue = (byte)(numBitsPerValue / 8);
 

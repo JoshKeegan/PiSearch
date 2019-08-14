@@ -1,4 +1,4 @@
-﻿/*
+/*
  * PiSearch
  * Precompute Search Results - for precomputing the suffix array indices that would be returned by
  *  performing the full search
@@ -35,7 +35,7 @@ namespace StringSearch.Legacy
                     //Find when this string starts
                     while (suffixArrayVal < fourBitDigitArray.Length &&
                         suffixArrayIdx < suffixArray.Length &&
-                        SearchString.doesStartWithSuffix(fourBitDigitArray, bArrSearch, suffixArrayVal) == -1)
+                        SearchString.DoesStartWithSuffix(fourBitDigitArray, bArrSearch, suffixArrayVal) == -1)
                     {
                         suffixArrayIdx++;
                         if (suffixArrayIdx < suffixArray.Length)
@@ -49,7 +49,7 @@ namespace StringSearch.Legacy
                     //Find when this string ends
                     while (suffixArrayVal < fourBitDigitArray.Length &&
                         suffixArrayIdx < suffixArray.Length &&
-                        SearchString.doesStartWithSuffix(fourBitDigitArray, bArrSearch, suffixArrayVal) == 0)
+                        SearchString.DoesStartWithSuffix(fourBitDigitArray, bArrSearch, suffixArrayVal) == 0)
                     {
                         suffixArrayIdx++;
                         if(suffixArrayIdx < suffixArray.Length)

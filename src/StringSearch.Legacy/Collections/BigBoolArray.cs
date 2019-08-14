@@ -25,8 +25,8 @@ namespace StringSearch.Legacy.Collections
                 }
 
                 //Set the stream position to that of the byte holding the bit we're after
-                stream.Position = i / 8;
-                int b = stream.ReadByte();
+                Stream.Position = i / 8;
+                int b = Stream.ReadByte();
 
                 //Move the bit we're after to be the LSB
                 int bitNum = (int)(i % 8);
@@ -49,11 +49,11 @@ namespace StringSearch.Legacy.Collections
                 }
 
                 //Set the stream position to that of the byte holding the bit we want to set
-                stream.Position = i / 8;
-                int b = stream.ReadByte();
+                Stream.Position = i / 8;
+                int b = Stream.ReadByte();
 
                 //Stream position will have incremented on read, roll back to write over this byte in a moment
-                stream.Position--;
+                Stream.Position--;
 
                 //Get out the values to the left and right of the bit to be set so that they can be written back onto the stream
                 int bitNum = (int)(i % 8);
@@ -73,7 +73,7 @@ namespace StringSearch.Legacy.Collections
 
                 //Merge the three bit strings
                 int merged = left | shiftedVal | right;
-                stream.WriteByte((byte)merged);
+                Stream.WriteByte((byte)merged);
             }
         }
 
@@ -88,15 +88,15 @@ namespace StringSearch.Legacy.Collections
             //TODO: Validation (length must be positive)
 
             Length = length;
-            stream = underlyingStream;
+            Stream = underlyingStream;
 
             //Calculate the minimum required length of the underlying stream
             long minStreamLength = calculateMinimumStreamLength(Length);
 
             //If the provided underlying stream isn't long enough, make it bigger
-            if(stream.Length < minStreamLength)
+            if(Stream.Length < minStreamLength)
             {
-                stream.SetLength(minStreamLength);
+                Stream.SetLength(minStreamLength);
             }
         }
 

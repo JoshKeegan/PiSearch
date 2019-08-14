@@ -1,4 +1,4 @@
-﻿/*
+/*
  * PiSearch
  * WinFileIO - High speed file IO using the windows API
  *  P/Invoke methods in kernel32 for better performance
@@ -26,6 +26,8 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+
+// ReSharper disable InconsistentNaming
 
 namespace StringSearch.Legacy.IO
 {

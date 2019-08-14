@@ -1,4 +1,4 @@
-﻿/*
+/*
     PiSearch
     SAIS - Implements the IS based linear suffix array consturction algorithm described in the paper:
         Ge Nong, Sen Zhang and Wai Hong Chan
@@ -42,6 +42,8 @@
 using System;
 using System.IO;
 using StringSearch.Legacy.Collections;
+
+// ReSharper disable InconsistentNaming
 
 namespace SuffixArray
 {
