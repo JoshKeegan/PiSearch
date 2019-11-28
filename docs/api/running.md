@@ -4,7 +4,12 @@ Wherever you're running the PiSearch API (from a dev PC through to production), 
 ## PiSearch DB
 The PiSearch DB is in MySQL.  
 The schema in in `schema.sql` under the API project.  
-The connection string mu be made available as configuration to the API, see `appsettings.json` for an example.
+The connection string must be made available as configuration to the API, see `appsettings.json` for an example.
+
+For local dev, you can start mysql with:
+```bash
+docker run -d -e MYSQL_ROOT_PASSWORD=wow_much_security -p 3306:3306 mysql
+```
 
 ## Digits, Suffix Array & Precomputed Results
 The API needs data to serve . . .  

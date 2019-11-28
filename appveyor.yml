@@ -1,8 +1,5 @@
 version: 1.0.{build}
-image: Visual Studio 2017
-
-install:
-- ps: build/ci/appveyor/installDotnet2.2.ps1
+image: Visual Studio 2019
 
 build_script:
 - ps: dotnet build
