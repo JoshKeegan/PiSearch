@@ -37,10 +37,12 @@ unit-tests: publish-unit-tests
 ci: build unit-tests
 
 publish-api: build
-	dotnet publish -c Release --no-build -o out src/StringSearch.Api.Host
+	cd src/StringSearch.Api.Host && \
+		dotnet publish -c Release --no-build -o out
 
 publish-unit-tests: build
-	dotnet publish -c Release --no-build -o out test/UnitTests
+	cd test/UnitTests && \
+		dotnet publish -c Release --no-build -o out
 
 publish-all: publish-api publish-unit-tests
 
