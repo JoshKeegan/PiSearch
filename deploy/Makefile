@@ -58,6 +58,9 @@ wait-for-container-ready:
 teardown-old-containers:
 	/bin/bash teardownOldContainers.sh $(environment) $(shell cat $(UNIQUEIFIER_PATH))
 
+delete-unused-images:
+	/bin/bash deleteUnusedImages.sh $(IMAGE_API)
+
 #
 # Deployment Tests
 #
@@ -108,5 +111,5 @@ reverse-proxy-target-new-container: generate-nginx-conf
 #	- environment
 #	- appsettingsDir
 #	- hostname
-deploy: run-container wait-for-container-ready run-deployment-tests-against-container reverse-proxy-target-new-container teardown-old-containers
+deploy: run-container wait-for-container-ready run-deployment-tests-against-container reverse-proxy-target-new-container teardown-old-containers delete-unused-images
 	$(info Deployment Complete. Now running version $(shell cat $(UNIQUEIFIER_PATH)) in environment $(environment))
