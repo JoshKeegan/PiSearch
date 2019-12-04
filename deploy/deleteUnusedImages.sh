@@ -4,7 +4,7 @@
 # Delete unused versions of an image
 #
 # Usage:
-#       ./deleteUnusedImage.sh $image
+#       ./deleteUnusedImages.sh $image
 #
 
 # Exit on error
@@ -14,7 +14,7 @@ readonly image="$1"
 
 if [ -z "$image" ]; then
         echo "Missing required params" >&2
-        echo 'Usage: ./deleteUnusedImage.sh $image' >&2
+        echo 'Usage: ./deleteUnusedImages.sh $image' >&2
         exit 1
 fi
 
