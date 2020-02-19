@@ -44,7 +44,7 @@ generate-docker-images:
     - docker
   image: docker:stable
   services:
-    - docker:dind
+    - docker:19.03.5-dind
   only:
     - master
   stage: generate-docker-images
