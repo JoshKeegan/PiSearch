@@ -73,6 +73,7 @@ run-deployment-tests-against-container:
 # Run within docker so that we can connect to the same docker network
 	export MSYS_NO_PATHCONV=1; \
 		docker run \
+			--rm \
 			-v ${PWD}/runDeploymentTests.sh:/app/runDeploymentTests.sh:ro \
 			--network=reverseProxy \
 			--entrypoint /bin/bash \
