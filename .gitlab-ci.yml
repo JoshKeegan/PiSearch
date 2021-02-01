@@ -7,7 +7,7 @@ stages:
 build:
   tags:
     - big-cpu
-  image: joshkeegan/dotnet-build:5.0.100
+  image: joshkeegan/dotnet-build:5.0.102-1-buster-slim
   stage: build
   script:
     - make publish-all
@@ -26,7 +26,7 @@ build:
 unit-tests:
   tags:
     - big-mem
-  image: joshkeegan/dotnet-build:5.0.100
+  image: joshkeegan/dotnet-build:5.0.102-1-buster-slim
   stage: unit-tests
   dependencies:
     - build
