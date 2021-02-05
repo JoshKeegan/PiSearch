@@ -48,10 +48,17 @@ namespace StringSearch.Api
             app.UseRouting();
             app.UseEndpoints(endpoints => endpoints.MapControllers());
 
-            app.UseForwardedHeaders(new ForwardedHeadersOptions()
+            ForwardedHeadersOptions forwardingOptions = new()
             {
                 ForwardedHeaders = ForwardedHeaders.All
-            });
+            };
+            // Defaults to only allow localhost, as it's written for IIS
+            //  As nginx is in a separate container it won't trust it, and will therefore ignore the X-Forwarded-* headers from it
+            //  Clearing these means it acepts these headers from any source (but the docker network setup limits who can
+            //  call it directly, so it's still protected without this)
+            forwardingOptions.KnownNetworks.Clear();
+            forwardingOptions.KnownProxies.Clear();
+            app.UseForwardedHeaders(forwardingOptions);
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
