@@ -56,6 +56,7 @@ namespace StringSearch.Api
             //  As nginx is in a separate container it won't trust it, and will therefore ignore the X-Forwarded-* headers from it
             //  Clearing these means it acepts these headers from any source (but the docker network setup limits who can
             //  call it directly, so it's still protected without this)
+            //  see: https://stackoverflow.com/a/44390593/5401981
             forwardingOptions.KnownNetworks.Clear();
             forwardingOptions.KnownProxies.Clear();
             app.UseForwardedHeaders(forwardingOptions);
