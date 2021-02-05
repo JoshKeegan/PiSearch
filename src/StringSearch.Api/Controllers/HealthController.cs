@@ -25,7 +25,8 @@ namespace StringSearch.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            logger.Debug("Request {protocol}, {host} and {@headers}", Request.Protocol, Request.Host, Request.Headers);
+            logger.Debug("Request {protocol}, {scheme}, {host} and {@headers}", Request.Protocol, Request.Scheme,
+                Request.Host, Request.Headers);
 
             HealthServiceSummary summary = await healthCheckServices.RunAll();
 
