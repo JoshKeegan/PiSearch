@@ -50,7 +50,7 @@ namespace StringSearch.Api
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions()
             {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+                ForwardedHeaders = ForwardedHeaders.All
             });
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
