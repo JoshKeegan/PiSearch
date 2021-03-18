@@ -38,6 +38,7 @@ run-container:
 			--log-opt fluentd-address=localhost:24224 \
 			--log-opt fluentd-sub-second-precision=true \
 			--log-opt fluentd-async=true \
+			--log-opt tag=pisearch.api.$(environment) \
 			-v "$(rootPath)":/var/www/pi_digits:ro \
 			-v "$(appsettingsDir)/appsettings.$(environment).json":/app/appsettings.$(environment).json \
 			-e ASPNETCORE_ENVIRONMENT="$(environment)" \
