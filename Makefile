@@ -105,7 +105,6 @@ endif
 
 	export MSYS_NO_PATHCONV=1; \
 		docker run \
-			-it \
 			--rm \
 			-v "$(rootPath)":/var/www/pi_digits:ro \
 			-e ASPNETCORE_ENVIRONMENT="DockerLocal" \

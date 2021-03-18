@@ -1,5 +1,8 @@
 # Hosting (as a service)
-Note: this is no longer the recommended way of hosting PiSearch. See [Hosting in Docker](hostingDocker.md) unless you have a good reason not to!
+---
+***Note***: this is no longer the recommended way of hosting PiSearch. See [Hosting in Docker](hostingDocker.md) unless you have a good reason not to!
+
+---
 
 This is a quick setup guide for an instance of the PiSearch API directly on a bare metal server or VM.  
 It is hosted on Debian Linux (version 9/Stretch) using apache2 as a reverse proxy to pass requests on to Kestrel running as a service listening on port 5000.

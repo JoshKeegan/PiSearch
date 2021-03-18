@@ -34,6 +34,10 @@ run-container:
 		docker container create \
 			--name "$(containerName)" \
 			--restart always \
+			--log-driver fluentd \
+			--log-opt fluentd-address=localhost:24224 \
+			--log-opt fluentd-sub-second-precision=true \
+			--log-opt fluentd-async=true \
 			-v "$(rootPath)":/var/www/pi_digits:ro \
 			-v "$(appsettingsDir)/appsettings.$(environment).json":/app/appsettings.$(environment).json \
 			-e ASPNETCORE_ENVIRONMENT="$(environment)" \

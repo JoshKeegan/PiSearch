@@ -1,5 +1,17 @@
 # Hosting (in Docker)
+---
+**Note** that the current production setup runs behind nginx as a reverse proxy, with logs being forwarded to fluentd by docker.  
+Both nginx and fluentd are also running in containers, which is not a part of this repository.  
+**TODO: Document the current hosting architecture**.
+
+This documentation covers an older deployment where logging was an application concern, and apache2 was used as the reverse proxy
+and that was installed on the host machine. The overall concepts are still relevant but this is no longer the preferred method of hosting.
+
+---
+
 This is a quick setup guide for an instance of the PiSearch API within a Docker container.  
+
+This documentation covers an older setup were apache2 was used as the reverse proxy
 
 The API is hosted on Debian Linux (version 9/Stretch) using apache2 as a reverse proxy to pass requests on to Kestrel running within a Docker container.  
 Continuous Deployment is operated via a Gitlab CI/CD pipeline, which is declared (with all associated scripts) in this repo, so could easily be replicated.

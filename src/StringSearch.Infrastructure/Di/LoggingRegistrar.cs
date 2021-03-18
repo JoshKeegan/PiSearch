@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using Serilog.Hosting;
+using Serilog.Extensions.Logging;
 using StringSearch.Infrastructure.Logging.Extensions;
 using StringSearch.Versioning;
 using ILogger = Serilog.ILogger;
