@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringSearch.Legacy", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringSearch.Tests.Unit", "test\StringSearch.Tests.Unit\StringSearch.Tests.Unit.csproj", "{FBC61AA4-6283-42FF-B2A3-460333705B88}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringSearch.Tests.Container", "test\StringSearch.Tests.Container\StringSearch.Tests.Container.csproj", "{5EB5F7E4-03FF-4B33-AB61-CF41D80FC99C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{FBC61AA4-6283-42FF-B2A3-460333705B88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBC61AA4-6283-42FF-B2A3-460333705B88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBC61AA4-6283-42FF-B2A3-460333705B88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EB5F7E4-03FF-4B33-AB61-CF41D80FC99C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EB5F7E4-03FF-4B33-AB61-CF41D80FC99C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EB5F7E4-03FF-4B33-AB61-CF41D80FC99C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EB5F7E4-03FF-4B33-AB61-CF41D80FC99C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{4900D5E5-B85F-46DC-A619-59F50635D028} = {6BFC8641-CDEC-473D-96B3-0F74B9E4C927}
 		{51520E5D-9F55-493D-95C1-E635BAFCF3C9} = {6BFC8641-CDEC-473D-96B3-0F74B9E4C927}
 		{FBC61AA4-6283-42FF-B2A3-460333705B88} = {95DF04AA-18E7-4BE0-8D70-81E4301475DC}
+		{5EB5F7E4-03FF-4B33-AB61-CF41D80FC99C} = {95DF04AA-18E7-4BE0-8D70-81E4301475DC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F105FED6-FACC-41D3-BF01-404E894EDDCE}

@@ -172,3 +172,5 @@ artefacts/
 
 FodyWeavers.xml
 FodyWeavers.xsd
+
+*.feature.cs
