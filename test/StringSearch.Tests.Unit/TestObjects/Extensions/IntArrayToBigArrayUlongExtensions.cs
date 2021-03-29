@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using StringSearch.Legacy.Collections;
 
-namespace UnitTests.TestObjects.Extensions
+namespace StringSearch.Test.Unit.TestObjects.Extensions
 {
     public static class IntArrayToBigArrayUlongExtensions
     {

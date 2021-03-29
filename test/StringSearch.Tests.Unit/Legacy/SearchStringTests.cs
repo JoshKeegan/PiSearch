@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 using StringSearch.Legacy;
 using StringSearch.Legacy.Collections;
+using StringSearch.Test.Unit.TestObjects.Extensions;
 using SuffixArray;
-using UnitTests.TestObjects.Extensions;
 
-namespace UnitTests.Legacy
+namespace StringSearch.Test.Unit.Legacy
 {
     [TestFixture]
     public class SearchStringTests

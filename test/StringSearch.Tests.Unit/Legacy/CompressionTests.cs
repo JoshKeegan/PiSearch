@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text;
 using NUnit.Framework;
 using StringSearch.Legacy;
 
-namespace UnitTests.Legacy
+namespace StringSearch.Test.Unit.Legacy
 {
     [TestFixture]
     public class CompressionTests

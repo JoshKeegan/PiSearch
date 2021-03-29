@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System;
 using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using StringSearch.Api.Di;
 
-namespace UnitTests.Api
+namespace StringSearch.Test.Unit.Api
 {
     [TestFixture]
     public class AutoMapperTests

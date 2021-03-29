@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NUnit.Framework;
 using StringSearch.Legacy.IO;
 
-namespace UnitTests.Legacy.IO
+namespace StringSearch.Test.Unit.Legacy.IO
 {
     [TestFixture]
     [Category("windows")]

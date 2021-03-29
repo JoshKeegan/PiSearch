@@ -1,8 +1,8 @@
-﻿using System.IO;
+using System.IO;
 using NUnit.Framework;
 using StringSearch.Legacy.Collections;
 
-namespace UnitTests.Legacy.Collections
+namespace StringSearch.Test.Unit.Legacy.Collections
 {
     [TestFixture]
     public class BigBoolArrayTests

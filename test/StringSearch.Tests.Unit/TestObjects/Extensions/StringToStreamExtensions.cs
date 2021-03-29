@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using StringSearch;
 using StringSearch.Legacy;
 
-namespace UnitTests.TestObjects.Extensions
+namespace StringSearch.Test.Unit.TestObjects.Extensions
 {
     public static class StringToStreamExtensions
     {

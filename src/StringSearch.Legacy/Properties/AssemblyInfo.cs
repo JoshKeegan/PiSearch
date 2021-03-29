@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -11,4 +11,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("531e72ea-4f3f-4459-bb18-241b11d3951e")]
 
 // Make the internals of this library visible to its Unit Tests
-[assembly: InternalsVisibleTo("UnitTests")]
+[assembly: InternalsVisibleTo("StringSearch.Tests.Unit")]

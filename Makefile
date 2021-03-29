@@ -30,8 +30,8 @@ clean:
 build: clean
 	dotnet build -c Release
 
-unit-tests: publish-unit-tests
-	cd test/UnitTests; \
+unit-tests:
+	cd test/StringSearch.Tests.Unit; \
 		make run
 
 ci: build unit-tests
@@ -40,11 +40,7 @@ publish-api: build
 	cd src/StringSearch.Api.Host && \
 		dotnet publish -c Release --no-build -o out
 
-publish-unit-tests: build
-	cd test/UnitTests && \
-		dotnet publish -c Release --no-build -o out
-
-publish-all: publish-api publish-unit-tests
+publish-all: publish-api
 
 #
 # Uniqueifier
