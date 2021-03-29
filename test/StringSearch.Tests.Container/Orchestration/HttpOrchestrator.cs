@@ -1,9 +1,9 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Newtonsoft.Json;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace StringSearch.Tests.Container.Orchestration
@@ -47,8 +47,8 @@ namespace StringSearch.Tests.Container.Orchestration
 
         public async Task AssertContent<T>(Action<T> assertion)
         {
-            string strContent = await response.Content.ReadAsStringAsync();
-            T model = JsonConvert.DeserializeObject<T>(strContent);
+            byte[] bArrContent = await response.Content.ReadAsByteArrayAsync();
+            T model = JsonSerializer.Deserialize<T>(bArrContent);
             assertion(model);
         }
 
