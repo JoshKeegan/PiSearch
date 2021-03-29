@@ -9,7 +9,7 @@ ifeq ($(shell uname), Linux)
 endif
 
 	dotnet test \
-		-c Release \
+		-o out \
 		--no-build \
 		$(testFilter) \
 		--logger:trx\;logfilename=../../../artefacts/testResults/UnitTests.trx

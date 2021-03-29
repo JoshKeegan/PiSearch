@@ -17,9 +17,9 @@ build:
       - sharedScripts
       - src/StringSearch.Api.Host/Dockerfile
       - src/StringSearch.Api.Host/out
-      - test/UnitTests/Makefile
-      - test/UnitTests/UnitTests.csproj
-      - test/UnitTests/out
+      - test/StringSearch.Tests.Unit/Makefile
+      - test/StringSearch.Tests.Unit/UnitTests.csproj
+      - test/StringSearch.Tests.Unit/out
       - Makefile
     expire_in: 30 minutes
 
@@ -33,7 +33,7 @@ unit-tests:
   variables:
     GIT_STRATEGY: none
   script:
-    - cd test/UnitTests
+    - cd test/StringSearch.Tests.Unit
     - make run
   artifacts:
     paths:
