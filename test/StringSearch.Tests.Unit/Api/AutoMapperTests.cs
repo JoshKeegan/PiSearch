@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using StringSearch.Api.Di;
 
-namespace StringSearch.Test.Unit.Api
+namespace StringSearch.Tests.Unit.Api
 {
     [TestFixture]
     public class AutoMapperTests

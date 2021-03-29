@@ -4,10 +4,10 @@ using System.IO;
 using NUnit.Framework;
 using StringSearch.Legacy;
 using StringSearch.Legacy.Collections;
-using StringSearch.Test.Unit.TestObjects.Extensions;
+using StringSearch.Tests.Unit.TestObjects.Extensions;
 using SuffixArray;
 
-namespace StringSearch.Test.Unit.Legacy
+namespace StringSearch.Tests.Unit.Legacy
 {
     [TestFixture]
     public class SearchStringTests

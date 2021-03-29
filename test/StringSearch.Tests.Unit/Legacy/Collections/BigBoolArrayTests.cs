@@ -2,7 +2,7 @@ using System.IO;
 using NUnit.Framework;
 using StringSearch.Legacy.Collections;
 
-namespace StringSearch.Test.Unit.Legacy.Collections
+namespace StringSearch.Tests.Unit.Legacy.Collections
 {
     [TestFixture]
     public class BigBoolArrayTests

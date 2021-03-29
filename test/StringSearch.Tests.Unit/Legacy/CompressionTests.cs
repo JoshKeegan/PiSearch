@@ -4,7 +4,7 @@ using System.Text;
 using NUnit.Framework;
 using StringSearch.Legacy;
 
-namespace StringSearch.Test.Unit.Legacy
+namespace StringSearch.Tests.Unit.Legacy
 {
     [TestFixture]
     public class CompressionTests

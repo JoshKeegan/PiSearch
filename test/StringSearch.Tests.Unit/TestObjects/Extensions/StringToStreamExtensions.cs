@@ -1,7 +1,7 @@
 using System.IO;
 using StringSearch.Legacy;
 
-namespace StringSearch.Test.Unit.TestObjects.Extensions
+namespace StringSearch.Tests.Unit.TestObjects.Extensions
 {
     public static class StringToStreamExtensions
     {

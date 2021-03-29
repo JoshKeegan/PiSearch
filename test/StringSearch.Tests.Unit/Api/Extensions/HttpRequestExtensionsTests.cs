@@ -4,7 +4,7 @@ using NSubstitute;
 using NUnit.Framework;
 using StringSearch.Api.Extensions;
 
-namespace StringSearch.Test.Unit.Api.Extensions
+namespace StringSearch.Tests.Unit.Api.Extensions
 {
     [TestFixture]
     public class HttpRequestExtensionsTests

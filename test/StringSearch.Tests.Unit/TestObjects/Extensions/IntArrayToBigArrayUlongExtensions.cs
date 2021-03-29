@@ -1,6 +1,6 @@
 using StringSearch.Legacy.Collections;
 
-namespace StringSearch.Test.Unit.TestObjects.Extensions
+namespace StringSearch.Tests.Unit.TestObjects.Extensions
 {
     public static class IntArrayToBigArrayUlongExtensions
     {

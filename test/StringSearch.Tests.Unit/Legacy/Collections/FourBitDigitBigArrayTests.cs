@@ -3,9 +3,9 @@ using System.IO;
 using NUnit.Framework;
 using StringSearch.Legacy.Collections;
 using StringSearch.Legacy.IO;
-using StringSearch.Test.Unit.TestObjects.Extensions;
+using StringSearch.Tests.Unit.TestObjects.Extensions;
 
-namespace StringSearch.Test.Unit.Legacy.Collections
+namespace StringSearch.Tests.Unit.Legacy.Collections
 {
     [TestFixture]
     public class FourBitDigitBigArrayTests
