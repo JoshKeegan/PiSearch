@@ -2,6 +2,8 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using FluentAssertions;
+using StringSearch.Tests.Container.Contracts;
 using StringSearch.Tests.Container.Orchestration;
 using TechTalk.SpecFlow;
 
@@ -21,8 +23,8 @@ namespace StringSearch.Tests.Container.Steps
         public Task WhenIRequestTheSystemHealth() => httpOrchestrator.SendAsync("Health", HttpMethod.Get);
 
         [Then(@"all critical resources should be healthy")]
-        // TODO: Needs contract access
-        public Task ThenAllCriticalResourcesShouldBeHealthy() => throw new NotImplementedException();
+        public Task ThenAllCriticalResourcesShouldBeHealthy() =>
+            httpOrchestrator.AssertContent<HealthResponseDto>(r => r.AllCriticalHealthy.Should().BeTrue());
 
         [Then(@"the HTTP Status code should be '(.*)'")]
         public void ThenTheHttpStatusCodeShouldBe(HttpStatusCode statusCode) =>

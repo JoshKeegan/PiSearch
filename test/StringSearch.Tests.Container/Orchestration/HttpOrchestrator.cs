@@ -29,9 +29,9 @@ namespace StringSearch.Tests.Container.Orchestration
                 throw new InvalidOperationException(nameof(ApiVersion) + " must be set");
             }
 
-            path = $"/{ApiVersion}/{path}";
-
             Uri uri = getUri(path);
+
+            testOutputHelper.WriteLine($"Making HTTP {method} request to {uri}");
 
             HttpRequestMessage request = new HttpRequestMessage(method, uri)
             {
@@ -63,11 +63,6 @@ namespace StringSearch.Tests.Container.Orchestration
             if (path == null)
             {
                 throw new ArgumentNullException(nameof(path));
-            }
-
-            if (!path.StartsWith('/'))
-            {
-                path = '/' + path;
             }
 
             string strUri = $"{EnvState.ApiBaseUri}/api/{ApiVersion}/{path}";
