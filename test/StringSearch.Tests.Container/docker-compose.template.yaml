@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  sut:
+    image: {{IMAGE_API}}
+    ports: 
+      - {{SUT_PORT_NUMBER}}:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=prod
+      - ASPNETCORE_URLS=http://*:80
+      - UNIQUEIFIER={{UNIQUEIFIER}}
+    volumes:
+      - ./appsettings.prod.json:/app/appsettings.prod.json
+# TODO: Mount digits
+
+  mysql:
+    image: mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=PiSearchContainerTesting
+      - MYSQL_USER=PiSearchDbGodUser
+      - MYSQL_PASSWORD=wow_much_security
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql

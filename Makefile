@@ -2,9 +2,9 @@
 # Solution Makefile
 #
 
-#
+###############################################################################
 # Constants
-#
+###############################################################################
 
 UNIQUEIFIER_PATH = artefacts/uniqueifier#
 LOCAL_API_DOCKER_PORT = 5002#
@@ -12,10 +12,10 @@ LOCAL_API_DOCKER_PORT = 5002#
 include sharedScripts/make/dockerImages.mk
 
 clean:
-	rm -r */out || true
-	rm -r */bin || true
-	rm -r */obj || true
-	rm -r artefacts || true
+	rm -rf */*/out || true
+	rm -rf */*/bin || true
+	rm -rf */*/obj || true
+	rm -rf artefacts || true
 	
 	mkdir -p \
 		artefacts/testResults \
@@ -23,16 +23,20 @@ clean:
 
 	cp -r deploy artefacts/
 
-#
+###############################################################################
 # Build
-#
+###############################################################################
 
 build: clean
 	dotnet build -c Release
 
 unit-tests: publish-unit-tests
-	cd test/StringSearch.Tests.Unit; \
+	cd test/StringSearch.Tests.Unit && \
 		make run
+
+container-tests:
+	cd test/StringSearch.Tests.Container && \
+		make run-e2e
 
 ci: build unit-tests
 
@@ -46,9 +50,9 @@ publish-unit-tests: build
 
 publish-all: publish-api publish-unit-tests
 
-#
+###############################################################################
 # Uniqueifier
-#
+###############################################################################
 
 # Args:
 #	- buildId (remote only)
@@ -65,9 +69,9 @@ endif
 	echo -n $(buildId)-$(commitHash) > $(UNIQUEIFIER_PATH)
 endif
 	
-#
+###############################################################################
 # Docker Images
-#
+###############################################################################
 
 # Args:
 #	- buildId (remote only)
@@ -89,9 +93,9 @@ publish-api-image: build-api-image docker-login
 docker-login:
 	@docker login $(CONTAINER_REGISTRY_HOSTNAME) -u $(crUsername) -p $(crPassword)
 
-#
+###############################################################################
 # Run locally
-#
+###############################################################################
 
 # Args
 #	- rootPath

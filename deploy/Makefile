@@ -66,9 +66,9 @@ teardown-old-containers:
 delete-unused-images:
 	/bin/bash deleteUnusedImages.sh $(IMAGE_API)
 
-#
+###############################################################################
 # Deployment Tests
-#
+###############################################################################
 
 # Args:
 #	- environment
@@ -85,9 +85,9 @@ run-deployment-tests-against-container:
 			joshkeegan/deploy-ssh \
 			/app/runDeploymentTests.sh $(containerName) $(EXTERNAL_CONTAINER_PORT)
 
-#
+###############################################################################
 # Reverse Proxy
-#
+###############################################################################
 
 # Args:
 #	- environment
@@ -110,7 +110,9 @@ reverse-proxy-target-new-container: generate-nginx-conf
 	cd /home/josh/ServerAutomation/webServer && \
 		/bin/bash reload.sh
 
+###############################################################################
 # Main deployment
+###############################################################################
 
 # Args:
 #	- rootPath

@@ -164,9 +164,10 @@ test-results/
 .vscode/
 .idea/
 
-# Environment specific appsettings, except for the sample one
+# Environment specific appsettings, except for the sample one and container testing template
 appsettings.*.json
 !appsettings.Development.Sample.json
+!test/StringSearch.Tests.Container/appsettings.prod.template.json
 
 artefacts/
 
