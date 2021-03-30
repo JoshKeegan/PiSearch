@@ -1,7 +1,7 @@
 /*
  * PiSearch
- * UnderlyingStream - Abstract class for classes using an underlying stream that they want to expose internally 
- *  to the assembly. Having them all implement this means they can have common methods for saving or loading
+ * UnderlyingStream - Abstract class for classes using an underlying stream that they want to expose.
+ *  Having them all implement this means they can have common methods for saving or loading
  *  the underlying stream
  * By Josh Keegan 30/12/2014
  */
@@ -12,6 +12,6 @@ namespace StringSearch.Legacy.Collections
 {
     public abstract class UnderlyingStream
     {
-        internal Stream Stream { get; set; }
+        public Stream Stream { get; set; }
     }
 }

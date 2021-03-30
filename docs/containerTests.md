@@ -18,7 +18,7 @@ TODO: Not sure Gitlab will trigger on PRs from outside of this repo (think depen
 ## Running locally
 ```bash
 # Build code & build API docker image
-make clean publish-api publish-container-tests build-api-image
+make clean publish-api publish-index-generator build-api-image
 
 # Run Container Tests
 cd test/StringSearch.Tests.Container

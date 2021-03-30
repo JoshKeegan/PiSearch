@@ -11,7 +11,7 @@ services:
       - UNIQUEIFIER={{UNIQUEIFIER}}
     volumes:
       - ./appsettings.prod.json:/app/appsettings.prod.json
-# TODO: Mount digits
+      - ./digits:/digits
 
   mysql:
     image: mysql

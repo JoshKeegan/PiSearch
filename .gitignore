@@ -175,3 +175,5 @@ FodyWeavers.xml
 FodyWeavers.xsd
 
 *.feature.cs
+
+.env

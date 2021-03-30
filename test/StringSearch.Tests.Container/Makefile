@@ -22,7 +22,7 @@ clean:
 	rm -rf $(RELATIVE_ARTEFACTS_DIR_PATH)/containerTesting
 	rm -rf $(RELATIVE_ARTEFACTS_DIR_PATH)/testResults/ContainerTests.trx
 
-	mkdir $(RELATIVE_ARTEFACTS_DIR_PATH)/containerTesting
+	mkdir -p $(RELATIVE_ARTEFACTS_DIR_PATH)/containerTesting/digits
 
 ###############################################################################
 # Run end-to-end
@@ -45,7 +45,17 @@ dependency-prep-schema:
 	cat ../../src/StringSearch.Api/schema.sql >> $(RELATIVE_ARTEFACTS_DIR_PATH)/containerTesting/schema.sql
 
 dependency-prep-digits:
-# TODO
+	export MSYS_NO_PATHCONV=1; \
+	docker run --rm \
+		-e INPUT_DIGITS_DIR=/input \
+		-e OUTPUT_DIR=/output \
+		-v $(PWD)/../../src/StringSearch.IndexGenerator/out:/app \
+		-v $(PWD)/digits:/input \
+		-v $(ABSOLUTE_ARTEFACTS_DIR_PATH)/containerTesting/digits:/output \
+		-w="/app" \
+		--entrypoint dotnet \
+		mcr.microsoft.com/dotnet/runtime:5.0.4-alpine3.13-amd64 \
+		StringSearch.IndexGenerator.dll
 
 dependency-prep-config:
 	cp appsettings.prod.template.json $(RELATIVE_ARTEFACTS_DIR_PATH)/containerTesting/appsettings.prod.json

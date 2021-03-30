@@ -44,11 +44,15 @@ publish-api: build
 	cd src/StringSearch.Api.Host && \
 		dotnet publish -c Release --no-build -o out
 
+publish-index-generator: build
+	cd src/StringSearch.IndexGenerator && \
+		dotnet publish -c Release --no-build -o out
+
 publish-unit-tests: build
 	cd test/StringSearch.Tests.Unit && \
 		dotnet publish -c Release --no-build -o out
 
-publish-all: publish-api publish-unit-tests
+publish-all: publish-api publish-index-generator publish-unit-tests
 
 ###############################################################################
 # Uniqueifier

@@ -18,6 +18,7 @@ build:
       - src/StringSearch.Api/schema.sql
       - src/StringSearch.Api.Host/Dockerfile
       - src/StringSearch.Api.Host/out
+      - src/StringSearch.IndexGenerator/out
       - test/StringSearch.Tests.Unit/Makefile
       - test/StringSearch.Tests.Unit/UnitTests.csproj
       - test/StringSearch.Tests.Unit/out
