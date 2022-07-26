@@ -9,9 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     container: joshkeegan/dotnet-build:6.0.100
     steps:
-      - name: Mem
-        run: cat /proc/meminfo
-
       - name: Checkout
         uses: actions/checkout@v3
       
