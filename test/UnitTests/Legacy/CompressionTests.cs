@@ -25,7 +25,6 @@ namespace UnitTests.Legacy
             File.Delete(filePath + ".4bitDigit");
 
             Assert.AreEqual(str, readBack);
-            Console.WriteLine(readBack);
         }
 
         [Test]
@@ -43,7 +42,6 @@ namespace UnitTests.Legacy
             File.Delete(filePath + ".4bitDigit");
 
             Assert.AreEqual(str, readBack);
-            Console.WriteLine(readBack);
         }
 #endregion
 
