@@ -1,0 +1,27 @@
+name: CI/CD
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    container: joshkeegan/dotnet-build:6.0.100
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Build
+        run: make build
+
+      - name: Run Unit Tests
+        working-directory: test/UnitTests
+        run: make run
+      
+      - name: Upload artefacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: artefacts
+          path: artefacts
+        if: ${{ always() }}
