@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using NUnit.Framework;
 using StringSearch.Legacy.Collections;
@@ -8,7 +8,7 @@ using UnitTests.TestObjects.Extensions;
 namespace UnitTests.Legacy.Collections
 {
     [TestFixture]
-    public class FourBitDigitBigArrayTests
+    public class FourBitDigitBigArrayTests : ForceGcBetweenTests
     {
         [Test]
         public void TestConstructor()

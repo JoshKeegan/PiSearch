@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
@@ -7,7 +7,7 @@ using StringSearch.Legacy.Collections;
 namespace UnitTests.Legacy.Collections
 {
     [TestFixture]
-    public class MemoryEfficientBigULongArrayTests
+    public class MemoryEfficientBigULongArrayTests : ForceGcBetweenTests
     {
         [Test]
         public void TestConstructor()

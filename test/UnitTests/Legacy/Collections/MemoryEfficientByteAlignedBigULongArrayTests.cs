@@ -7,7 +7,7 @@ using StringSearch.Legacy.Collections;
 namespace UnitTests.Legacy.Collections
 {
     [TestFixture]
-    public class MemoryEfficientByteAlignedBigULongArrayTests
+    public class MemoryEfficientByteAlignedBigULongArrayTests : ForceGcBetweenTests
     {
         [Test]
         public void TestConstructor()
