@@ -12,4 +12,5 @@ endif
 		-o out \
 		--no-build \
 		$(testFilter) \
-		--logger:trx\;logfilename=../../../artefacts/testResults/UnitTests.trx
+		--logger:trx\;logfilename=../../../artefacts/testResults/UnitTests.trx \
+		--logger:console;verbosity=detailed
