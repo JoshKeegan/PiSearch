@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
@@ -192,13 +192,6 @@ namespace UnitTests.Legacy.Collections
             {
                 arr[arr.Length] = 1;
             });
-        }
-
-        [Test]
-        public void TestConstructorBig()
-        {
-            //number 7 requires minimum 3 bits, so thats (5bil * 3) / 8 bytes ~= 1.75GiB of RAM used
-            MemoryEfficientByteAlignedBigULongArray arr = new MemoryEfficientByteAlignedBigULongArray(5000000000, 7);
         }
 
         [Test]
