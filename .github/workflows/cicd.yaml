@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  ci:
+  ci-build-test:
     runs-on: ubuntu-latest
     container: joshkeegan/dotnet-build:6.0.100
     steps:
@@ -23,5 +23,28 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: artefacts
-          path: artefacts
+          path: |
+            artefacts
+            sharedScripts
+            src/StringSearch.Api.Host/Dockerfile
+            src/StringSearch.Api.Host/out
+            Makefile
         if: ${{ always() }}
+  
+  ci-docker:
+    runs-on: ubuntu-latest
+    needs: ci-build-test
+    steps:
+      - name: Download artefacts
+        uses: actions/download-artifact@v3
+        with:
+          name: artefacts
+          path: .
+      
+      # TODO: Short SHA for commit hash
+      - name: Build Image
+        run: |
+          make \
+            build-api-image \
+            buildId="${{ github.run_number }}-${{ github.run_attempt }}" \
+            commitHash="${{ github.sha }}"
