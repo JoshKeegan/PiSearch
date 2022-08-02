@@ -34,6 +34,8 @@ jobs:
   ci-docker:
     runs-on: ubuntu-latest
     needs: ci-build-test
+    outputs:
+      uniqueifier: ${{ steps.output_uniqueifier.outputs.uniqueifier }}
     steps:
       - name: Docker Login
         uses: docker/login-action@v2
@@ -58,13 +60,16 @@ jobs:
       - name: Publish Image
         run: make publish-api-image
       
+      - name: Output Uniqueifier
+        id: output_uniqueifier
+        run: echo "::set-output name=uniqueifier::`cat artefacts/uniqueifier`"
+      
       - name: Upload Artefacts
         uses: actions/upload-artifact@v3
         with:
           name: ci-docker-artefacts
           path: |
             artefacts/deploy
-            artefacts/uniqueifier
             sharedScripts
   
   deploy-prod:
@@ -88,18 +93,16 @@ jobs:
       
       - name: Copy Artefacts to Target
         run: |
-          uniqueifier=`cat artefacts/uniqueifier`
-          ssh ${{ secrets.USERNAME }}@${{ secrets.HOSTNAME }} -p ${{ secrets.SSH_PORT }} "mkdir -p ~/cd/prod/gh-actions/$uniqueifier"
+          ssh ${{ secrets.USERNAME }}@${{ secrets.HOSTNAME }} -p ${{ secrets.SSH_PORT }} "mkdir -p ~/cd/prod/gh-actions/${{ needs.ci-docker.outputs.uniqueifier }}"
           for l in `ls`; \
           do \
-            scp -r -P ${{ secrets.SSH_PORT }} $PWD/$l ${{ secrets.USERNAME }}@${{ secrets.HOSTNAME }}:~/cd/prod/gh-actions/$uniqueifier ; \
+            scp -r -P ${{ secrets.SSH_PORT }} $PWD/$l ${{ secrets.USERNAME }}@${{ secrets.HOSTNAME }}:~/cd/prod/gh-actions/${{ needs.ci-docker.outputs.uniqueifier }} ; \
           done
       
       - name: Deploy
         run: |
-          uniqueifier=`cat artefacts/uniqueifier`
           ssh ${{ secrets.USERNAME }}@${{ secrets.HOSTNAME }} -p ${{ secrets.SSH_PORT }} \
-            "cd ~/cd/prod/gh-actions/$uniqueifier/artefacts/deploy && \
+            "cd ~/cd/prod/gh-actions/${{ needs.ci-docker.outputs.uniqueifier }}/artefacts/deploy && \
             make \
               rootPath=\"/home/josh/pisearch/pi_digits\" \
               environment=\"prod\" \
