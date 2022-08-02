@@ -75,7 +75,7 @@ jobs:
     if: github.ref == 'refs/heads/githubActions'
     container: joshkeegan/deploy-ssh:latest
     steps:
-      - name: Debug:
+      - name: Debug
         run: |
           cd ~/
           pwd
