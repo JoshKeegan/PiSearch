@@ -108,5 +108,5 @@ jobs:
               deploy"
       
       - name: Post-Deployment Tests
-        run: ./artefacts/deploy/runDeploymentTests.sh ${{ secrets.HOSTNAME }} 80
+        run: /bin/bash artefacts/deploy/runDeploymentTests.sh ${{ secrets.HOSTNAME }} 80
 
