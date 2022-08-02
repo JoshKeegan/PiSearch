@@ -75,19 +75,16 @@ jobs:
     if: github.ref == 'refs/heads/githubActions'
     container: joshkeegan/deploy-ssh:latest
     steps:
-      - name: Debug
-        run: |
-          cd ~/
-          pwd
-
       - name: Download Artefacts
         uses: actions/download-artifact@v3
         with:
           name: ci-docker-artefacts
           path: .
       
+      # Must hardcode /root here because gh actions overrides $HOME for some bizarre reason :s
+      #   https://github.com/actions/runner/issues/863
       - name: Add SSH Private Key
-        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > /root/.ssh/id_rsa
       
       - name: Copy Artefacts to Target
         run: |
