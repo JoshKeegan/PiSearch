@@ -89,7 +89,7 @@ jobs:
       - name: Copy Artefacts to Target
         run: |
           uniqueifier=`cat artefacts/uniqueifier`
-          ssh ${{ secrets.USERNAME }}@${{ secrets.HOSTNAME }} -p ${{ secrets.SSH_PORT }} "mkdir -p ~/cd/prod/gh-actions/$uniqueifier" && \
+          ssh ${{ secrets.USERNAME }}@${{ secrets.HOSTNAME }} -p ${{ secrets.SSH_PORT }} "mkdir -p ~/cd/prod/gh-actions/$uniqueifier"
           for l in `ls`; \
           do \
             scp -r -P ${{ secrets.SSH_PORT }} $PWD/$l ${{ secrets.USERNAME }}@${{ secrets.HOSTNAME }}:~/cd/prod/gh-actions/$uniqueifier ; \
@@ -99,7 +99,7 @@ jobs:
         run: |
           uniqueifier=`cat artefacts/uniqueifier`
           ssh ${{ secrets.USERNAME }}@${{ secrets.HOSTNAME }} -p ${{ secrets.SSH_PORT }} \
-            "cd ~/cd/prod/$uniqueifier/artefacts/deploy
+            "cd ~/cd/prod/$uniqueifier/artefacts/deploy && \
             make \
               rootPath=\"/home/josh/pisearch/pi_digits\" \
               environment=\"prod\" \
