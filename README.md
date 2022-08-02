@@ -3,6 +3,7 @@ PiSearch is a system designed to search through a large number of digits very qu
 To see it in action, go to [PiSearch](http://pisearch.joshkeegan.co.uk/) to search through the first 5 billion digits of Pi online.
 
 ## CI Pipelines:  
+GitHub Actions: ![CI/CD](https://github.com/joshkeegan/pisearch/actions/workflows/cicd.yaml/badge.svg?branch=master)  
 Appveyor: [![Build status](https://ci.appveyor.com/api/projects/status/nh3pv5yqt5nn0wby?svg=true)](https://ci.appveyor.com/project/JoshKeegan/pisearch)  
 GitLab: [![GitLab CI status](https://gitlab.com/JoshKeegan/PiSearch/badges/master/pipeline.svg)](https://gitlab.com/JoshKeegan/PiSearch/commits/master)
 
