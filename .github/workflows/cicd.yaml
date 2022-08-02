@@ -47,4 +47,4 @@ jobs:
           make \
             build-api-image \
             buildId="${{ github.run_number }}-${{ github.run_attempt }}" \
-            commitHash="${{ github.sha }}"
+            commitHash="${GITHUB_SHA:0:8}"
