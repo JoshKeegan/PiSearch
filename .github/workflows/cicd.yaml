@@ -19,10 +19,10 @@ jobs:
         working-directory: test/UnitTests
         run: make run
       
-      - name: Upload artefacts
+      - name: Upload Artefacts
         uses: actions/upload-artifact@v3
         with:
-          name: artefacts
+          name: ci-build-test-artefacts
           path: |
             artefacts
             sharedScripts
@@ -42,10 +42,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Download artefacts
+      - name: Download Artefacts
         uses: actions/download-artifact@v3
         with:
-          name: artefacts
+          name: ci-build-test-artefacts
           path: .
       
       - name: Build Image
@@ -57,3 +57,53 @@ jobs:
       
       - name: Publish Image
         run: make publish-api-image
+      
+      - name: Upload Artefacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ci-docker-artefacts
+          path: |
+            artefacts/deploy
+            artefacts/uniqueifier
+            sharedScripts
+  
+  deploy-prod:
+    environment: prod
+    runs-on: ubuntu-latest
+    needs: ci-docker
+    if: github.ref == 'refs/heads/master'
+    container: joshkeegan/deploy-ssh:latest
+    steps:
+      - name: Download Artefacts
+        uses: actions/download-artifact@v3
+        with:
+          name: ci-docker-artefacts
+          path: .
+      
+      - name: Add SSH Private Key
+        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+      
+      - name: Copy Artefacts to Target
+        run: |
+          uniqueifier=`cat artefacts/uniqueifier` && \
+          ssh ${{ secrets.USERNAME }}@${{ secrets.HOSTNAME }} -p ${{ secrets.SSH_PORT }} "mkdir -p ~/cd/prod/gh-actions/$uniqueifier" && \
+          for l in `ls`; \
+          do \
+            scp -r -P ${{ secrets.SSH_PORT }} $PWD/$l ${{ secrets.USERNAME }}@${{ secrets.HOSTNAME }}:~/cd/prod/gh-actions/$uniqueifier ; \
+          done
+      
+      - name: Deploy
+        run: |
+          uniqueifier=`cat artefacts/uniqueifier` && \
+          ssh ${{ secrets.USERNAME }}@${{ secrets.HOSTNAME }} -p ${{ secrets.SSH_PORT }} \
+            "cd ~/cd/prod/$uniqueifier/artefacts/deploy && \
+            make \
+              rootPath=\"/home/josh/pisearch/pi_digits\" \
+              environment=\"prod\" \
+              appsettingsDir=\"/home/josh/pisearch/config\" \
+              hostname=\"${{ secrets.HOSTNAME }}\" \
+              deploy"
+      
+      - name: Post-Deployment Tests
+        run: ./artefacts/deploy/runDeploymentTests.sh ${{ secrets.HOSTNAME }} 80
+
