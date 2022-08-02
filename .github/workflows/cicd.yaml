@@ -82,11 +82,13 @@ jobs:
           path: .
       
       - name: Add SSH Private Key
-        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
       
       - name: Copy Artefacts to Target
         run: |
-          uniqueifier=`cat artefacts/uniqueifier` && \
+          uniqueifier=`cat artefacts/uniqueifier`
           ssh ${{ secrets.USERNAME }}@${{ secrets.HOSTNAME }} -p ${{ secrets.SSH_PORT }} "mkdir -p ~/cd/prod/gh-actions/$uniqueifier" && \
           for l in `ls`; \
           do \
@@ -95,9 +97,9 @@ jobs:
       
       - name: Deploy
         run: |
-          uniqueifier=`cat artefacts/uniqueifier` && \
+          uniqueifier=`cat artefacts/uniqueifier`
           ssh ${{ secrets.USERNAME }}@${{ secrets.HOSTNAME }} -p ${{ secrets.SSH_PORT }} \
-            "cd ~/cd/prod/$uniqueifier/artefacts/deploy && \
+            "cd ~/cd/prod/$uniqueifier/artefacts/deploy
             make \
               rootPath=\"/home/josh/pisearch/pi_digits\" \
               environment=\"prod\" \
