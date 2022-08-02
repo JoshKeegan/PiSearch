@@ -39,63 +39,63 @@ unit-tests:
     paths:
       - artefacts/testResults/UnitTests.trx
 
-generate-docker-images:
-  tags:
-    - docker
-  image: docker:stable
-  services:
-    - docker:19.03.5-dind
-  only:
-    - master
-  stage: generate-docker-images
-  dependencies:
-    - build
-  variables:
-    GIT_STRATEGY: none
-  before_script:
-    - apk add --no-cache make
-  script:
-    - |
-      make \
-        crUsername="$CR_USERNAME" \
-        crPassword="$CR_PASSWORD" \
-        buildId="$CI_JOB_ID" commitHash="${CI_COMMIT_SHA:0:8}" \
-        publish-api-image
-  artifacts:
-    paths:
-      - artefacts/deploy
-      - artefacts/uniqueifier
-      - sharedScripts
-
-deploy-prod:
-  image: joshkeegan/deploy-ssh:latest
-  only:
-    - master
-  stage: deploy-prod
-  environment:
-    name: prod
-    url: http://v2.api.pisearch.joshkeegan.co.uk
-  dependencies:
-    - generate-docker-images
-  variables:
-    GIT_STRATEGY: none
-  script:
-    - echo "$SSH_PRIVATE_KEY_PROD" > ~/.ssh/id_rsa
-    - uniqueifier=`cat artefacts/uniqueifier`
-    - hostname=`echo $CI_ENVIRONMENT_URL | awk -F [/:] '{print $4}'`
-    - ssh $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD -p $DEPLOY_SSH_PORT_PROD "mkdir -p ~/cd/prod/$uniqueifier"
-    - |
-      for l in `ls`; \
-      do \
-        scp -r -P $DEPLOY_SSH_PORT_PROD $PWD/$l $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD:~/cd/prod/$uniqueifier ; \
-      done
-    - |
-      ssh $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD -p $DEPLOY_SSH_PORT_PROD \
-        "cd ~/cd/prod/$uniqueifier/artefacts/deploy && \
-        make \
-          rootPath=\"/home/josh/pisearch/pi_digits\" \
-          environment=\"prod\" \
-          appsettingsDir=\"/home/josh/pisearch/config\" \
-          hostname=\"$hostname\" \
-          deploy"
-    - /bin/bash artefacts/deploy/runDeploymentTests.sh $hostname 80
+#generate-docker-images:
+#  tags:
+#    - docker
+#  image: docker:stable
+#  services:
+#    - docker:19.03.5-dind
+#  only:
+#    - master
+#  stage: generate-docker-images
+#  dependencies:
+#    - build
+#  variables:
+#    GIT_STRATEGY: none
+#  before_script:
+#    - apk add --no-cache make
+#  script:
+#    - |
+#      make \
+#        crUsername="$CR_USERNAME" \
+#        crPassword="$CR_PASSWORD" \
+#        buildId="$CI_JOB_ID" commitHash="${CI_COMMIT_SHA:0:8}" \
+#        publish-api-image
+#  artifacts:
+#    paths:
+#      - artefacts/deploy
+#      - artefacts/uniqueifier
+#      - sharedScripts
+#
+#deploy-prod:
+#  image: joshkeegan/deploy-ssh:latest
+#  only:
+#    - master
+#  stage: deploy-prod
+#  environment:
+#    name: prod
+#    url: http://v2.api.pisearch.joshkeegan.co.uk
+#  dependencies:
+#    - generate-docker-images
+#  variables:
+#    GIT_STRATEGY: none
+#  script:
+#    - echo "$SSH_PRIVATE_KEY_PROD" > ~/.ssh/id_rsa
+#    - uniqueifier=`cat artefacts/uniqueifier`
+#    - hostname=`echo $CI_ENVIRONMENT_URL | awk -F [/:] '{print $4}'`
+#    - ssh $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD -p $DEPLOY_SSH_PORT_PROD "mkdir -p ~/cd/prod/$uniqueifier"
+#    - |
+#      for l in `ls`; \
+#      do \
+#        scp -r -P $DEPLOY_SSH_PORT_PROD $PWD/$l $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD:~/cd/prod/$uniqueifier ; \
+#      done
+#    - |
+#      ssh $DEPLOY_USERNAME_PROD@$DEPLOY_HOSTNAME_PROD -p $DEPLOY_SSH_PORT_PROD \
+#        "cd ~/cd/prod/$uniqueifier/artefacts/deploy && \
+#        make \
+#          rootPath=\"/home/josh/pisearch/pi_digits\" \
+#          environment=\"prod\" \
+#          appsettingsDir=\"/home/josh/pisearch/config\" \
+#          hostname=\"$hostname\" \
+#          deploy"
+#    - /bin/bash artefacts/deploy/runDeploymentTests.sh $hostname 80

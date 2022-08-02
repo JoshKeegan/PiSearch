@@ -75,12 +75,7 @@ endif
 build-api-image: generate-uniqueifier
 	docker build --pull -t $(IMAGE_API):$(shell cat $(UNIQUEIFIER_PATH)) src/StringSearch.Api.Host
 
-# Args:
-#	- crUsername
-#	- crPassword
-#	- buildId (remote only)
-#	- commitHash (remote only - optional)
-publish-api-image: build-api-image docker-login
+publish-api-image:
 	docker push $(IMAGE_API):$(shell cat $(UNIQUEIFIER_PATH))
 
 # Args:
