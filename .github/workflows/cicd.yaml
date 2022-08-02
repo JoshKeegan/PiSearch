@@ -71,7 +71,8 @@ jobs:
     environment: prod
     runs-on: ubuntu-latest
     needs: ci-docker
-    if: github.ref == 'refs/heads/master'
+    # TODO: master
+    if: github.ref == 'refs/heads/githubActions'
     container: joshkeegan/deploy-ssh:latest
     steps:
       - name: Download Artefacts
