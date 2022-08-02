@@ -75,6 +75,11 @@ jobs:
     if: github.ref == 'refs/heads/githubActions'
     container: joshkeegan/deploy-ssh:latest
     steps:
+      - name: Debug:
+        run: |
+          cd ~/
+          pwd
+
       - name: Download Artefacts
         uses: actions/download-artifact@v3
         with:
@@ -82,9 +87,7 @@ jobs:
           path: .
       
       - name: Add SSH Private Key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
       
       - name: Copy Artefacts to Target
         run: |
