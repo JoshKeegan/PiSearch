@@ -38,6 +38,7 @@ jobs:
       uniqueifier: ${{ steps.output_uniqueifier.outputs.uniqueifier }}
     steps:
       - name: Docker Login
+        if: github.ref == 'refs/heads/master'
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
@@ -58,6 +59,7 @@ jobs:
             commitHash="${GITHUB_SHA:0:8}"
       
       - name: Publish Image
+        if: github.ref == 'refs/heads/master'
         run: make publish-api-image
       
       - name: Output Uniqueifier
