@@ -94,7 +94,9 @@ jobs:
         run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > /root/.ssh/id_rsa
       
       - name: Debug DNS
-        run: dig ${{ secrets.HOSTNAME }}
+        run: |
+          sudo apt-get install -y dnsutils
+          dig ${{ secrets.HOSTNAME }}
       
       - name: Copy Artefacts to Target
         run: |
