@@ -95,7 +95,7 @@ jobs:
       
       - name: Debug DNS
         run: |
-          sudo apt-get install -y dnsutils
+          apt-get install -y dnsutils
           dig ${{ secrets.HOSTNAME }}
       
       - name: Copy Artefacts to Target
