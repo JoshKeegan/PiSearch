@@ -93,6 +93,9 @@ jobs:
       - name: Add SSH Private Key
         run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > /root/.ssh/id_rsa
       
+      - name: Debug DNS
+        run: dig ${{ secrets.HOSTNAME }}
+      
       - name: Copy Artefacts to Target
         run: |
           ssh ${{ secrets.USERNAME }}@${{ secrets.HOSTNAME }} -p ${{ secrets.SSH_PORT }} "mkdir -p ~/cd/prod/gh-actions/${{ needs.ci-docker.outputs.uniqueifier }}"
