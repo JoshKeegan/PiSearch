@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Serilog;
 using StringSearch.Api.Contracts.Errors;
@@ -15,13 +14,13 @@ namespace StringSearch.Api.Mvc.Middleware
     {
         private readonly RequestDelegate next;
         private readonly ILogger logger;
-        private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public ExceptionRequestHandler(RequestDelegate next, ILogger logger, IHostingEnvironment hostingEnvironment)
+        public ExceptionRequestHandler(RequestDelegate next, ILogger logger, IWebHostEnvironment webHostEnvironment)
         {
             this.next = next ?? throw new ArgumentNullException(nameof(next));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.hostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(hostingEnvironment));
+            this.webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
         }
 
         public async Task Invoke(HttpContext context)
@@ -45,7 +44,7 @@ namespace StringSearch.Api.Mvc.Middleware
 
                 // Construct an error. If in development, add additional info
                 ErrorDto error;
-                if (hostingEnvironment.IsDevelopment())
+                if (webHostEnvironment.IsDevelopment())
                 {
                     error = new DevelopmentErrorDto()
                     {
