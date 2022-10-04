@@ -107,6 +107,7 @@ jobs:
       
       - name: Copy Artefacts to Target
         run: |
+          set -x
           ssh ${{ secrets.USERNAME }}@${{ secrets.HOSTNAME }} -p ${{ secrets.SSH_PORT }} "mkdir -p ~/cd/prod/gh-actions/${{ needs.ci-docker.outputs.uniqueifier }}"
           for l in `ls`; \
           do \
