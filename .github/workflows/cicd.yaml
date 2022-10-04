@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+permissions:
+  packages: write
+
 jobs:
   ci-build-test:
     runs-on: ubuntu-latest
