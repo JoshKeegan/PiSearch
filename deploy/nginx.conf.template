@@ -8,6 +8,10 @@ server
 	ssl_certificate /etc/letsencrypt/live/v2.api.pisearch.joshkeegan.co.uk/fullchain.pem;
 	ssl_certificate_key /etc/letsencrypt/live/v2.api.pisearch.joshkeegan.co.uk/privkey.pem;
 
+	ssl_stapling on;
+	ssl_stapling_verify on;
+	ssl_trusted_certificate /etc/letsencrypt/live/v2.api.pisearch.joshkeegan.co.uk/chain.pem;
+
 	include /etc/nginx/tls/options-ssl-nginx.conf;
 	ssl_dhparam /etc/nginx/tls/ssl-dhparams.pem;
 
