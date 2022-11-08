@@ -20,10 +20,10 @@ fi
 readonly uri="http://$hostname:$port"
 # Note: If running on Windows via Mingw, this curl will give a non-zero exit code. It doesn't like
 #	--output /dev/null. If ever this is needed to work on Windows, that will need looking at.
-readonly curl="curl -L --silent --fail --output /dev/null --write-out '%{http_code}: %{url_effective}\n'"
+readonly curl="curl -X GET -G -L --silent --fail --output /dev/null --write-out '%{http_code}: %{url_effective}\n'"
 
 # Health check
 eval $curl $uri/api/v1/Health
 
 # Quick happy path
-eval $curl $uri/api/v1/Lookup?namedDigits=pi&find=230893
+eval $curl $uri/api/v1/Lookup -d namedDigits=pi -d find=230893

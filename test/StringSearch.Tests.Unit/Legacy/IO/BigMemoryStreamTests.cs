@@ -7,7 +7,7 @@ using StringSearch.Legacy.IO;
 namespace StringSearch.Tests.Unit.Legacy.IO
 {
     [TestFixture]
-    public class BigMemoryStreamTests
+    public class BigMemoryStreamTests : ForceGcBetweenTests
     {
         [Test]
         public void TestConstructorNoParams()

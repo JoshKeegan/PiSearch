@@ -594,7 +594,6 @@ namespace StringSearch.Tests.Unit.Legacy
             if (status != 0)
             {
                 string error = String.Format("Error occurred whilst generating the suffix array: {0}", status);
-                Console.WriteLine(error);
                 throw new Exception(error);
             }
 

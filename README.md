@@ -3,8 +3,8 @@ PiSearch is a system designed to search through a large number of digits very qu
 To see it in action, go to [PiSearch](http://pisearch.joshkeegan.co.uk/) to search through the first 5 billion digits of Pi online.
 
 ## CI Pipelines:  
+GitHub Actions: [![CI/CD](https://github.com/joshkeegan/pisearch/actions/workflows/cicd.yaml/badge.svg?branch=master)](https://github.com/JoshKeegan/PiSearch/actions?query=branch%3Amaster)  
 Appveyor: [![Build status](https://ci.appveyor.com/api/projects/status/nh3pv5yqt5nn0wby?svg=true)](https://ci.appveyor.com/project/JoshKeegan/pisearch)  
-GitLab: [![GitLab CI status](https://gitlab.com/JoshKeegan/PiSearch/badges/master/pipeline.svg)](https://gitlab.com/JoshKeegan/PiSearch/commits/master)
 
 ## Docs
 - [Hosting the API via Docker (recommended)](docs/api/hostingDocker.md)
@@ -26,7 +26,7 @@ GitLab: [![GitLab CI status](https://gitlab.com/JoshKeegan/PiSearch/badges/maste
 - Documentation for: generating suffix array, performing search with suffix array, pre-computing suffix array indices for searches up to length n, checking if all strings of digits up to length n exist in some digits.
   
 ## License
-Copyright (c) 2014-2021 Josh Keegan
+Copyright (c) 2014-2022 Josh Keegan
 
 This file is part of PiSearch.
 

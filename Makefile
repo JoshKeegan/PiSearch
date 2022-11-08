@@ -12,10 +12,10 @@ LOCAL_API_DOCKER_PORT = 5002#
 include sharedScripts/make/dockerImages.mk
 
 clean:
-	rm -rf */*/out || true
-	rm -rf */*/bin || true
-	rm -rf */*/obj || true
-	rm -rf artefacts || true
+	rm -r */*/out || true
+	rm -r */*/bin || true
+	rm -r */*/obj || true
+	rm -r artefacts || true
 	
 	mkdir -p \
 		artefacts/testResults \
@@ -83,12 +83,7 @@ endif
 build-api-image: generate-uniqueifier
 	docker build --pull -t $(IMAGE_API):$(shell cat $(UNIQUEIFIER_PATH)) src/StringSearch.Api.Host
 
-# Args:
-#	- crUsername
-#	- crPassword
-#	- buildId (remote only)
-#	- commitHash (remote only - optional)
-publish-api-image: build-api-image docker-login
+publish-api-image:
 	docker push $(IMAGE_API):$(shell cat $(UNIQUEIFIER_PATH))
 
 # Args:

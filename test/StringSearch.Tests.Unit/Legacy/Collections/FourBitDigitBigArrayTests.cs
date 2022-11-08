@@ -8,7 +8,7 @@ using StringSearch.Tests.Unit.TestObjects.Extensions;
 namespace StringSearch.Tests.Unit.Legacy.Collections
 {
     [TestFixture]
-    public class FourBitDigitBigArrayTests
+    public class FourBitDigitBigArrayTests : ForceGcBetweenTests
     {
         [Test]
         public void TestConstructor()

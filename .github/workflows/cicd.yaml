@@ -1,0 +1,130 @@
+name: CI/CD
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  packages: write
+
+jobs:
+  ci-build-test:
+    runs-on: ubuntu-latest
+    container: joshkeegan/dotnet-build:7.0.100
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Build
+        run: make publish-all
+
+      - name: Run Unit Tests
+        working-directory: test/UnitTests
+        run: make run
+      
+      - name: Upload Artefacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ci-build-test-artefacts
+          path: |
+            artefacts
+            sharedScripts
+            src/StringSearch.Api.Host/Dockerfile
+            src/StringSearch.Api.Host/out
+            Makefile
+        if: ${{ always() }}
+  
+  ci-docker:
+    runs-on: ubuntu-latest
+    needs: ci-build-test
+    outputs:
+      uniqueifier: ${{ steps.output_uniqueifier.outputs.uniqueifier }}
+    steps:
+      - name: Docker Login
+        if: github.ref == 'refs/heads/master'
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download Artefacts
+        uses: actions/download-artifact@v3
+        with:
+          name: ci-build-test-artefacts
+          path: .
+      
+      - name: Build Image
+        run: |
+          make \
+            build-api-image \
+            buildId="${{ github.run_number }}-${{ github.run_attempt }}" \
+            commitHash="${GITHUB_SHA:0:8}"
+      
+      - name: Publish Image
+        if: github.ref == 'refs/heads/master'
+        run: make publish-api-image
+      
+      - name: Output Uniqueifier
+        id: output_uniqueifier
+        run: echo "::set-output name=uniqueifier::`cat artefacts/uniqueifier`"
+      
+      - name: Upload Artefacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ci-docker-artefacts
+          path: |
+            artefacts/deploy
+            artefacts/uniqueifier
+            sharedScripts
+  
+  deploy-prod:
+    environment: prod
+    runs-on: ubuntu-latest
+    needs: ci-docker
+    if: github.ref == 'refs/heads/master'
+    container: joshkeegan/deploy-ssh:latest
+    steps:
+      - name: Download Artefacts
+        uses: actions/download-artifact@v3
+        with:
+          name: ci-docker-artefacts
+          path: .
+      
+      # Must hardcode /root here because gh actions overrides $HOME for some bizarre reason :s
+      #   https://github.com/actions/runner/issues/863
+      - name: Add SSH Private Key
+        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > /root/.ssh/id_rsa
+      
+      # Debug step left here since deployments have randomly failed.
+      # Leaving this here for now since by the time I investigate the issue it fixes itself, so the next time
+      #   it happens I want this output to be in the logs . . .
+      - name: Debug DNS
+        run: |
+          apk add bind-tools
+          dig ${{ secrets.HOSTNAME }}
+          getent ahosts ${{ secrets.HOSTNAME }}
+      
+      - name: Copy Artefacts to Target
+        run: |
+          set -x
+          ssh ${{ secrets.USERNAME }}@${{ secrets.HOSTNAME }} -p ${{ secrets.SSH_PORT }} "mkdir -p ~/cd/prod/gh-actions/${{ needs.ci-docker.outputs.uniqueifier }}"
+          for l in `ls`; \
+          do \
+            scp -r -P ${{ secrets.SSH_PORT }} $PWD/$l ${{ secrets.USERNAME }}@${{ secrets.HOSTNAME }}:~/cd/prod/gh-actions/${{ needs.ci-docker.outputs.uniqueifier }} ; \
+          done
+      
+      - name: Deploy
+        run: |
+          ssh ${{ secrets.USERNAME }}@${{ secrets.HOSTNAME }} -p ${{ secrets.SSH_PORT }} \
+            "cd ~/cd/prod/gh-actions/${{ needs.ci-docker.outputs.uniqueifier }}/artefacts/deploy && \
+            make \
+              rootPath=\"/home/josh/pisearch/pi_digits\" \
+              environment=\"prod\" \
+              appsettingsDir=\"/home/josh/pisearch/config\" \
+              hostname=\"${{ secrets.HOSTNAME }}\" \
+              deploy"
+      
+      - name: Post-Deployment Tests
+        run: /bin/bash artefacts/deploy/runDeploymentTests.sh ${{ secrets.HOSTNAME }} 80
+
