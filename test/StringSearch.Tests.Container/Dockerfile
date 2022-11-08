@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0.201
+FROM mcr.microsoft.com/dotnet/sdk:7.0.100
 WORKDIR /app
 
 # TODO: Would prefer the build wasn't done here so that it can reference projects outside of this directory
