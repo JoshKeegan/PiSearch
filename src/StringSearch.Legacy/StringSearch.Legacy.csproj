@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <AssemblyTitle>StringSearch</AssemblyTitle>
     <Product>StringSearch</Product>
     <Copyright>Copyright © 2014</Copyright>
