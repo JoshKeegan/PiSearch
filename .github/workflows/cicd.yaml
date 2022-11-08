@@ -19,7 +19,7 @@ jobs:
         run: make publish-all
 
       - name: Run Unit Tests
-        working-directory: test/UnitTests
+        working-directory: test/StringSearch.Tests.Unit
         run: make run
       
       - name: Upload Artefacts
