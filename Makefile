@@ -12,9 +12,9 @@ LOCAL_API_DOCKER_PORT = 5002#
 include sharedScripts/make/dockerImages.mk
 
 clean:
-	rm -r */out || true
-	rm -r */bin || true
-	rm -r */obj || true
+	rm -r */*/out || true
+	rm -r */*/bin || true
+	rm -r */*/obj || true
 	rm -r artefacts || true
 	
 	mkdir -p \
