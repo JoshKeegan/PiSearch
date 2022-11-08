@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 
-namespace UnitTests.Legacy
+namespace StringSearch.Tests.Unit.Legacy
 {
     /// <summary>
     /// For test fixtures that can consume large amounts of memory, force GC to run after them.
