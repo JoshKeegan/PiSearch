@@ -54,7 +54,7 @@ dependency-prep-digits:
 		-v $(ABSOLUTE_ARTEFACTS_DIR_PATH)/containerTesting/digits:/output \
 		-w="/app" \
 		--entrypoint dotnet \
-		mcr.microsoft.com/dotnet/runtime:5.0.4-alpine3.13-amd64 \
+		mcr.microsoft.com/dotnet/runtime:7.0.0-alpine3.16 \
 		StringSearch.IndexGenerator.dll
 
 dependency-prep-config:
