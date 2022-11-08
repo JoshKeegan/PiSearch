@@ -44,6 +44,8 @@ dependency-prep-schema:
 	echo "USE PiSearchContainerTesting;" > $(RELATIVE_ARTEFACTS_DIR_PATH)/containerTesting/schema.sql
 	cat ../../src/StringSearch.Api/schema.sql >> $(RELATIVE_ARTEFACTS_DIR_PATH)/containerTesting/schema.sql
 
+# TODO: slightly odd to run this interacftively - would probably be clearer cut to have an image
+#	built in the main makefile, so the process is the same for this & the API image.
 dependency-prep-digits:
 	export MSYS_NO_PATHCONV=1; \
 	docker run --rm \
