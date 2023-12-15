@@ -5,7 +5,7 @@
 run:
 # If not on windows, set a filter to exclude the windows-specific tests
 ifeq ($(shell uname), Linux)
-	$(eval testFilter = --filter TestCategory!=windows)
+	$(eval testFilter = --filter os!=windows)
 endif
 
 	dotnet test \

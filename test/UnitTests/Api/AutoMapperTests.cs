@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System;
 using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 using StringSearch.Api.Di;
+using Xunit;
 
 namespace UnitTests.Api
 {
-    [TestFixture]
     public class AutoMapperTests
     {
-        [Test]
+        [Fact]
         public void ConfigurationIsValid()
         {
             IServiceCollection services = new ServiceCollection();

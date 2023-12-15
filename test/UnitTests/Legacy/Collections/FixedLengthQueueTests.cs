@@ -1,58 +1,57 @@
-﻿using System;
-using NUnit.Framework;
+using System;
 using StringSearch.Legacy.Collections;
+using Xunit;
 
 namespace UnitTests.Legacy.Collections
 {
-    [TestFixture]
     public class FixedLengthQueueTests
     {
-        [Test]
+        [Fact]
         public void TestConstructorLength()
         {
             FixedLengthQueue<int> q = new FixedLengthQueue<int>(5);
-            Assert.AreEqual(5, q.Length);
+            Assert.Equal(5, q.Length);
         }
 
-        [Test]
+        [Fact]
         public void TestConstructorInitialValues()
         {
             int[] initialValues = new int[] { 4, 7, 3, 11, 215, -4 };
 
             FixedLengthQueue<int> q = new FixedLengthQueue<int>(initialValues);
 
-            Assert.AreEqual(initialValues.Length, q.Length);
+            Assert.Equal(initialValues.Length, q.Length);
 
             for(int i = 0; i < initialValues.Length; i++)
             {
-                Assert.AreEqual(initialValues[i], q[i]);
+                Assert.Equal(initialValues[i], q[i]);
             }
         }
 
-        [Test]
+        [Fact]
         public void TestConstructorInitialValuesAndHead()
         {
             int[] initialValues = new int[] { 4, 7, 3, 11, 215, -4 };
             int head = 3;
             FixedLengthQueue<int> q = new FixedLengthQueue<int>(initialValues, head);
 
-            Assert.AreEqual(initialValues.Length, q.Length);
+            Assert.Equal(initialValues.Length, q.Length);
 
             for (int i = 0; i < initialValues.Length; i++)
             {
                 int j = (i + head) % initialValues.Length;
 
-                Assert.AreEqual(initialValues[j], q[i]);
+                Assert.Equal(initialValues[j], q[i]);
             }
         }
 
-        [Test]
+        [Fact]
         public void TestConstructorNegativeLength()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => new FixedLengthQueue<int>(-1));
         }
 
-        [Test]
+        [Fact]
         public void TestConstructorNegativeHead()
         {
             int[] initialValues = new int[] { 4, 7, 3, 11, 215, -4 };
@@ -61,7 +60,7 @@ namespace UnitTests.Legacy.Collections
             Assert.Throws<ArgumentOutOfRangeException>(() => new FixedLengthQueue<int>(initialValues, head));
         }
 
-        [Test]
+        [Fact]
         public void TestConstructorHeadTooBig()
         {
             int[] initialValues = new int[] { 4, 7, 3, 11, 215, -4 };
@@ -70,7 +69,7 @@ namespace UnitTests.Legacy.Collections
             Assert.Throws<ArgumentOutOfRangeException>(() => new FixedLengthQueue<int>(initialValues, head));
         }
 
-        [Test]
+        [Fact]
         public void TestAccessIndexHeadZero()
         {
             int[] initialValues = new int[] { 4, 7, 3, 11, 215, -4 };
@@ -79,22 +78,22 @@ namespace UnitTests.Legacy.Collections
 
             for(int i = 0; i < q.Length; i++)
             {
-                Assert.AreEqual(initialValues[i], q[i]);
+                Assert.Equal(initialValues[i], q[i]);
             }
         }
 
-        [Test]
+        [Fact]
         public void TestAccessIndexArbitraryHead()
         {
             int[] initialValues = new int[] { 4, 7, 3, 11, 215, -4 };
             int head = 3;
             FixedLengthQueue<int> q = new FixedLengthQueue<int>(initialValues, head);
 
-            Assert.AreEqual(initialValues[head], q[0]);
-            Assert.AreEqual(initialValues[0], q[initialValues.Length - head]);
+            Assert.Equal(initialValues[head], q[0]);
+            Assert.Equal(initialValues[0], q[initialValues.Length - head]);
         }
 
-        [Test]
+        [Fact]
         public void TestEnqueue()
         {
             int[] initialValues = new int[] { 4, 7, 3, 11, 215, -4 };
@@ -103,31 +102,31 @@ namespace UnitTests.Legacy.Collections
 
             q.Enqueue(5);
 
-            Assert.AreEqual(5, q[q.Length - 1]);
+            Assert.Equal(5, q[q.Length - 1]);
         }
 
-        [Test]
+        [Fact]
         public void TestEnqueueUnsetValues()
         {
             FixedLengthQueue<int> q = new FixedLengthQueue<int>(12);
 
             q.Enqueue(5);
 
-            Assert.AreEqual(5, q[q.Length - 1]);
+            Assert.Equal(5, q[q.Length - 1]);
         }
 
-        [Test]
+        [Fact]
         public void TestEnqueueDoesntChangeLength()
         {
             int length = 12;
             FixedLengthQueue<int> q = new FixedLengthQueue<int>(length);
 
-            Assert.AreEqual(length, q.Length);
+            Assert.Equal(length, q.Length);
             q.Enqueue(5);
-            Assert.AreEqual(length, q.Length);
+            Assert.Equal(length, q.Length);
         }
 
-        [Test]
+        [Fact]
         public void TestEnqueueDequeue()
         {
             int[] initialValues = new int[] { 4, 7, 3, 11, 215, -4 };
@@ -139,8 +138,8 @@ namespace UnitTests.Legacy.Collections
             int expected = initialValues[head];
             int actual = q.DequeueEnqueue(newVal);
 
-            Assert.AreEqual(expected, actual);
-            Assert.AreEqual(newVal, q[q.Length - 1]);
+            Assert.Equal(expected, actual);
+            Assert.Equal(newVal, q[q.Length - 1]);
         }
     }
 }

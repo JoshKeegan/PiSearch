@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Program entry point for the String Search Console application, the development interface for the PiSearch project
  * By Josh Keegan 07/11/2014
  */
@@ -754,7 +754,7 @@ namespace StringSearchConsole
                 stopwatch.Reset();
                 stopwatch.Start();
 
-                int[] foundIdxs = SearchString.Search(loadedString, toFind);
+                long[] foundIdxs = SearchString.Search(loadedString, toFind);
                 Console.WriteLine("Found {0} results", foundIdxs.Length);
                 foreach(int idx in foundIdxs)
                 {

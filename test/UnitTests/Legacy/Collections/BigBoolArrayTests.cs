@@ -1,31 +1,30 @@
-﻿using System.IO;
-using NUnit.Framework;
+using System.IO;
 using StringSearch.Legacy.Collections;
+using Xunit;
 
 namespace UnitTests.Legacy.Collections
 {
-    [TestFixture]
     public class BigBoolArrayTests
     {
-        [Test]
+        [Fact]
         public void TestConstructor()
         {
             BigBoolArray a = new BigBoolArray(10);
         }
 
-        [Test]
+        [Fact]
         public void TestConstructorWithStream()
         {
             BigBoolArray a = new BigBoolArray(10, new MemoryStream(2));
         }
 
-        [Test]
+        [Fact]
         public void TestConstructorWithStreamTooSmall()
         {
             BigBoolArray a = new BigBoolArray(10, new MemoryStream(1));
         }
 
-        [Test]
+        [Fact]
         public void TestReadWrite()
         {
             BigBoolArray a = new BigBoolArray(50);
@@ -35,13 +34,13 @@ namespace UnitTests.Legacy.Collections
             a[43] = true;
             a[47] = false;
 
-            Assert.AreEqual(false, a[0]);
-            Assert.AreEqual(true, a[1]);
-            Assert.AreEqual(true, a[43]);
-            Assert.AreEqual(false, a[47]);
+            Assert.False(a[0]);
+            Assert.True(a[1]);
+            Assert.True(a[43]);
+            Assert.False(a[47]);
         }
 
-        [Test]
+        [Fact]
         public void TestReadWriteAlternating()
         {
             BigBoolArray a = new BigBoolArray(100);
@@ -53,7 +52,7 @@ namespace UnitTests.Legacy.Collections
 
             for(int i = 0; i < a.Length; i++)
             {
-                Assert.AreEqual(i % 2 == 0, a[i]);
+                Assert.Equal(i % 2 == 0, a[i]);
             }
         }
     }

@@ -1,20 +1,21 @@
-﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Text;
-using NUnit.Framework;
 using StringSearch.Legacy;
+using Xunit;
 
 namespace UnitTests.Legacy
 {
-    [TestFixture]
     public class CompressionTests
     {
-#region Four Bit Digit
-        [Test]
+        private static string workingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+        #region Four Bit Digit
+        [Fact]
         public void CompressFile4BitDigit()
         {
             const string str = "1234567890";
-            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "testCompressFile4BitDigit.");
+            string filePath = Path.Combine(workingDirectory, "testCompressFile4BitDigit.");
 
             writeStringFile(filePath + "txt", str);
             Compression.CompressFile4BitDigit(filePath + "txt", filePath + "4bitDigit");
@@ -24,14 +25,14 @@ namespace UnitTests.Legacy
             File.Delete(filePath + ".txt");
             File.Delete(filePath + ".4bitDigit");
 
-            Assert.AreEqual(str, readBack);
+            Assert.Equal(str, readBack);
         }
 
-        [Test]
+        [Fact]
         public void CompressFile4BitDigitOddLength()
         {
             const string str = "12345678905";
-            string filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "testCompressFile4BitDigitOddLength.");
+            string filePath = Path.Combine(workingDirectory, "testCompressFile4BitDigitOddLength.");
 
             writeStringFile(filePath + "txt", str);
             Compression.CompressFile4BitDigit(filePath + "txt", filePath + "4bitDigit");
@@ -41,7 +42,7 @@ namespace UnitTests.Legacy
             File.Delete(filePath + ".txt");
             File.Delete(filePath + ".4bitDigit");
 
-            Assert.AreEqual(str, readBack);
+            Assert.Equal(str, readBack);
         }
 #endregion
 

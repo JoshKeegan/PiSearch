@@ -1,4 +1,4 @@
-﻿/*
+/*
  * PiSearch
  * SearchString - static class containing methods to search through a given string (or other data type)
  *  for some string (or other data type) to be found.
@@ -16,7 +16,7 @@ namespace StringSearch.Legacy
 {
     public static class SearchString
     {
-        public static int[] Search(string toSearch, string lookFor)
+        public static long[] Search(string toSearch, string lookFor)
         {
             //Validation
             if(toSearch == null)
@@ -37,7 +37,7 @@ namespace StringSearch.Legacy
             //The string to be searched must be longer than or of equal length to the string being searched for
             if(toSearch.Length >= lookFor.Length)
             {
-                List<int> foundIdxs = new List<int>();
+                List<long> foundIdxs = new List<long>();
 
                 LinkedList<char> prevChars = new LinkedList<char>();
 
@@ -82,7 +82,7 @@ namespace StringSearch.Legacy
             }
             else //Otherwise the string being seacrhed is shorter than the string being searched for, there cannot be any matches
             {
-                return new int[0];
+                return Array.Empty<long>();
             }
         }
 

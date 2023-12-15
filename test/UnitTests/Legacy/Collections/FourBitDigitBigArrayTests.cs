@@ -1,16 +1,15 @@
 using System;
 using System.IO;
-using NUnit.Framework;
 using StringSearch.Legacy.Collections;
 using StringSearch.Legacy.IO;
 using UnitTests.TestObjects.Extensions;
+using Xunit;
 
 namespace UnitTests.Legacy.Collections
 {
-    [TestFixture]
     public class FourBitDigitBigArrayTests : ForceGcBetweenTests
     {
-        [Test]
+        [Fact]
         public void TestConstructor()
         {
             const string str = "1234";
@@ -20,27 +19,27 @@ namespace UnitTests.Legacy.Collections
             FourBitDigitBigArray a = new FourBitDigitBigArray(memStream);
         }
 
-        [Test]
+        [Fact]
         public void TestEmpty()
         {
             Stream memStream = "".ToFourBitDigitStream();
 
             FourBitDigitBigArray a = new FourBitDigitBigArray(memStream);
 
-            Assert.AreEqual(0, a.Length);
+            Assert.Equal(0, a.Length);
         }
 
-        [Test]
+        [Fact]
         public void TestOddNumberOfDigits()
         {
             Stream memStream = "123".ToFourBitDigitStream();
 
             FourBitDigitBigArray a = new FourBitDigitBigArray(memStream);
 
-            Assert.AreEqual(3, a.Length);
+            Assert.Equal(3, a.Length);
         }
 
-        [Test]
+        [Fact]
         public void TestGet()
         {
             const string str = "391";
@@ -52,11 +51,11 @@ namespace UnitTests.Legacy.Collections
                 char c = str[i];
                 byte b = a[i];
 
-                Assert.AreEqual(c.ToString(), b.ToString());
+                Assert.Equal(c.ToString(), b.ToString());
             }
         }
 
-        [Test]
+        [Fact]
         public void TestSetEven()
         {
             const string orig = "391";
@@ -64,15 +63,15 @@ namespace UnitTests.Legacy.Collections
             FourBitDigitBigArray a = orig.ToFourBitDigitBigArray();
 
             a[0] = 7;
-            Assert.AreEqual(7, a[0]);
+            Assert.Equal(7, a[0]);
 
             for (int i = 1; i < orig.Length; i++)
             {
-                Assert.AreEqual(orig[i].ToString(), a[i].ToString());
+                Assert.Equal(orig[i].ToString(), a[i].ToString());
             }
         }
 
-        [Test]
+        [Fact]
         public void TestSetOdd()
         {
             const string orig = "391";
@@ -80,18 +79,18 @@ namespace UnitTests.Legacy.Collections
             FourBitDigitBigArray a = orig.ToFourBitDigitBigArray();
 
             a[1] = 7;
-            Assert.AreEqual(7, a[1]);
+            Assert.Equal(7, a[1]);
 
             for (int i = 0; i < orig.Length; i++)
             {
                 if(i != 1)
                 {
-                    Assert.AreEqual(orig[i].ToString(), a[i].ToString());
+                    Assert.Equal(orig[i].ToString(), a[i].ToString());
                 }
             }
         }
 
-        [Test]
+        [Fact]
         public void TestAccessOutOfRangeNeg()
         {
             FourBitDigitBigArray a = "123".ToFourBitDigitBigArray();
@@ -102,7 +101,7 @@ namespace UnitTests.Legacy.Collections
             });
         }
 
-        [Test]
+        [Fact]
         public void TestAccessOutOfRange()
         {
             FourBitDigitBigArray a = "123".ToFourBitDigitBigArray();
@@ -113,7 +112,7 @@ namespace UnitTests.Legacy.Collections
             });
         }
 
-        [Test]
+        [Fact]
         public void TestSetOutOfRangeNeg()
         {
             FourBitDigitBigArray a = "123".ToFourBitDigitBigArray();
@@ -124,7 +123,7 @@ namespace UnitTests.Legacy.Collections
             });
         }
 
-        [Test]
+        [Fact]
         public void TestSetOutOfRange()
         {
             FourBitDigitBigArray a = "123".ToFourBitDigitBigArray();
@@ -135,7 +134,7 @@ namespace UnitTests.Legacy.Collections
             });
         }
 
-        [Test]
+        [Fact]
         public void TestSetOverflow()
         {
             FourBitDigitBigArray a = "123".ToFourBitDigitBigArray();
@@ -146,7 +145,7 @@ namespace UnitTests.Legacy.Collections
             });
         }
 
-        [Test]
+        [Fact]
         public void TestSetReservedOverflow()
         {
             //Highest possible value in 4 bits (15) reserved for marking that half of the byte as not in use
@@ -159,72 +158,72 @@ namespace UnitTests.Legacy.Collections
             });
         }
 
-        [Test]
+        [Fact]
         public void TestLength()
         {
             FourBitDigitBigArray a = "123".ToFourBitDigitBigArray();
-            Assert.AreEqual(3, a.Length);
+            Assert.Equal(3, a.Length);
         }
 
-        [Test]
+        [Fact]
         public void TestLengthEven()
         {
             FourBitDigitBigArray a = "1234".ToFourBitDigitBigArray();
-            Assert.AreEqual(4, a.Length);
+            Assert.Equal(4, a.Length);
         }
 
-        [Test]
+        [Fact]
         public void TestLengthEmpty()
         {
             const long length = 3;
             FourBitDigitBigArray a = makeNew(length);
-            Assert.AreEqual(length, a.Length);
+            Assert.Equal(length, a.Length);
         }
 
-        [Test]
+        [Fact]
         public void TestLengthEmptyEven()
         {
             const long length = 4;
             FourBitDigitBigArray a = makeNew(length);
-            Assert.AreEqual(length, a.Length);
+            Assert.Equal(length, a.Length);
         }
 
-        [Test]
+        [Fact]
         public void TestLengthBig()
         {
             const long length = 3000000001;
             FourBitDigitBigArray a = makeNew(length);
-            Assert.AreEqual(length, a.Length);
+            Assert.Equal(length, a.Length);
         }
 
-        [Test]
+        [Fact]
         public void TestLengthBigEven()
         {
             const long length = 3000000000;
             FourBitDigitBigArray a = makeNew(length);
-            Assert.AreEqual(length, a.Length);
+            Assert.Equal(length, a.Length);
         }
 
-        [Test]
+        [Fact]
         public void TestConstructorBigMemoryStreamAsUnderlyingStream()
         {
             BigMemoryStream stream = new BigMemoryStream(5);
             FourBitDigitBigArray a = new FourBitDigitBigArray(stream);
         }
 
-        [Test]
+        [Fact]
         public void TestConstructorBigMemoryStreamAsUnderlyingStreamBig()
         {
             BigMemoryStream stream = new BigMemoryStream(3000000000); //3bil bytes ~= 3GB
             FourBitDigitBigArray a = new FourBitDigitBigArray(stream);
         }
 
-        [Test]
+        [Fact]
         public void TestGetSetBig()
         {
             FourBitDigitBigArray a = makeNew(3000000000);
             a[2500000000] = 5;
-            Assert.AreEqual(5, a[2500000000]);
+            Assert.Equal(5, a[2500000000]);
         }
 
         #region Helpers
