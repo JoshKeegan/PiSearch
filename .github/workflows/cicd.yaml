@@ -49,7 +49,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download Artefacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ci-build-test-artefacts
           path: .
@@ -87,7 +87,7 @@ jobs:
     container: joshkeegan/deploy-ssh:latest
     steps:
       - name: Download Artefacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ci-docker-artefacts
           path: .
