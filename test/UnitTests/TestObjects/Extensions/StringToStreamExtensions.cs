@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using StringSearch;
+﻿using System.IO;
 using StringSearch.Legacy;
 
 namespace UnitTests.TestObjects.Extensions

@@ -1,91 +1,90 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using NUnit.Framework;
 using StringSearch.Legacy.Collections;
+using Xunit;
 
 namespace UnitTests.Legacy.Collections
 {
-    [TestFixture]
     public class MemoryEfficientBigULongArrayTests : ForceGcBetweenTests
     {
-        [Test]
+        [Fact]
         public void TestConstructor()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10);
         }
 
-        [Test]
+        [Fact]
         public void TestConstructorWithMaxValue()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, 1000);
         }
 
-        [Test]
+        [Fact]
         public void TestConstructorWithStream()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, 1000, new MemoryStream());
         }
 
-        [Test]
+        [Fact]
         public void TestConstructorWithStreamNoMaxValue()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, new MemoryStream());
         }
 
-        [Test]
+        [Fact]
         public void TestLength()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10);
-            Assert.AreEqual(10, arr.Length);
+            Assert.Equal(10, arr.Length);
         }
 
-        [Test]
+        [Fact]
         public void TestMaxValue()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, 1000);
-            Assert.AreEqual(1000, arr.MaxValue);
+            Assert.Equal(1000ul, arr.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void TestGetUnset()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, 1000);
-            Assert.AreEqual(0, arr[5]);
+            Assert.Equal(0ul, arr[5]);
         }
 
-        [Test]
+        [Fact]
         public void TestGetUnsetWithSpecifiedStream()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, 1000, new MemoryStream());
-            Assert.AreEqual(0, arr[5]);
+            Assert.Equal(0ul, arr[5]);
         }
 
-        [Test]
+        [Fact]
         public void TestGetSet()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, 1000);
             arr[3] = 400;
-            Assert.AreEqual(400, arr[3]);
+            Assert.Equal(400ul, arr[3]);
         }
 
-        [Test]
+        [Fact]
         public void TestGetSetWithSpecifiedStream()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, 1000, new MemoryStream());
             arr[3] = 400;
-            Assert.AreEqual(400, arr[3]);
+            Assert.Equal(400ul, arr[3]);
         }
 
-        [Test]
+        [Fact]
         public void TestGetSetByteAligned()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, byte.MaxValue);
             arr[7] = 12;
-            Assert.AreEqual(12, arr[7]);
+            Assert.Equal(12ul, arr[7]);
         }
 
-        [Test]
+        [Fact]
         public void TestGetSetMultipleValues()
         {
             ulong[] ulongArr = { 23, 47, 1000, 247, 803, 2, 0, 403 };
@@ -100,11 +99,11 @@ namespace UnitTests.Legacy.Collections
             //Check the values
             for(int i = 0; i < ulongArr.Length; i++)
             {
-                Assert.AreEqual(ulongArr[i], arr[i]);
+                Assert.Equal(ulongArr[i], arr[i]);
             }
         }
 
-        [Test]
+        [Fact]
         public void TestGetSetMultipleValuesReverseOrder()
         {
             ulong[] ulongArr = { 23, 47, 1000, 247, 803, 2, 0, 403 };
@@ -119,11 +118,11 @@ namespace UnitTests.Legacy.Collections
             //Check the values
             for (int i = ulongArr.Length - 1; i >= 0; i--)
             {
-                Assert.AreEqual(ulongArr[i], arr[i]);
+                Assert.Equal(ulongArr[i], arr[i]);
             }
         }
 
-        [Test]
+        [Fact]
         public void TestGetSetBigArray()
         {
             long len = 1000000000;
@@ -134,10 +133,10 @@ namespace UnitTests.Legacy.Collections
 
             arr[setPos] = setVal;
 
-            Assert.AreEqual(setVal, arr[setPos]);
+            Assert.Equal(setVal, arr[setPos]);
         }
 
-        [Test]
+        [Fact]
         public void TestGetIndexTooSmall()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, 1000);
@@ -148,7 +147,7 @@ namespace UnitTests.Legacy.Collections
             });
         }
 
-        [Test]
+        [Fact]
         public void TestGetIndexTooBig()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, 1000);
@@ -159,7 +158,7 @@ namespace UnitTests.Legacy.Collections
             });
         }
 
-        [Test]
+        [Fact]
         public void TestSetIndexTooSmall()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, 1000);
@@ -170,7 +169,7 @@ namespace UnitTests.Legacy.Collections
             });
         }
 
-        [Test]
+        [Fact]
         public void TestSetValueTooBig()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, 1000);
@@ -181,7 +180,7 @@ namespace UnitTests.Legacy.Collections
             });
         }
 
-        [Test]
+        [Fact]
         public void TestSetIndexTooBig()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, 1000);
@@ -192,14 +191,14 @@ namespace UnitTests.Legacy.Collections
             });
         }
 
-        [Test]
+        [Fact]
         public void TestConstructorBig()
         {
             //number 7 requires minimum 3 bits, so that's (5bil * 3) / 8 bytes ~= 1.75GiB of RAM used
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(5000000000, 7);
         }
 
-        [Test]
+        [Fact]
         public void TestConstructorBiggerThan2Gb()
         {
             //Test that an array larger than 2GiB in size can be constructed
@@ -208,16 +207,16 @@ namespace UnitTests.Legacy.Collections
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(length, byte.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void TestGetSetBig()
         {
             MemoryEfficientBigULongArray arr = new MemoryEfficientBigULongArray(10, ulong.MaxValue);
             arr[3] = ulong.MaxValue;
-            Assert.AreEqual(ulong.MaxValue, arr[3]);
+            Assert.Equal(ulong.MaxValue, arr[3]);
         }
 
         #region Test Internals
-        [Test]
+        [Fact]
         public void TestCalculateBitsPerValue()
         {
             Dictionary<ulong, byte> answers = new Dictionary<ulong, byte>()
@@ -237,7 +236,7 @@ namespace UnitTests.Legacy.Collections
                 byte numBits = kvp.Value;
 
                 byte actual = MemoryEfficientBigULongArray.CalculateBitsPerValue(num);
-                Assert.AreEqual(numBits, actual);
+                Assert.Equal(numBits, actual);
             }
         }
         #endregion

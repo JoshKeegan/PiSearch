@@ -1,5 +1,4 @@
 using System;
-using NUnit.Framework;
 
 namespace UnitTests.Legacy
 {
@@ -8,10 +7,9 @@ namespace UnitTests.Legacy
     /// This frees up as much memory as possible for the next test, and also keeps GC runtime variability out of tests
     /// that didn't create the objects being collected.
     /// </summary>
-    public class ForceGcBetweenTests
+    public class ForceGcBetweenTests : IDisposable
     {
-        [TearDown]
-        public void TearDown()
+        public void Dispose()
         {
             GC.Collect();
         }

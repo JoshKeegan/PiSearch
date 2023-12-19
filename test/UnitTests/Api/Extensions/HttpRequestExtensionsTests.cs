@@ -1,20 +1,19 @@
 using System.Net;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
-using NUnit.Framework;
 using StringSearch.Api.Extensions;
+using Xunit;
 
 namespace UnitTests.Api.Extensions
 {
-    [TestFixture]
     public class HttpRequestExtensionsTests
     {
         [Theory]
-        [TestCase("119.140.0.200")]
-        [TestCase("127.0.0.1")]
-        [TestCase("192.168.0.1")]
-        [TestCase("::1")]
-        [TestCase("2001:0db8:85a3:0000:0000:8a2e:0370:7334")]
+        [InlineData("119.140.0.200")]
+        [InlineData("127.0.0.1")]
+        [InlineData("192.168.0.1")]
+        [InlineData("::1")]
+        [InlineData("2001:0db8:85a3:0000:0000:8a2e:0370:7334")]
         public void GetClientIp_ForwardedForSingle_ReturnsForwardedFor(string strIp)
         {
             // Arrange
@@ -30,15 +29,15 @@ namespace UnitTests.Api.Extensions
             IPAddress actual = request.GetClientIp();
 
             // Assert
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
         [Theory]
-        [TestCase("119.140.0.200")]
-        [TestCase("127.0.0.1")]
-        [TestCase("192.168.0.1")]
-        [TestCase("::1")]
-        [TestCase("2001:0db8:85a3:0000:0000:8a2e:0370:7334")]
+        [InlineData("119.140.0.200")]
+        [InlineData("127.0.0.1")]
+        [InlineData("192.168.0.1")]
+        [InlineData("::1")]
+        [InlineData("2001:0db8:85a3:0000:0000:8a2e:0370:7334")]
         public void GetClientIp_NoForwardedFor_ReturnsHttpContextConnectionRemoteIpAddress(string strIp)
         {
             // Arrange
@@ -51,7 +50,7 @@ namespace UnitTests.Api.Extensions
             IPAddress actual = request.GetClientIp();
 
             // Assert
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

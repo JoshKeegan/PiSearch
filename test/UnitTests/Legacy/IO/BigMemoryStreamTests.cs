@@ -1,56 +1,55 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
 using StringSearch.Legacy.IO;
+using Xunit;
 
 namespace UnitTests.Legacy.IO
 {
-    [TestFixture]
     public class BigMemoryStreamTests : ForceGcBetweenTests
     {
-        [Test]
+        [Fact]
         public void TestConstructorNoParams()
         {
             BigMemoryStream stream = new BigMemoryStream();
 
-            Assert.AreEqual(0, stream.Length);
-            Assert.AreEqual(true, stream.CanWrite);
+            Assert.Equal(0, stream.Length);
+            Assert.True(stream.CanWrite);
         }
 
-        [Test]
+        [Fact]
         public void TestConstructorWithCapacity()
         {
             BigMemoryStream stream = new BigMemoryStream(10);
 
-            Assert.AreEqual(10, stream.Length); //Big difference to MemoryStream => length == capacity
+            Assert.Equal(10, stream.Length); //Big difference to MemoryStream => length == capacity
         }
 
-        [Test]
+        [Fact]
         public void TestConstructorNegCapacity()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => new BigMemoryStream(-1));
         }
 
-        [Test]
+        [Fact]
         public void TestConstructorWithBigCapacity()
         {
             long length = 3L * 1024L * 1024L * 1024L; //3GiB
 
             BigMemoryStream stream = new BigMemoryStream(length);
 
-            Assert.AreEqual(length, stream.Length);
+            Assert.Equal(length, stream.Length);
         }
 
-        [Test]
+        [Fact]
         public void TestPositionStart()
         {
             BigMemoryStream stream = new BigMemoryStream();
 
-            Assert.AreEqual(0, stream.Position);
+            Assert.Equal(0, stream.Position);
         }
 
-        [Test]
+        [Fact]
         public void TestSetPosition()
         {
             BigMemoryStream stream = new BigMemoryStream(10);
@@ -59,11 +58,11 @@ namespace UnitTests.Legacy.IO
             {
                 stream.Position = i;
 
-                Assert.AreEqual(i, stream.Position);
+                Assert.Equal(i, stream.Position);
             }
         }
 
-        [Test]
+        [Fact]
         public void TestSetPositionBig()
         {
             long length = 3L * 1024L * 1024L * 1024L; //3GiB
@@ -72,14 +71,14 @@ namespace UnitTests.Legacy.IO
 
             //Small position on big stream
             stream.Position = 10;
-            Assert.AreEqual(10, stream.Position);
+            Assert.Equal(10, stream.Position);
 
             //Big position on big stream
             stream.Position = length - 5;
-            Assert.AreEqual(length - 5, stream.Position);
+            Assert.Equal(length - 5, stream.Position);
         }
 
-        [Test]
+        [Fact]
         public void TestSetPositionNeg()
         {
             BigMemoryStream stream = new BigMemoryStream();
@@ -87,7 +86,7 @@ namespace UnitTests.Legacy.IO
             Assert.Throws<ArgumentOutOfRangeException>(() => stream.Position = -1);
         }
 
-        [Test]
+        [Fact]
         public void TestPositionMovesOnRead()
         {
             BigMemoryStream stream = new BigMemoryStream(100);
@@ -96,10 +95,10 @@ namespace UnitTests.Legacy.IO
             byte[] buffer = new byte[5];
             stream.Read(buffer, 0, 5);
 
-            Assert.AreEqual(10, stream.Position);
+            Assert.Equal(10, stream.Position);
         }
 
-        [Test]
+        [Fact]
         public void TestPositionMovesOnWrite()
         {
             BigMemoryStream stream = new BigMemoryStream(100);
@@ -114,10 +113,10 @@ namespace UnitTests.Legacy.IO
 
             stream.Write(toWrite, 0, toWrite.Length);
 
-            Assert.AreEqual(15, stream.Position);
+            Assert.Equal(15, stream.Position);
         }
 
-        [Test]
+        [Fact]
         public void TestPositionMovesOnReadByte()
         {
             BigMemoryStream stream = new BigMemoryStream(100);
@@ -126,10 +125,10 @@ namespace UnitTests.Legacy.IO
 
             stream.ReadByte();
 
-            Assert.AreEqual(6, stream.Position);
+            Assert.Equal(6, stream.Position);
         }
 
-        [Test]
+        [Fact]
         public void TesPositionMovesOnWriteByte()
         {
             BigMemoryStream stream = new BigMemoryStream(100);
@@ -138,10 +137,10 @@ namespace UnitTests.Legacy.IO
 
             stream.WriteByte(3);
 
-            Assert.AreEqual(6, stream.Position);
+            Assert.Equal(6, stream.Position);
         }
 
-        [Test]
+        [Fact]
         public void TestSetPositionToLength()
         {
             BigMemoryStream stream = new BigMemoryStream(5);
@@ -149,7 +148,7 @@ namespace UnitTests.Legacy.IO
             stream.Position = 5; //Should be fine to set position, but fail on read/write
         }
 
-        [Test]
+        [Fact]
         public void TestReadWrite()
         {
             int length = 100;
@@ -170,10 +169,10 @@ namespace UnitTests.Legacy.IO
             byte[] buffer = new byte[length];
             stream.Read(buffer, 0, length);
 
-            CollectionAssert.AreEqual(values, buffer);
+            Assert.Equal(values, buffer);
         }
 
-        [Test]
+        [Fact]
         public void TestReadWriteBig()
         {
             long length = 3L * 1024L * 1024L * 1024L; //3GiB
@@ -194,10 +193,10 @@ namespace UnitTests.Legacy.IO
             byte[] buffer = new byte[values.Length];
             stream.Read(buffer, 0, values.Length);
 
-            CollectionAssert.AreEqual(values, buffer);
+            Assert.Equal(values, buffer);
         }
 
-        [Test]
+        [Fact]
         public void TestReadWriteBigAboveIntegerIndex()
         {
             long length = 3L * 1024L * 1024L * 1024L; //3GiB
@@ -221,10 +220,10 @@ namespace UnitTests.Legacy.IO
             byte[] buffer = new byte[values.Length];
             stream.Read(buffer, 0, values.Length);
 
-            CollectionAssert.AreEqual(values, buffer);
+            Assert.Equal(values, buffer);
         }
 
-        [Test]
+        [Fact]
         public void TestReadWriteOffset1()
         {
             BigMemoryStream stream = new BigMemoryStream(100);
@@ -240,7 +239,7 @@ namespace UnitTests.Legacy.IO
             stream.Position = 0;
             stream.Read(actual1, 0, 4);
 
-            CollectionAssert.AreEqual(expected, actual1);
+            Assert.Equal(expected, actual1);
 
             //Get the bytes back using an offset on read too
             byte[] actual2 = new byte[values.Length];
@@ -249,11 +248,11 @@ namespace UnitTests.Legacy.IO
 
             for(int i = 3; i < 7; i++)
             {
-                Assert.AreEqual(values[i], actual2[i]);
+                Assert.Equal(values[i], actual2[i]);
             }
         }
 
-        [Test]
+        [Fact]
         public void TestReadWriteOffset2()
         {
             int length = 100;
@@ -279,11 +278,11 @@ namespace UnitTests.Legacy.IO
             byte[] buffer = new byte[length];
             int numRead = stream.Read(buffer, writeFrom, length - writeFrom);
 
-            CollectionAssert.AreEqual(expected, buffer);
-            Assert.AreEqual(length - writeFrom, numRead);
+            Assert.Equal(expected, buffer);
+            Assert.Equal(length - writeFrom, numRead);
         }
 
-        [Test]
+        [Fact]
         public void TestReadBufferNull()
         {
             BigMemoryStream stream = new BigMemoryStream(5);
@@ -292,7 +291,7 @@ namespace UnitTests.Legacy.IO
             Assert.Throws<ArgumentNullException>(() => stream.Read(buffer, 0, 1));
         }
 
-        [Test]
+        [Fact]
         public void TestReadNegOffset()
         {
             BigMemoryStream stream = new BigMemoryStream(5);
@@ -301,7 +300,7 @@ namespace UnitTests.Legacy.IO
             Assert.Throws<ArgumentOutOfRangeException>(() => stream.Read(buffer, -1, 1));
         }
 
-        [Test]
+        [Fact]
         public void TestReadNegCount()
         {
             BigMemoryStream stream = new BigMemoryStream(5);
@@ -310,7 +309,7 @@ namespace UnitTests.Legacy.IO
             Assert.Throws<ArgumentOutOfRangeException>(() => stream.Read(buffer, 1, -1));
         }
 
-        [Test]
+        [Fact]
         public void TestReadBufferTooSmall()
         {
             BigMemoryStream stream = new BigMemoryStream(5);
@@ -319,7 +318,7 @@ namespace UnitTests.Legacy.IO
             Assert.Throws<ArgumentException>(() => stream.Read(buffer, 0, 5));
         }
 
-        [Test]
+        [Fact]
         public void TestReadBufferTooSmallDueToOffset()
         {
             BigMemoryStream stream = new BigMemoryStream(5);
@@ -328,7 +327,7 @@ namespace UnitTests.Legacy.IO
             Assert.Throws<ArgumentException>(() => stream.Read(buffer, 1, 4));
         }
 
-        [Test]
+        [Fact]
         public void TestReadEos()
         {
             BigMemoryStream stream = new BigMemoryStream(5);
@@ -337,10 +336,10 @@ namespace UnitTests.Legacy.IO
             stream.Position = 5;
             int bytesRead = stream.Read(buffer, 0, 1);
 
-            Assert.AreEqual(0, bytesRead);
+            Assert.Equal(0, bytesRead);
         }
 
-        [Test]
+        [Fact]
         public void TestReadLastUnset()
         {
             byte[] expected = new byte[] { 0 };
@@ -353,11 +352,11 @@ namespace UnitTests.Legacy.IO
 
             int bytesRead = stream.Read(buffer, 0, 1);
 
-            Assert.AreEqual(1, bytesRead);
-            CollectionAssert.AreEqual(expected, buffer);
+            Assert.Equal(1, bytesRead);
+            Assert.Equal(expected, buffer);
         }
 
-        [Test]
+        [Fact]
         public void TestReadLastUnsetWithMaxSizeOfUnderlyingStream()
         {
             byte[] expected = new byte[] { 0 };
@@ -370,11 +369,11 @@ namespace UnitTests.Legacy.IO
 
             int bytesRead = stream.Read(buffer, 0, 1);
 
-            Assert.AreEqual(1, bytesRead);
-            CollectionAssert.AreEqual(expected, buffer);
+            Assert.Equal(1, bytesRead);
+            Assert.Equal(expected, buffer);
         }
 
-        [Test]
+        [Fact]
         public void TestReadWriteByte()
         {
             BigMemoryStream stream = new BigMemoryStream(100);
@@ -383,10 +382,10 @@ namespace UnitTests.Legacy.IO
 
             stream.Position = 0;
 
-            Assert.AreEqual(5, stream.ReadByte());
+            Assert.Equal(5, stream.ReadByte());
         }
 
-        [Test]
+        [Fact]
         public void TestReadByteEos()
         {
             BigMemoryStream stream = new BigMemoryStream(100);
@@ -394,10 +393,10 @@ namespace UnitTests.Legacy.IO
             stream.Position = 100;
             int b = stream.ReadByte();
 
-            Assert.AreEqual(-1, b);
+            Assert.Equal(-1, b);
         }
 
-        [Test]
+        [Fact]
         public void TestReadByteEosBig()
         {
             long length = 3L * 1024L * 1024L * 1024L; //3GiB
@@ -406,10 +405,10 @@ namespace UnitTests.Legacy.IO
             stream.Position = length;
             int b = stream.ReadByte();
 
-            Assert.AreEqual(-1, b);
+            Assert.Equal(-1, b);
         }
 
-        [Test]
+        [Fact]
         public void TestReadWriteLastByte()
         {
             BigMemoryStream stream = new BigMemoryStream(100);
@@ -419,10 +418,10 @@ namespace UnitTests.Legacy.IO
 
             stream.Position = 99;
             int b = stream.ReadByte();
-            Assert.AreEqual(5, b);
+            Assert.Equal(5, b);
         }
 
-        [Test]
+        [Fact]
         public void TestReadWriteLastByteBig()
         {
             long length = 3L * 1024L * 1024L * 1024L; //3GiB
@@ -433,10 +432,10 @@ namespace UnitTests.Legacy.IO
 
             stream.Position = length - 1;
             int b = stream.ReadByte();
-            Assert.AreEqual(5, b);
+            Assert.Equal(5, b);
         }
 
-        [Test]
+        [Fact]
         public void TestReadWriteLastByteInUnderlyingStream()
         {
             long length = BigMemoryStream.MEMORY_STREAM_MAX_SIZE + 5;
@@ -447,10 +446,10 @@ namespace UnitTests.Legacy.IO
 
             stream.Position = BigMemoryStream.MEMORY_STREAM_MAX_SIZE - 1;
             int b = stream.ReadByte();
-            Assert.AreEqual(5, b);
+            Assert.Equal(5, b);
         }
 
-        [Test]
+        [Fact]
         public void TestReadWriteFirstByteInSecondUnderlyingStream()
         {
             long length = BigMemoryStream.MEMORY_STREAM_MAX_SIZE + 5;
@@ -461,10 +460,10 @@ namespace UnitTests.Legacy.IO
 
             stream.Position = BigMemoryStream.MEMORY_STREAM_MAX_SIZE;
             int b = stream.ReadByte();
-            Assert.AreEqual(5, b);
+            Assert.Equal(5, b);
         }
 
-        [Test]
+        [Fact]
         public void TestReadWriteLastByteInStreamAtMaxOfUnderlyingStream()
         {
             BigMemoryStream stream = new BigMemoryStream(BigMemoryStream.MEMORY_STREAM_MAX_SIZE);
@@ -474,30 +473,30 @@ namespace UnitTests.Legacy.IO
 
             stream.Position = BigMemoryStream.MEMORY_STREAM_MAX_SIZE - 1;
             int b = stream.ReadByte();
-            Assert.AreEqual(5, b);
+            Assert.Equal(5, b);
         }
 
-        [Test]
+        [Fact]
         public void TestReadByteUnset()
         {
             BigMemoryStream stream = new BigMemoryStream(100);
             stream.Position = 50;
 
             int b = stream.ReadByte();
-            Assert.AreEqual(0, b);
+            Assert.Equal(0, b);
         }
 
-        [Test]
+        [Fact]
         public void TestReadLastByteUnset()
         {
             BigMemoryStream stream = new BigMemoryStream(100);
             stream.Position = stream.Length - 1;
 
             int b = stream.ReadByte();
-            Assert.AreEqual(0, b);
+            Assert.Equal(0, b);
         }
 
-        [Test]
+        [Fact]
         public void TestReadLastByteUnsetBig()
         {
             long length = 3L * 1024L * 1024L * 1024L; //3GiB
@@ -505,10 +504,10 @@ namespace UnitTests.Legacy.IO
             stream.Position = stream.Length - 1;
 
             int b = stream.ReadByte();
-            Assert.AreEqual(0, b);
+            Assert.Equal(0, b);
         }
 
-        [Test]
+        [Fact]
         public void TestReadLastByteUnsetWithMaxSizeOfUnderlyingStream()
         {
             BigMemoryStream stream = new BigMemoryStream(BigMemoryStream.MEMORY_STREAM_MAX_SIZE);
@@ -516,10 +515,10 @@ namespace UnitTests.Legacy.IO
             stream.Position = stream.Length - 1;
 
             int b = stream.ReadByte();
-            Assert.AreEqual(0, b);
+            Assert.Equal(0, b);
         }
 
-        [Test]
+        [Fact]
         public void TestDisposed()
         {
             BigMemoryStream stream = new BigMemoryStream(5);
