@@ -67,7 +67,7 @@ jobs:
       
       - name: Output Uniqueifier
         id: output_uniqueifier
-        run: echo "::set-output name=uniqueifier::`cat artefacts/uniqueifier`"
+        run: echo "uniqueifier=`cat artefacts/uniqueifier`" >> $GITHUB_OUTPUT
       
       - name: Upload Artefacts
         uses: actions/upload-artifact@v4
