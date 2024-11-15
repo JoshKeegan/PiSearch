@@ -94,7 +94,10 @@ jobs:
       - name: Add SSH Private Key
         run: |
           mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo -e "Host *\n\tStrictHostKeyChecking accept-new\n" > ~/.ssh/config
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
       
       - name: Copy Artefacts to Target
         run: |
