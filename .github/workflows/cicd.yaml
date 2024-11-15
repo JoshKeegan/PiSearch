@@ -91,10 +91,8 @@ jobs:
           name: ci-docker-artefacts
           path: .
       
-      # Must hardcode /root here because gh actions overrides $HOME for some bizarre reason :s
-      #   https://github.com/actions/runner/issues/863
       - name: Add SSH Private Key
-        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > /root/.ssh/id_rsa
+        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
       
       # Debug step left here since deployments have randomly failed.
       # Leaving this here for now since by the time I investigate the issue it fixes itself, so the next time
