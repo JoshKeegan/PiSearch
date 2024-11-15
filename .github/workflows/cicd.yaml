@@ -96,15 +96,6 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
       
-      # Debug step left here since deployments have randomly failed.
-      # Leaving this here for now since by the time I investigate the issue it fixes itself, so the next time
-      #   it happens I want this output to be in the logs . . .
-      - name: Debug DNS
-        run: |
-          apk add bind-tools
-          dig ${{ secrets.HOSTNAME }}
-          getent ahosts ${{ secrets.HOSTNAME }}
-      
       - name: Copy Artefacts to Target
         run: |
           set -x
