@@ -92,7 +92,9 @@ jobs:
           path: .
       
       - name: Add SSH Private Key
-        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
       
       # Debug step left here since deployments have randomly failed.
       # Leaving this here for now since by the time I investigate the issue it fixes itself, so the next time
