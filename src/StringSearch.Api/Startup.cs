@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using StringSearch.Api.Di;
 using StringSearch.Api.Mvc.ActionFilters;
 using StringSearch.Api.Mvc.Middleware;
