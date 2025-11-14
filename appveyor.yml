@@ -1,8 +1,8 @@
 version: 1.0.{build}
-image: Visual Studio 2019
+image: Visual Studio 2022
 
 install:
-- ps: build/ci/appveyor/installDotnet9.0Sdk.ps1
+- ps: build/ci/appveyor/installDotnet10.0Sdk.ps1
 
 build_script:
 - ps: dotnet build
