@@ -93,7 +93,7 @@ namespace UnitTests.Legacy.IO
 
             stream.Position = 5;
             byte[] buffer = new byte[5];
-            stream.Read(buffer, 0, 5);
+            stream.ReadExactly(buffer, 0, 5);
 
             Assert.Equal(10, stream.Position);
         }
@@ -167,7 +167,7 @@ namespace UnitTests.Legacy.IO
             stream.Position = 0;
 
             byte[] buffer = new byte[length];
-            stream.Read(buffer, 0, length);
+            stream.ReadExactly(buffer, 0, length);
 
             Assert.Equal(values, buffer);
         }
@@ -191,7 +191,7 @@ namespace UnitTests.Legacy.IO
             stream.Position = 0;
 
             byte[] buffer = new byte[values.Length];
-            stream.Read(buffer, 0, values.Length);
+            stream.ReadExactly(buffer, 0, values.Length);
 
             Assert.Equal(values, buffer);
         }
@@ -218,7 +218,7 @@ namespace UnitTests.Legacy.IO
             stream.Position = fromStreamPos;
 
             byte[] buffer = new byte[values.Length];
-            stream.Read(buffer, 0, values.Length);
+            stream.ReadExactly(buffer, 0, values.Length);
 
             Assert.Equal(values, buffer);
         }
@@ -237,14 +237,14 @@ namespace UnitTests.Legacy.IO
             //Get just the bytes that were written
             byte[] actual1 = new byte[4];
             stream.Position = 0;
-            stream.Read(actual1, 0, 4);
+            stream.ReadExactly(actual1, 0, 4);
 
             Assert.Equal(expected, actual1);
 
             //Get the bytes back using an offset on read too
             byte[] actual2 = new byte[values.Length];
             stream.Position = 0;
-            stream.Read(actual2, 3, 4);
+            stream.ReadExactly(actual2, 3, 4);
 
             for(int i = 3; i < 7; i++)
             {
