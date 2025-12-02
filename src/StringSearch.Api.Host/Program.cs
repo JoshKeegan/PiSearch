@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using StringSearch.Di;
 using StringSearch.Infrastructure.Di;
 
@@ -12,12 +12,14 @@ namespace StringSearch.Api.Host
             createWebHostBuilder(args).Build().Run();
         }
 
-        private static IWebHostBuilder createWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .ConfigureServices(services => 
-                    services
-                        .RegisterInfrastructureDependencies()
-                        .AddStringSearch());
+        private static IHostBuilder createWebHostBuilder(string[] args) =>
+            Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder => 
+                    webBuilder
+                        .UseStartup<Startup>()
+                        .ConfigureServices(services =>
+                            services
+                                .RegisterInfrastructureDependencies()
+                                .AddStringSearch()));
     }
 }
