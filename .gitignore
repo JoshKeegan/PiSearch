@@ -169,6 +169,3 @@ appsettings.*.json
 !appsettings.Development.Sample.json
 
 artefacts/
-
-FodyWeavers.xml
-FodyWeavers.xsd
