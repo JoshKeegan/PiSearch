@@ -9,7 +9,9 @@ install:
 - ps: build/ci/appveyor/installDotnet10.0Sdk.ps1
 
 build_script:
-- ps: dotnet build
+# dotnet installs dev certs on first use, and writes to stderr when it does this.
+# Use cmd rather than ps, so this won't error the job
+- cmd: dotnet build
 
 test_script:
 - ps: |
