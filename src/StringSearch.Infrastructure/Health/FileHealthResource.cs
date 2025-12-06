@@ -34,7 +34,7 @@ namespace StringSearch.Infrastructure.Health
             {
                 using (Stream s = new FileStream(path, fileMode, fileAccess, FileShare.ReadWrite, 1, true))
                 {
-                    await s.ReadAsync(new byte[1], 0, 1);
+                    await s.ReadExactlyAsync(new byte[1], 0, 1);
                 }
             }
             catch (Exception e)

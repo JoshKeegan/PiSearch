@@ -10,7 +10,7 @@ permissions:
 jobs:
   ci-build-test:
     runs-on: ubuntu-latest
-    container: joshkeegan/dotnet-build:9.0.100
+    container: joshkeegan/dotnet-build:10.0.100
     steps:
       - name: Checkout
         uses: actions/checkout@v6

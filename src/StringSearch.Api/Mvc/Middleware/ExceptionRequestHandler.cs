@@ -86,7 +86,7 @@ namespace StringSearch.Api.Mvc.Middleware
             long prevPos = request.Body.Position;
             request.Body.Position = 0;
             byte[] buffer = new byte[request.ContentLength.Value];
-            await request.Body.ReadAsync(buffer, 0, buffer.Length);
+            await request.Body.ReadExactlyAsync(buffer, 0, buffer.Length);
             request.Body.Position = prevPos;
             return Encoding.UTF8.GetString(buffer);
         }

@@ -38,9 +38,13 @@ namespace StringSearch.Legacy.Collections
                 //Move the stream to where it should be
                 Stream.Position = startByteIdx;
 
-                //Read in the bytes for this value
+                //Read in the bytes for this value. Default to 0 if the underlying stream isn't long enough for that
+                //data, so a value has not been written for an index this high
                 byte[] bytes = new byte[8];
-                Stream.Read(bytes, 0, bytesPerValue);
+                if (Stream.Read(bytes, 0, bytesPerValue) != bytesPerValue)
+                {
+                    return 0L;
+                }
 
                 //Convert the bytes into a ulong
                 ulong toRet = BitConverter.ToUInt64(bytes, 0);
