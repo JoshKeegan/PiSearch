@@ -23,7 +23,7 @@ jobs:
         run: make run
       
       - name: Upload Artefacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: ci-build-test-artefacts
           path: |
@@ -70,7 +70,7 @@ jobs:
         run: echo "uniqueifier=`cat artefacts/uniqueifier`" >> $GITHUB_OUTPUT
       
       - name: Upload Artefacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: ci-docker-artefacts
           path: |
