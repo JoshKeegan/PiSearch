@@ -18,6 +18,10 @@ server
 
 	location /
 	{
+		# Increase the default timeout because lookups for very short strings can be slow.
+		# There's little benefit to timing them out because the server won't cancel the request regardless.
+		proxy_read_timeout 300s;
+
 		proxy_set_header X-Real-IP $remote_addr;
 		proxy_set_header Host $host;
 		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
