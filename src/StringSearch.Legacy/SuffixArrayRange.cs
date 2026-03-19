@@ -21,7 +21,7 @@ namespace StringSearch.Legacy
         public readonly long Max;
         public readonly IBigArray<ulong> SuffixArray;
         public readonly IBigArray<byte> Digits;
-        public long[] SortedValues
+        private long[] SortedValues
         {
             get
             {
@@ -47,6 +47,22 @@ namespace StringSearch.Legacy
                 }
                 return sortedValues;
             }
+        }
+
+        public long GetSorted(int index)
+        {
+            if (index < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index));
+            }
+
+            long[] values = SortedValues;
+            if (index >= values.LongLength)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index));
+            }
+
+            return values[index];
         }
 
         // Constructors

@@ -831,11 +831,11 @@ namespace StringSearchConsole
                 stopwatch.Start();
 
                 SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, toFind, precomputedSearchResults);
-                long[] foundIdxs = suffixArrayRange.SortedValues;
-                Console.WriteLine("Found {0} results", foundIdxs.Length);
-                foreach (long idx in foundIdxs)
+                long resultsCount = suffixArrayRange.HasResults ? suffixArrayRange.Max - suffixArrayRange.Min + 1 : 0;
+                Console.WriteLine("Found {0} results", resultsCount);
+                if (resultsCount > 0)
                 {
-                    Console.WriteLine(idx);
+                    Console.WriteLine(suffixArrayRange.GetSorted(0));
                 }
             }
             else

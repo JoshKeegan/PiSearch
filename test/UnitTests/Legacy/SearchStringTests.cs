@@ -134,7 +134,7 @@ namespace UnitTests.Legacy
 
                     long[] seqSearchRes = SearchString.Search(str, find);
                     SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, find);
-                    long[] suffixArraySearchRes = suffixArrayRange.SortedValues;
+                    long[] suffixArraySearchRes = getAllSortedValues(suffixArrayRange);
 
                     Assert.Equal(seqSearchRes, suffixArraySearchRes);
                 }
@@ -163,7 +163,7 @@ namespace UnitTests.Legacy
                 long[] expected = kvp.Value;
 
                 SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, find);
-                long[] actual = suffixArrayRange.SortedValues;
+                long[] actual = getAllSortedValues(suffixArrayRange);
 
                 Assert.Equal(expected, actual);
             }
@@ -182,7 +182,7 @@ namespace UnitTests.Legacy
             long[] expected = new long[] { 11 };
 
             SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, find);
-            long[] actual = suffixArrayRange.SortedValues;
+            long[] actual = getAllSortedValues(suffixArrayRange);
 
             Assert.Equal(expected, actual);
         }
@@ -200,7 +200,7 @@ namespace UnitTests.Legacy
             long[] expected = new long[] { 0 };
 
             SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, find);
-            long[] actual = suffixArrayRange.SortedValues;
+            long[] actual = getAllSortedValues(suffixArrayRange);
 
             Assert.Equal(expected, actual);
         }
@@ -216,7 +216,7 @@ namespace UnitTests.Legacy
             long[] expected = new long[] { 0 };
 
             SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, str);
-            long[] actual = suffixArrayRange.SortedValues;
+            long[] actual = getAllSortedValues(suffixArrayRange);
 
             Assert.Equal(expected, actual);
         }
@@ -244,7 +244,7 @@ namespace UnitTests.Legacy
             long[] expected = new long[0];
 
             SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, find);
-            long[] actual = suffixArrayRange.SortedValues;
+            long[] actual = getAllSortedValues(suffixArrayRange);
 
             Assert.Equal(expected, actual);
         }
@@ -270,7 +270,7 @@ namespace UnitTests.Legacy
             long[] expected = new long[] {  };
 
             SuffixArrayRange suffixArrayRange = SearchString.Search(suffixArray, fourBitDigitArray, find);
-            long[] actual = suffixArrayRange.SortedValues;
+            long[] actual = getAllSortedValues(suffixArrayRange);
 
             Assert.False(suffixArrayRange.HasResults);
             Assert.Equal(expected, actual);
@@ -582,6 +582,26 @@ namespace UnitTests.Legacy
         #endregion
 
         #region Helper Methods
+        
+        // We only usually want one result, so the contract is changed so the implementation can be optimised for that.
+        // In tests we assert against them all at once, so this helpers collects them.
+        private static long[] getAllSortedValues(SuffixArrayRange suffixArrayRange)
+        {
+            if (!suffixArrayRange.HasResults)
+            {
+                return [];
+            }
+
+            int count = (int)(suffixArrayRange.Max - suffixArrayRange.Min + 1);
+            long[] values = new long[count];
+            for (int i = 0; i < count; i++)
+            {
+                values[i] = suffixArrayRange.GetSorted(i);
+            }
+
+            return values;
+        }
+
         private static IBigArray<ulong> buildSuffixArray(string str)
         {
             //Initialise the array that will hold the suffix array

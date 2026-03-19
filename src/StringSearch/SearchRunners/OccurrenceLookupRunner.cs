@@ -35,7 +35,7 @@ namespace StringSearch.SearchRunners
                 SuffixArrayRange suffixArrayRange = new SuffixArrayRange(request.MinSuffixArrayIdx,
                     request.MaxSuffixArrayIdx, suffixArray.Object, digits.Object);
 
-                long resultIdx = suffixArrayRange.SortedValues[request.ResultId];
+                long resultIdx = suffixArrayRange.GetSorted(request.ResultId);
                 SurroundingDigits surroundingDigits = null;
 
                 if (request.NumSurroundingDigits > 0)
