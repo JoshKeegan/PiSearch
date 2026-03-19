@@ -12,8 +12,8 @@ namespace StringSearch.Legacy
     public class SuffixArrayRange
     {
         //Private variables
-        private bool calculatedSortedValues = false;
-        private long[] sortedValues;
+        private bool valuesLoaded = false;
+        private long[] values;
 
         //Public accessors & modifiers
         public readonly bool HasResults;
@@ -21,48 +21,139 @@ namespace StringSearch.Legacy
         public readonly long Max;
         public readonly IBigArray<ulong> SuffixArray;
         public readonly IBigArray<byte> Digits;
-        private long[] SortedValues
+        private long[] Values
         {
             get
             {
-                if (!calculatedSortedValues)
+                if (!valuesLoaded)
                 {
                     if(HasResults)
                     {
-                        sortedValues = new long[Max - Min + 1];
-                        for (long i = Min; i <= Max; i++)
+                        int length = checked((int)(Max - Min + 1));
+                        values = new long[length];
+                        long start = Min;
+                        for (int i = 0; i < length; i++)
                         {
-                            sortedValues[i - Min] = (long)SuffixArray[i];
+                            values[i] = (long)SuffixArray[start + i];
                         }
-
-                        //Sort the array of string indices (Array.Sort implements Quicksort)
-                        Array.Sort(sortedValues);
                     }
                     else
                     {
-                        sortedValues = new long[0];
+                        values = [];
                     }
 
-                    calculatedSortedValues = true;
+                    valuesLoaded = true;
                 }
-                return sortedValues;
+                return values;
             }
         }
 
         public long GetSorted(int index)
         {
-            if (index < 0)
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+
+            long[] values = Values;
+            if (index >= values.Length)
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
 
-            long[] values = SortedValues;
-            if (index >= values.LongLength)
+            return quickSelect(values, index);
+        }
+
+        private static long quickSelect(long[] values, int index)
+        {
+            int left = 0;
+            int right = values.Length - 1;
+
+            while (true)
             {
-                throw new ArgumentOutOfRangeException(nameof(index));
+                if (left == right)
+                {
+                    return values[left];
+                }
+
+                int pivotIndex = selectPivotIndex(values, left, right);
+                pivotIndex = partition(values, left, right, pivotIndex);
+
+                if (index == pivotIndex)
+                {
+                    return values[index];
+                }
+
+                if (index < pivotIndex)
+                {
+                    right = pivotIndex - 1;
+                }
+                else
+                {
+                    left = pivotIndex + 1;
+                }
+            }
+        }
+
+        private static int selectPivotIndex(long[] values, int left, int right)
+        {
+            int mid = left + (right - left) / 2;
+            long a = values[left];
+            long b = values[mid];
+            long c = values[right];
+
+            if (a < b)
+            {
+                if (b < c)
+                {
+                    return mid;
+                }
+
+                if (a < c)
+                {
+                    return right;
+                }
+
+                return left;
             }
 
-            return values[index];
+            if (a < c)
+            {
+                return left;
+            }
+
+            if (b < c)
+            {
+                return right;
+            }
+
+            return mid;
+        }
+
+        private static int partition(long[] values, int left, int right, int pivotIndex)
+        {
+            long pivotValue = values[pivotIndex];
+            swap(values, pivotIndex, right);
+
+            int storeIndex = left;
+            for (int i = left; i < right; i++)
+            {
+                if (values[i] < pivotValue)
+                {
+                    swap(values, storeIndex, i);
+                    storeIndex++;
+                }
+            }
+
+            swap(values, right, storeIndex);
+            return storeIndex;
+        }
+
+        private static void swap(long[] values, int left, int right)
+        {
+            if (left == right)
+            {
+                return;
+            }
+
+            (values[left], values[right]) = (values[right], values[left]);
         }
 
         // Constructors
