@@ -13,7 +13,7 @@ jobs:
     container: joshkeegan/dotnet-build:10.0.100
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       
       - name: Build
         run: make publish-all
