@@ -81,8 +81,8 @@ run-deployment-tests-against-container:
 			--rm \
 			-v ${PWD}/runDeploymentTests.sh:/app/runDeploymentTests.sh:ro \
 			--network=reverseProxy \
-			--entrypoint /bin/bash \
-			joshkeegan/deploy-ssh \
+			--entrypoint /bin/sh \
+			curlimages/curl \
 			/app/runDeploymentTests.sh $(containerName) $(EXTERNAL_CONTAINER_PORT)
 
 #
