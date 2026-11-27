@@ -74,7 +74,7 @@ var numberHelpers =
 		console.log("numberHelpers.removeCommas");
 
 		//TODO: Validation
-		return numStr.replace(",", "");
+		return numStr.replaceAll(",", "");
 	},
 
 	roundWithoutTrailingZeros: function(num, numDecimalPlaces)
