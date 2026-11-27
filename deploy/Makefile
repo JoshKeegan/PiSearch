@@ -29,29 +29,8 @@ endef
 run-container:
 	$(eval $(call get-container-name,containerName,$(environment)))
 
-	# Make the container
-	export MSYS_NO_PATHCONV=1; \
-		docker container create \
-			--name "$(containerName)" \
-			--restart always \
-			--log-driver fluentd \
-			--log-opt fluentd-address=localhost:24224 \
-			--log-opt fluentd-sub-second-precision=true \
-			--log-opt fluentd-async=true \
-			--log-opt tag=pisearch.api.$(environment) \
-			-v "$(rootPath)":/var/www/pi_digits:ro \
-			-v "$(appsettingsDir)/appsettings.$(environment).json":/app/appsettings.$(environment).json \
-			-e ASPNETCORE_ENVIRONMENT="$(environment)" \
-			-e ASPNETCORE_URLS="http://*:$(INTERNAL_CONTAINER_PORT)" \
-			-e UNIQUEIFIER="$(shell cat $(UNIQUEIFIER_PATH))" \
-			$(IMAGE_API):$(shell cat $(UNIQUEIFIER_PATH))
-
-	# Join networks
-	docker network connect reverseProxy $(containerName)
-	docker network connect mysql $(containerName)
-
-	# Start the container
-	docker start $(containerName)
+	/bin/bash runContainer.sh "$(containerName)" "$(IMAGE_API)" "$(shell cat $(UNIQUEIFIER_PATH))" \
+		"$(environment)" "$(rootPath)" "$(appsettingsDir)" "$(INTERNAL_CONTAINER_PORT)"
 	
 wait-for-container-ready:
 # TODO: Improve to actually wait for the web server to start.
